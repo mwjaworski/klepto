@@ -1,35 +1,65 @@
 # Pinto
 
-
-[Package Quality](http://packagequality.com/#?package=pinto)
+[![Package Quality](http://npm.packagequality.com/badge/pinto.png)](http://packagequality.com/#?package=pinto)
 <a href="https://www.npmjs.com/package/pinto">
-  NPM
+  <img src="https://img.shields.io/badge/pinto-available-green.svg" alt="Pinto on NPM" />
 </a>
+[![Build Status](https://travis-ci.org/mwjaworski/pinto.svg?branch=docs-and-testing)](https://travis-ci.org/mwjaworski/pinto)
 
-[![Build Status](https://travis-ci.org/olohmann/pinto.svg?branch=master)](https://travis-ci.org/olohmann/pinto)
+> An archive (zip or tar) component package manager
 
-> Manage components packaged in zip files
+## What does Pinto do?
 
-## Install
+Pinto is a package manager for zip or tar files. It's primary use-case is corporations which are not using npm (e.g. slow adoption because of red-tape) and cannot use bower (because bower has terrible support for installing zip/tar files).
 
-Install globally via [npm](npmjs.org):
+Pinto provides a simple interface to install components hosted on a server or file system in to a `bower_components/`, `node_modules/`, or other folder as a simple package delivery system.
+
+## Why Pinto?
+
+Pinto exists as a stop-gap for development groups who:
+
+1. Need private packages (otherwise use npm)
+2. Are not hosting an internal npm server (e.g. red-tape)
+3. Cannot use bower because of it's poor support for zip/tar files
+
+> It's a small slice of the world
+
+## Installation
+
+Install globally via [npm](npmjs.org).
 
 ```bash
-npm install --global pinto
+npm install --global pinto;
 ```
+
+Install globally via [yarn](https://yarnpkg.com/).
+
+```bash
+yarn global add pinto;
+```
+
+> Pinto relies on Node v4 upwards.
 
 ## Usage
 
-After pinto is installed globally, you can run `pinto` from the CLI:
+After pinto is installed globally, you can run `pinto` from the command-line interface in interactive mode:
 
 ```bash
 pinto
 ```
 
-## Author
+You can invoke any command as a one-off by giving the command on the command-line.
 
-**[Michael Jaworski](https://github.com/mwjaworski)**
+```bash
+pinto [command] <options>
+```
+
+## Commands
+
+| Command         | Purpose
+|:----------------|:-----------------------------------------
+| `version`       | Write the current version
 
 ## License
 
-MIT. Copyright (c) 2017-10-11 Michael Jaworski, contributors.
+MIT. Copyright (c) 2017-10-11 [Michael Jaworski](https://github.com/mwjaworski).
