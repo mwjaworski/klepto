@@ -1,8 +1,8 @@
 {
-  "name": "barrel",
+  "name": "bauble",
   "description": "Manage components packaged in zip files",
   "version": "0.1.0",
-  "homepage": "https://github.com/mwjaworski/barrel",
+  "homepage": "https://github.com/mwjaworski/bauble",
   "author": {
     "name": "Michael Jaworski",
     "url": "https://github.com/mwjaworski",
@@ -10,10 +10,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/mwjaworski/barrel.git"
+    "url": "git://github.com/mwjaworski/bauble.git"
   },
   "bugs": {
-    "url": "https://github.com/mwjaworski/barrel/issues"
+    "url": "https://github.com/mwjaworski/bauble/issues"
   },
   "license": "MIT",
   "keywords": [
@@ -22,7 +22,7 @@
   ],
   "preferGlobal": true,
   "bin": {
-    "barrel": "bin/index.js"
+    "bauble": "bin/index.js"
   },
   "main": "bin/index.js",
   "engines": {

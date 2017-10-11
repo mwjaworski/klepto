@@ -4,8 +4,8 @@ module.exports = {
 
     vorpal
       .delimiter(`::}`)
-      .history(`barrel-1`)
-      .localStorage(`barrel-1`);
+      .history(`bauble-1`)
+      .localStorage(`bauble-1`);
 
     if (isInteractive) {
       vorpal.show();
