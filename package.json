@@ -39,7 +39,8 @@
     "/*.bkp"
   ],
   "scripts": {
-    "test": "xo --space && node test.js"
+    "format": "node_modules/.bin/prettier --write bin/**/*.js",
+    "test": "node_modules/.bin/ava --timeout=3s test/test.js"
   },
   "dependencies": {
     "axios": "^0.16.2",
@@ -56,5 +57,18 @@
   "devDependencies": {
     "ava": "0.22.0",
     "prettier": "^1.7.4"
+  },
+  "ava": {
+    "files": [
+      "bin/**/*.js"
+    ],
+    "source": [
+      "bin/**/*.js"
+    ],
+    "failWithoutAssertions": true,
+    "powerAssert": false,
+    "concurrency": 5,
+    "failFast": true,
+    "tap": true
   }
 }
