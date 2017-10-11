@@ -1,21 +1,31 @@
 'use strict';
 
-const test = require('ava');
 const childProcess = require('child_process');
+const test = require('ava');
+const _ = require('lodash');
 
-test('smoke-test', t => {
-	t.plan(1);
+test.cb('command: version', t => {
+  t.plan(7);
 
-	const cp = childProcess.spawn('node', ['cli.js'], {
-		cwd: __dirname,
-		stdio: 'inherit'
-	});
+  childProcess.exec('node bin/index.js version', (error, stdout, stderr) => {
 
-	cp.on('error', err => {
-		t.assert(!err, err);
-	});
+    if (error) {
+      t.fail(`error: ${error}`);
+      t.end();
+      return;
+    }
 
-	cp.on('close', code => {
-		t.assert(code === 0);
-	});
+    const parts = _.zipObject(['major', 'minor', 'patch'], _.map(stdout.split('.'), _.toNumber));
+
+    t.is(_.size(parts) === 3, true, 'there should be a major.minor.patch');
+
+    _.each(parts, (v, name) => {
+      t.is(_.isNumber(v), true, `${name} is a number`);
+      t.is(v >= 0, true, `${name} is greater than zero`);
+    });
+
+    t.end();
+
+  });
+
 });

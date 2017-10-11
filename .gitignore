@@ -6,7 +6,9 @@
 
 .idea/
 .vscode/
+.nyc_output/
 
 /vendor/
 /node_modules/
 /reports/
+/reports/coverage/

@@ -39,7 +39,10 @@
     "/*.bkp"
   ],
   "scripts": {
-    "test": "xo --space && node test.js"
+    "format": "node_modules/.bin/prettier --write bin/**/*.js",
+    "test": "node_modules/.bin/ava --timeout=3s test/test.js",
+    "coverage": "./node_modules/.bin/nyc npm run test",
+    "coveralls": "npm run coverage"
   },
   "dependencies": {
     "axios": "^0.16.2",
@@ -50,11 +53,38 @@
     "jsonfile": "4.0.0",
     "jszip": "^3.1.4",
     "lodash": "4.17.4",
+    "nyc": "^11.2.1",
     "semver-compare": "1.0.0",
     "vorpal": "^1.12.0"
   },
   "devDependencies": {
     "ava": "0.22.0",
     "prettier": "^1.7.4"
+  },
+  "ava": {
+    "files": [
+      "bin/**/*.js"
+    ],
+    "source": [
+      "bin/**/*.js"
+    ],
+    "failWithoutAssertions": true,
+    "powerAssert": false,
+    "concurrency": 5,
+    "failFast": true,
+    "tap": true
+  },
+  "nyc": {
+    "check-coverage": true,
+    "include": [
+      "bin/**/*.js"
+    ],
+    "reporter": [
+      "lcov",
+      "text-summary"
+    ],
+    "cache": true,
+    "all": true,
+    "report-dir": "./reports/coverage"
   }
 }
