@@ -1,8 +1,7 @@
 # Pinto
 
-<a href="https://www.npmjs.com/package/pinto">
-  <img src="https://img.shields.io/badge/pinto-available-green.svg" alt="Pinto on NPM" />
-</a>
+[![Build Status](https://img.shields.io/badge/pinto-available-green.svg)](https://www.npmjs.com/package/pinto)
+
 [![Build Status](https://travis-ci.org/mwjaworski/pinto.svg?branch=docs-and-testing)](https://travis-ci.org/mwjaworski/pinto)
 
 > An archive (zip or tar) component package manager
