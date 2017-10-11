@@ -1,0 +1,12 @@
+*.sass-cache
+*.sublime-*
+*.idea
+*.log
+.DS_Store
+
+.idea/
+.vscode/
+
+/vendor/
+/node_modules/
+/reports/
