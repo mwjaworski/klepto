@@ -1,6 +1,5 @@
 # Pinto
 
-[![Package Quality](http://npm.packagequality.com/badge/pinto.png)](http://packagequality.com/#?package=pinto)
 <a href="https://www.npmjs.com/package/pinto">
   <img src="https://img.shields.io/badge/pinto-available-green.svg" alt="Pinto on NPM" />
 </a>
