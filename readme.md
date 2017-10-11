@@ -1,17 +1,17 @@
-# bauble
+# Bauble
 
 [![Build Status](https://img.shields.io/badge/bauble-available-green.svg)](https://www.npmjs.com/package/bauble)
 [![Build Status](https://travis-ci.org/mwjaworski/bauble.svg?branch=docs-and-testing)](https://travis-ci.org/mwjaworski/bauble)
 
 > An archive (zip or tar) component package manager
 
-## What does bauble do?
+## What does Bauble do?
 
 Bauble is a package manager for zip or tar files. It's primary use-case is corporations which are not using npm (e.g. slow adoption because of red-tape) and cannot use bower (because bower has terrible support for installing zip/tar files).
 
 Bauble provides a simple interface to install components hosted on a server or file system in to a `bower_components/`, `node_modules/`, or other folder as a simple package delivery system.
 
-## Why bauble?
+## Why Bauble?
 
 Bauble exists as a stop-gap for development groups who:
 
