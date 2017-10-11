@@ -1,19 +1,19 @@
-# Pinto
+# barrel
 
-[![Build Status](https://img.shields.io/badge/pinto-available-green.svg)](https://www.npmjs.com/package/pinto)
-[![Build Status](https://travis-ci.org/mwjaworski/pinto.svg?branch=docs-and-testing)](https://travis-ci.org/mwjaworski/pinto)
+[![Build Status](https://img.shields.io/badge/barrel-available-green.svg)](https://www.npmjs.com/package/barrel)
+[![Build Status](https://travis-ci.org/mwjaworski/barrel.svg?branch=docs-and-testing)](https://travis-ci.org/mwjaworski/barrel)
 
 > An archive (zip or tar) component package manager
 
-## What does Pinto do?
+## What does barrel do?
 
-Pinto is a package manager for zip or tar files. It's primary use-case is corporations which are not using npm (e.g. slow adoption because of red-tape) and cannot use bower (because bower has terrible support for installing zip/tar files).
+Barrel is a package manager for zip or tar files. It's primary use-case is corporations which are not using npm (e.g. slow adoption because of red-tape) and cannot use bower (because bower has terrible support for installing zip/tar files).
 
-Pinto provides a simple interface to install components hosted on a server or file system in to a `bower_components/`, `node_modules/`, or other folder as a simple package delivery system.
+Barrel provides a simple interface to install components hosted on a server or file system in to a `bower_components/`, `node_modules/`, or other folder as a simple package delivery system.
 
-## Why Pinto?
+## Why barrel?
 
-Pinto exists as a stop-gap for development groups who:
+Barrel exists as a stop-gap for development groups who:
 
 1. Need private packages (otherwise use npm)
 2. Are not hosting an internal npm server (e.g. red-tape)
@@ -26,29 +26,29 @@ Pinto exists as a stop-gap for development groups who:
 Install globally via [npm](npmjs.org).
 
 ```bash
-npm install --global pinto;
+npm install --global barrel;
 ```
 
 Install globally via [yarn](https://yarnpkg.com/).
 
 ```bash
-yarn global add pinto;
+yarn global add barrel;
 ```
 
-> Pinto relies on Node v4 upwards.
+> barrel relies on Node v4 upwards.
 
 ## Usage
 
-After pinto is installed globally, you can run `pinto` from the command-line interface in interactive mode:
+After Barrel is installed globally, you can run `barrel` from the command-line interface in interactive mode:
 
 ```bash
-pinto
+barrel
 ```
 
 You can invoke any command as a one-off by giving the command on the command-line.
 
 ```bash
-pinto [command] <options>
+barrel [command] <options>
 ```
 
 ## Commands
