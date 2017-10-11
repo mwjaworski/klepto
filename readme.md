@@ -1,4 +1,10 @@
-# pinto
+# Pinto
+
+
+[Package Quality](http://packagequality.com/#?package=pinto)
+<a href="https://www.npmjs.com/package/pinto">
+  NPM
+</a>
 
 [![Build Status](https://travis-ci.org/olohmann/pinto.svg?branch=master)](https://travis-ci.org/olohmann/pinto)
 
