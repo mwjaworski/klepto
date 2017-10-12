@@ -6,17 +6,22 @@ const fs = require('fs');
 const path = require('path');
 
 const fileSystem = require('../support/file_system');
-const ZipBuilder = require('../loaders/zip');
-const TarBuilder = require('../loaders/tar');
+const WebIO = require('../io/web');
+
+const ZipBuilder = require('../packages/zip');
+const TarBuilder = require('../packages/tar');
 
 const FileTypeStrategy = {
   '.zip': ZipBuilder,
   '.tar': TarBuilder
 };
 
-const Patterns = {
-  EXTENSION: /\.([a-z0-9]*)$/i
-};
+// 1. download a new version
+// 2. if cannot download, look for cached version
+// 3. if have file, then write file to cache
+// 4. read file from cache and parse (read bower.json, package.json, ...)
+// 5. write to folder in json
+// 6. if no file in json, then use folder name (function to extract name?!)
 
 module.exports = {
   registerVorpalCommand: (vorpal, configuration) => {
@@ -30,38 +35,16 @@ module.exports = {
         return true;
       })
       .action((args, done) => {
+        const fileTypeBuilder = FileTypeStrategy[path.extname(args.url)];
 
-        const extension = path.extname(args.url);
-        const file = path.basename(args.url, extension);
-        const fileTypeBuilder = FileTypeStrategy[extension];
+        WebIO
+          .pullToCache(args.url)
+          .then(({ writePath }) => {
 
-        const cachePath = `.bauble/cache/${file}.zip`;
-
-        // 1. download a new version
-        // 2. if cannot download, look for cached version
-        // 3. if have file, then write file to cache
-        // 4. read file from cache and parse (read bower.json, package.json, ...)
-        // 5. write to folder in json
-        // 6. if no file in json, then use folder name (function to extract name?!)
-
-        axios({
-          responseType: fileTypeBuilder.responseType,
-          url: args.url,
-          method: 'get'
-        }).then(function(response) {
-
-          vorpal.log(`response`);
-
-          fileSystem
-            .write(cachePath, response.data)
-            .catch((a) => {
-              vorpal.log('error');
-            })
-            .then(() => {
-              fileSystem
-              .read(cachePath)
+            fileSystem
+              .read(writePath)
               .then((binaryData) => {
-                vorpal.log('zip loaded');
+
                 fileTypeBuilder
                   .build(binaryData)
                   .extract()
@@ -69,11 +52,9 @@ module.exports = {
                     done();
                   });
               });
-            });
 
-        }).catch(function(e) {
-          vorpal.log('error', e);
-        })
+          });
+
       });
   }
 };

@@ -21,7 +21,13 @@ Bauble exists as a stop-gap for development groups who:
 2. Are not hosting an internal npm server (e.g. red-tape)
 3. Cannot use bower because of it's poor support for zip/tar files
 
-> It's a small slice of the world
+## Features
+
+- [ ] Download files from HTTPS
+- [ ] Download files from GitHub
+- [ ] Unzip ZIP files
+- [ ] Untar TAR files
+- [ ] `install` a component based on NPM, Bower, or Bauble configurations
 
 ## Installation
 

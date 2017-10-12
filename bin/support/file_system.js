@@ -27,7 +27,7 @@ class FileSystemExtension {
     const {
       folder,
       file
-    } = this.__explodePath(path);
+    } = this.explodePath(path);
 
     return new Promise((resolve, reject) => {
 
@@ -55,7 +55,7 @@ class FileSystemExtension {
     const {
       folder,
       file
-    } = this.__explodePath(path);
+    } = this.explodePath(path);
 
     return new Promise((resolve, reject) => {
       fs.readFile(`${folder}/${file}`, 'binary', (err, data) => {
@@ -66,7 +66,7 @@ class FileSystemExtension {
       });
     });
   }
-  __explodePath(path) {
+  explodePath(path) {
     const _path = _.reverse(path.split(`/`));
     return {
       folder: _.reverse(_.tail(_path)).join(`/`),

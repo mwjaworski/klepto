@@ -4,7 +4,7 @@ const UNKNOWN_MANIFEST = {
   name: `unknown`
 };
 
-class TarLoader {
+class TarPackage {
 
   constructor() {
     this.__tar;
@@ -38,13 +38,9 @@ class TarLoader {
     };
   }
 
-  static get responseType() {
-    return `arraybuffer`;
-  }
-
   static build(tarBinary) {
-    return (new TarLoader()).load(tarBinary);
+    return (new TarPackage()).load(tarBinary);
   }
 }
 
-module.exports = TarLoader;
+module.exports = TarPackage;

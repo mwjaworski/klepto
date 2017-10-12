@@ -8,7 +8,7 @@ const UNKNOWN_MANIFEST = {
   name: `unknown`
 };
 
-class ZipLoader {
+class ZipPackage {
 
   constructor() {
     this.__zip;
@@ -20,6 +20,7 @@ class ZipLoader {
   }
 
   extract() {
+
     // TODO configuration should be set and all code reviewed
     fileSystem.makeDirectory(`.bauble/extract/`);
 
@@ -62,7 +63,7 @@ class ZipLoader {
       const manifestFile = packageFile || bowerFile || baubleFile;
       const manifestContent = (!!manifestFile) ? manifestFile.async('string') : UNKNOWN_MANIFEST;
 
-      return ZipLoader.__defineManifest(manifestContent);
+      return ZipPackage.__defineManifest(manifestContent);
     });
   }
 
@@ -76,13 +77,9 @@ class ZipLoader {
     };
   }
 
-  static get responseType() {
-    return `arraybuffer`;
-  }
-
   static build(zipBinary) {
-    return (new ZipLoader()).load(zipBinary);
+    return (new ZipPackage()).load(zipBinary);
   }
 }
 
-module.exports = ZipLoader;
+module.exports = ZipPackage;
