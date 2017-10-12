@@ -1,3 +1,5 @@
+const Git = require("nodegit");
+
 class GithubIO {
 
   static pullToCache(path) {

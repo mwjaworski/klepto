@@ -6,8 +6,8 @@ module.exports = {
 
     vorpal
       .delimiter(`::}`)
-      .history(`pinto-${configuration.major}`)
-      .localStorage(`pinto-${configuration.major}`);
+      .history(configuration.get('application.handle'))
+      .localStorage(configuration.get('application.handle'));
 
     if (isInteractive) {
       vorpal.show();

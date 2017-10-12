@@ -1,12 +1,38 @@
+const convict = require('convict');
 const _ = require('lodash');
 
-const configuration = {
-  version: `0.1.0`,
-  interface: {
-
-  }
+const VERSION = `0.1.0`;
+const Constants = {
+  MAJOR_VERSION: parseInt(_.head(VERSION.split(`.`)), 10),
+  NAME: `babule`,
+  VERSION
 };
 
-configuration.major = parseInt(_.head(configuration.version.split(`.`)), 10);
+const configuration = convict({
+  application: {
+    name: {
+      doc: `application name`,
+      default: Constants.NAME,
+      format: String
+    },
+    handle: {
+      doc: `application name`,
+      default: `${Constants.NAME}-${Constants.MAJOR_VERSION}`,
+      format: String
+    },
+    version: {
+      tag: {
+        doc: `application version`,
+        default: Constants.VERSION,
+        format: String
+      },
+      major: {
+        doc: `application major version`,
+        default: Constants.MAJOR_VERSION,
+        format: Number
+      }
+    }
+  }
+});
 
 module.exports = configuration;

@@ -1,6 +1,5 @@
 const configuration = require(`../core/configuration`);
 const clc = require('cli-color');
-const axios = require('axios');
 const _ = require('lodash');
 const fs = require('fs');
 const path = require('path');
@@ -26,19 +25,25 @@ const FileTypeStrategy = {
 module.exports = {
   registerVorpalCommand: (vorpal, configuration) => {
     return vorpal
-      .command(`download [url]`)
+      .command(`cache [path]`)
+      .alias(`c`)
       .description(`Download a component package.`)
-      .alias(`pull`)
       .validate(function (args) {
-        // if no url, then fail
+        // if no path, then fail
         // vorpal.log(`as ${clc.red('Text in red')} dfads`);
         return true;
       })
       .action((args, done) => {
-        const fileTypeBuilder = FileTypeStrategy[path.extname(args.url)];
+        const fileTypeBuilder = FileTypeStrategy[path.extname(args.path)];
+
+        // detect path
+          // LOCAL    file://
+          // WEB      http:// or https://
+          // GITHUB   http:// or https:// (too...)
+          // GIT      @path
 
         WebIO
-          .pullToCache(args.url)
+          .pullToCache(args.path)
           .then(({ writePath }) => {
 
             fileSystem
