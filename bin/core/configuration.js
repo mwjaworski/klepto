@@ -7,6 +7,6 @@ const configuration = {
   }
 };
 
-configuration.major = _.toNumber(_.head(configuration.version.split(`.`)));
+configuration.major = parseInt(_.head(configuration.version.split(`.`)), 10);
 
 module.exports = configuration;

@@ -1,16 +1,15 @@
 #!/usr/bin/env node
 
-const vorpal = require('vorpal')();
 const configuration = require('./core/configuration');
-const versionCommand = require('./commands/version');
-const terminal = require('./core/terminal');
+const vorpal = require('vorpal')();
 
 // register all commands available to vorpal
 //
 //
-versionCommand.registerVorpalCommand(vorpal, configuration);
+require('./commands/download').registerVorpalCommand(vorpal, configuration);
+require('./commands/version').registerVorpalCommand(vorpal, configuration);
 
 // vorpal must parse arguments after all commands are registered
 //
 //
-terminal.registerVorpalCommand(vorpal, configuration);
+require('./core/terminal').registerVorpalCommand(vorpal, configuration);

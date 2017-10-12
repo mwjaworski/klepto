@@ -5,6 +5,8 @@
 
 > An archive (zip or tar) component package manager
 
+# &lt;Bauble&gt; is an [OPEN Open Source Project](http://openopensource.org/).
+
 ## What does Bauble do?
 
 Bauble is a package manager for zip or tar files. It's primary use-case is corporations which are not using npm (e.g. slow adoption because of red-tape) and cannot use bower (because bower has terrible support for installing zip/tar files).

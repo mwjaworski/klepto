@@ -1,44 +1,88 @@
-// ResponseType: 'stream', for jpg
-// response is on `response.data.pipe(fs.createWriteStream('ada_lovelace.jpg'))`
-// responseType: 'arraybuffer', for zip
-// response is on `response`
+const fileSystem = require('../support/file_system');
+const JSZip = require('jszip');
+const _ = require('lodash');
+const fs = require('fs');
 
-// zip.file('test.file', 'hello there');
-// var data = zip.generate({base64:false,compression:'DEFLATE'});
-// console.log(data); // ugly data
+const UNKNOWN_MANIFEST = {
+  version: `0.0.0`,
+  name: `unknown`
+};
 
-// vorpal.log('call', 'http://bit.ly/2mTM3nY');
-// axios({
-// 	url: 'http://phoenix.eab.com/projects/core-ply-brand_3.8.0.zip',
-// 	responseType: 'arraybuffer',
-// 	method: 'get'
-// }).then(response => {
-// 	JSZip
-//     .loadAsync(response.data)
-//     .then(zip => {
-// 	zip
-//         .generateNodeStream({
-// 	type: 'nodebuffer',
-// 	streamFiles: true
-// })
-//         .pipe(fs.createWriteStream('out.zip'))
-//         .on('finish', () => {
-// 	vorpal.log('out.zip written.');
-// });
+class ZipLoader {
 
-// 	return zip;
-// })
-//     .then(zip => {
-// 	return zip
-//         .file('bower.json')
-//         .async('string');
-// })
-//     .then(text => {
-// 	console.log(text);
-// });
+  constructor() {
+    this.__zip;
+  }
 
-//   // Vorpal.log('response', response);
-//   // response.data.pipe(fs.createWriteStream('ada_lovelace.jpg'))
-// }).catch(e => {
-// 	vorpal.log('error', e);
-// });
+  load(zipBinary) {
+    this.__zip = JSZip.loadAsync(zipBinary);
+    return this;
+  }
+
+  extract() {
+    // TODO configuration should be set and all code reviewed
+    fileSystem.makeDirectory(`.bauble/extract/`);
+
+    return this.__zip.then(function (zip) {
+      const filesWritten = [];
+
+      zip.forEach((relativePath, file) => {
+        const isFolder = relativePath.lastIndexOf(`/`) === relativePath.length - 1;
+        const writePath = `.bauble/extract/${relativePath}`;
+
+        if (isFolder) {
+          fileSystem.makeDirectory(writePath);
+        } else {
+          filesWritten.push(new Promise((resolve) => {
+            const writeStream = fs.createWriteStream(writePath);
+
+            writeStream.on(`close`, () => {
+              resolve();
+            });
+
+            file
+              .nodeStream()
+              .pipe(writeStream);
+          }));
+        }
+
+      });
+
+      return Promise.all(filesWritten);
+
+    })
+  }
+
+  manifest() {
+    return this.__zip.then(function (zip) {
+      const packageFile = this.__zip.file('package.json');
+      const baubleFile = this.__zip.file('bauble.json');
+      const bowerFile = this.__zip.file('bower.json');
+
+      const manifestFile = packageFile || bowerFile || baubleFile;
+      const manifestContent = (!!manifestFile) ? manifestFile.async('string') : UNKNOWN_MANIFEST;
+
+      return ZipLoader.__defineManifest(manifestContent);
+    });
+  }
+
+  static __defineManifest({
+    name,
+    version
+  }) {
+    return {
+      version,
+      name
+    };
+  }
+
+  static get responseType() {
+    return `arraybuffer`;
+  }
+
+  static build(zipBinary) {
+    return (new ZipLoader()).load(zipBinary);
+  }
+}
+
+module.exports = ZipLoader;
