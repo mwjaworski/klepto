@@ -6,40 +6,24 @@ const UNKNOWN_MANIFEST = {
 
 class TarPackage {
 
-  constructor() {
-    this.__tar;
-  }
-
-  load(zipBinary) {
-
+  load() {
     return this;
   }
 
   extract() {
-    return this.__tar.then(function(zip) {
-      return zip.generateNodeStream({
-        type: 'nodebuffer',
-        streamFiles: true
+    return new Promise((_0, reject) => {
+      reject({
+        reason: `not implemented`
       });
-    })
+    });
   }
 
-  manifest() {
-
-  }
-
-  static __defineManifest({
-    name,
-    version
-  }) {
-    return {
-      version,
-      name
-    };
-  }
-
-  static build(tarBinary) {
-    return (new TarPackage()).load(tarBinary);
+  static build() {
+    return new Promise((_0, reject) => {
+      reject({
+        reason: `not implemented`
+      });
+    });
   }
 }
 

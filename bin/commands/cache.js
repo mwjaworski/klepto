@@ -1,19 +1,14 @@
 const { configuration } = require(`../core/configuration`);
 const clc = require('cli-color');
+const path = require('path');
 const _ = require('lodash');
 const fs = require('fs');
-const path = require('path');
 
+const ReferenceStrategy = require(`../strategies/reference_strategy`);
+const PackageStrategy = require(`../strategies/package_strategy`);
 const IOStrategy = require(`../strategies/io_strategy`);
-const fileSystem = require('../support/file_system');
 
-const ZipPackage = require('../packages/zip');
-const TarPackage = require('../packages/tar');
-
-const FileTypeStrategy = {
-  '.zip': ZipPackage,
-  '.tar': TarPackage
-};
+const FileSystem = require('../support/file_system');
 
 // 1. download a new version
 // 2. if cannot download, look for cached version
@@ -25,22 +20,40 @@ const FileTypeStrategy = {
 module.exports = {
   registerVorpalCommand: (vorpal, configuration) => {
     return vorpal
-      .command(`cache <ref>`)
+      .command(`cache <reference> [path]`)
       .alias(`c`)
+      .option('-a, --audit', `Inspect the tools selected for a reference`)
       .description(`Download a component package.`)
-      // .validate(function (args) {
-      //   // if no ref, then fail
-      //   // vorpal.log(`as ${clc.red('Text in red')} dfads`);
-      //   return true;
-      // })
+      .validate(function (args) {
+        return true;
+      })
       .action((args, done) => {
-        const fileTypePackage = FileTypeStrategy[path.extname(args.ref)];
 
-        IOStrategy
-          .of(args.ref)
-          .pullToCache(args.ref)
+        const scopeOrResource = ReferenceStrategy.normalizeReference(args);
+        const resource = ReferenceStrategy.scopeToResource(scopeOrResource);
+        const specifier = ReferenceStrategy.resourceToSpecifier(resource);
+
+        const IOTool = IOStrategy.of(specifier);
+        const PackageTool = PackageStrategy.of(specifier);
+
+        if (args.options.audit) {
+          vorpal.log(args.reference, args.path);
+          vorpal.log(scopeOrResource);
+          vorpal.log(resource);
+          vorpal.log(JSON.stringify(specifier, null, 2));
+          vorpal.log(IOTool.name);
+          vorpal.log(PackageTool.name);
+          done();
+          return;
+        }
+
+        FileSystem.makeDirectory(`.bauble/cache/`);
+
+        IOTool
+          .pullToCache(specifier, (msg) => vorpal.log(msg))
           .then(({ writePath }) => {
 
+            vorpal.log(writePath);
             // ZIP would be unzipped
             // TAR would be untarred
 
@@ -50,7 +63,10 @@ module.exports = {
 
             // FOLDER would be ...?! what if it is just a folder?!
 
-            fileSystem
+            // always a zip file - so we should create a new path!
+            // writePath
+
+            FileSystem
               .read(writePath)
               .then((binaryData) => {
 

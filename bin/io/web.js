@@ -13,17 +13,17 @@ const ResponseTypeStrategy = {
 
 class WebIO {
 
-  static pullToCache(url) {
-    const extension = path.extname(url);
-    const file = path.basename(url, extension);
+  static pullToCache({ uri }) {
+    const extension = path.extname(uri);
+    const file = path.basename(uri, extension);
     const writePath = `.bauble/cache/${file}${extension}`;
 
     return axios({
       responseType: ResponseTypeStrategy[extension],
       maxContentLength: 2000000,
       withCredentials: false,
-      method: 'get',
-      url: url,
+      method: `get`,
+      url: uri,
       headers: {
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.7; rv:22.0) Gecko/20100101 Firefox/22.0',
         'X-Requested-With': 'XMLHttpRequest'

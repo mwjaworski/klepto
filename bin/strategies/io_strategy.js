@@ -11,7 +11,7 @@ const {
 const Discover = {
   IS_EXTENSION: /\.(?:zip|tar|gz|tar\.gz)$/i,
   IS_URL: /^https?:\/\//i,
-  IS_FILE: /^file:\/\//i
+  IS_GIT: /\.(?:git)$/i
 };
 
 /**
@@ -20,121 +20,64 @@ const Discover = {
 class IOStrategy {
 
   /**
-   *
-   * @param {String} reference location for resource
-   * @return {IO} the IO if the reference passes, if the reference does not match then NullIO is returned
+   * @param {String} uri uri for resource
+   * @return {IO} the IO if the uri passes, if the uri does not match then NullIO is returned
    */
-  static of (reference) {
-    const ofSources = IOStrategy.__ofSources(reference);
-    const ofLocal = IOStrategy.__ofLocal(reference);
-    const ofWeb = IOStrategy.__ofWeb(reference);
+  static of ({
+    uri
+  }) {
+    const ofLocal = IOStrategy.__ofLocal(uri);
+    const ofNull = IOStrategy.__ofNull(uri);
+    const ofWeb = IOStrategy.__ofWeb(uri);
+    const ofGit = IOStrategy.__ofGit(uri);
 
-    return ofLocal || ofWeb || ofSources || NullIO;
+    // NOTE order matters, ofNull is the default case
+    return ofLocal || ofWeb || ofGit || ofNull;
   }
 
   /**
-   * @param {String} reference
-   * @return {IO | undefined} the LocalIO if the reference passes
+   * @param {String} uri
+   * @return {LocalIO | undefined} the LocalIO if the uri passes
    */
-  static __ofLocal(reference) {
-    const isFileByExtension = reference.match(Discover.IS_EXTENSION) !== null;
-    const isNotURLBySignature = reference.match(Discover.IS_URL) === null;
-    const isFileBySignature = reference.match(Discover.IS_FILE) !== null;
+  static __ofLocal(uri) {
+    const isNotURLBySignature = uri.match(Discover.IS_URL) === null;
+    const isLocal = isNotURLBySignature;
 
-    return (isFileBySignature || (isFileByExtension && (isNotURLBySignature || isFileBySignature))) ?
-      LocalIO :
-      undefined;
+    return (isLocal) ? LocalIO : undefined;
   }
 
   /**
-   * @param {String} reference
-   * @return {IO | undefined} the WebIO if the reference passes
+   * @param {String} uri
+   * @return {WebIO | undefined} the WebIO if the uri passes
    */
-  static __ofWeb(reference) {
-    const isNotFileByExtension = reference.match(Discover.IS_EXTENSION) === null;
-    const isURLBySignature = reference.match(Discover.IS_URL) !== null;
+  static __ofWeb(uri) {
+    const isFileByExtension = uri.match(Discover.IS_EXTENSION) !== null;
+    const isURLBySignature = uri.match(Discover.IS_URL) !== null;
+    const isWeb = isFileByExtension && isURLBySignature;
 
-    return (isNotFileByExtension && isURLBySignature) ?
-      WebIO :
-      undefined;
+    return (isWeb) ? WebIO : undefined;
   }
 
   /**
-   * @param {String} reference
-   * @return {IO | undefined} the GitIO if the reference passes
+   * @param {String} uri
+   * @return {GitIO | undefined} the WebIO if the uri passes
    */
-  static __ofSources(reference) {
-    const isSource = IOStrategy.__isSource(reference);
+  static __ofGit(uri) {
+    const isGitByExtension = uri.match(Discover.IS_GIT) !== null;
+    const isURLBySignature = uri.match(Discover.IS_URL) !== null;
+    const isGit = isGitByExtension && isURLBySignature;
 
-    if (!isSource) {
-      return undefined;
-    }
-
-    const aspects = IOStrategy.__getSourceAspects(reference);
-    const sources = configuration.get(`sources`);
-    const sourceKey = _.findKey(sources, (_0, sourceKey) => {
-      return aspects.source === sourceKey;
-    });
-
-    if (!sourceKey) {
-      return undefined;
-    }
-
-    const source = sources[sourceKey];
-
-    switch (source.service) {
-      case 'local':
-        return LocalIO;
-      case 'git':
-        return GitIO;
-      case 'web':
-        return WebIO;
-      default:
-        return undefined;
-    }
+    return (isGit) ? GitIO : undefined;
   }
 
   /**
-   *
-   * @param {String} reference
-   * @return {Boolean} is a source reference
+   * @param {String} uri
+   * @return {NullIO} the NullIO to produce nothing
    */
-  static __isSource(reference) {
-    const isNotFileByExtension = reference.match(Discover.IS_EXTENSION) === null;
-    const isNotURLBySignature = reference.match(Discover.IS_URL) === null;
-    const isNotFileBySignature = reference.match(Discover.IS_FILE) === null;
-
-    return isNotFileByExtension && isNotFileBySignature && isNotURLBySignature;
-  }
-
-  /**
-   *
-   * @param {String} reference
-   * @return {Object} describing the source/group?/ref for a source
-   */
-  static __getSourceAspects(reference) {
-    const aspects = reference.split(`/`);
-    const hasGroup = _.size(aspects) > 2;
-
-    return {
-      group: (hasGroup) ? _.nth(aspects, 1) : ``,
-      ref: _.nth(aspects, (hasGroup) ? 1 : 2),
-      source: _.nth(aspects, 0)
-    }
+  static __ofNull(uri) {
+    return NullIO;
   }
 
 }
 
 module.exports = IOStrategy;
-
-// // source/group/file
-// `bauble install repo/data-ng-academic-planner/core-ply-brand_3.8.0`
-
-// // source/file
-// `bauble install repo/core-ply-brand_3.8.0`
-
-// // web because of http(s) and zip/tar
-// `bauble install http://phoenix.eab.com/projects/core-ply-brand_3.8.0.zip`
-
-// // file because of no http(s) and zip/tar
-// `bauble install ./projects/core-ply-brand_3.8.0.zip`

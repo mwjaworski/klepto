@@ -1,25 +1,28 @@
 const cp = require('child_process');
+const process = require('process');
+const path = require('path');
 
 class GitIO {
 
-  static pullToCache(path, q) {
-    // const extension = path.extname(path);
-    const file = path.basename(path, extension);
-    const cachePath = `.bauble/cache/${file}`;
-
-    q(`started pull`);
-    q(`${process.cwd()}/capability-ng-deeplink`)
+  static pullToCache(specifier) {
+    const extension = path.extname(ref);
+    const file = path.basename(ref, extension);
+    const writePath = `.bauble/cache/${file}`;
 
     return new Promise((resolve, reject) => {
-      q(`started pull`);
-      q(`${process.cwd()}/capability-ng-deeplink`)
 
-      // TODO clone the component or fetch all and prune
+      const command = `
+        git clone --depth 1 ${ref} ${writePath};
+        cd ${writePath};
+        git fetch --all;
+        git pull;
+        cd ${process.cwd()};
+      `;
 
-      cp.exec(`cd capability-ng-deeplink; git tag`, (error, stdout, stderr) => {
-        q(`tag`);
-        q(stdout);
-        resolve();
+      cp.exec(command, (error, stdout, stderr) => {
+        resolve({
+          writePath
+        });
       });
 
     });

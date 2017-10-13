@@ -1,10 +1,10 @@
 
 class NullIO {
 
-  static pullToCache(path, q) {
-    return new Promise((resolve, reject) => {
+  static pullToCache() {
+    return new Promise((_0, reject) => {
       reject({
-        reason: `no io service`
+        reason: `no matching IO service`
       })
     });
   }

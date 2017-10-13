@@ -2,15 +2,22 @@ const path = require('path');
 const _ = require('lodash');
 const fs = require('fs');
 
-class FileSystemExtension {
-  isDirectory(directoryPath) {
+class FileSystem {
+
+  /**
+   *
+   * @param {*} directoryPath
+   */
+  static isDirectory(directoryPath) {
     try {
       return fs.lstatSync(directoryPath).isDirectory();
     } catch (e) {
       return false;
     }
   }
-  makeDirectory(directoryName) {
+
+
+  static makeDirectory(directoryName) {
     directoryName = path.normalize(directoryName).split(path.sep);
     directoryName.forEach((sdir, index) => {
       const pathInQuestion = directoryName.slice(0, index + 1).join(path.sep);
@@ -20,7 +27,9 @@ class FileSystemExtension {
       }
     });
   }
-  write(path, data, streamOptions = {
+
+
+  static write(path, data, streamOptions = {
     encoding: `binary`
   }) {
 
@@ -48,7 +57,9 @@ class FileSystemExtension {
 
     });
   }
-  read(path, streamOptions = {
+
+
+  static read(path, streamOptions = {
     encoding: `binary`
   }) {
 
@@ -66,7 +77,9 @@ class FileSystemExtension {
       });
     });
   }
-  explodePath(path) {
+
+
+  static explodePath(path) {
     const _path = _.reverse(path.split(`/`));
     return {
       folder: _.reverse(_.tail(_path)).join(`/`),
@@ -75,4 +88,4 @@ class FileSystemExtension {
   }
 }
 
-module.exports = new FileSystemExtension();
+module.exports = FileSystem;

@@ -19,7 +19,7 @@ class ZipPackage {
     return this;
   }
 
-  extract() {
+  extract(ref) {
 
     // TODO configuration should be set and all code reviewed
     fileSystem.makeDirectory(`.bauble/extract/`);
@@ -29,7 +29,7 @@ class ZipPackage {
 
       zip.forEach((relativePath, file) => {
         const isFolder = relativePath.lastIndexOf(`/`) === relativePath.length - 1;
-        const writePath = `.bauble/extract/${relativePath}`;
+        const writePath = `.bauble/extract/${ref}/${relativePath}`;
 
         if (isFolder) {
           fileSystem.makeDirectory(writePath);
@@ -54,18 +54,18 @@ class ZipPackage {
     })
   }
 
-  manifest() {
-    return this.__zip.then(function (zip) {
-      const packageFile = this.__zip.file('package.json');
-      const baubleFile = this.__zip.file('bauble.json');
-      const bowerFile = this.__zip.file('bower.json');
+  // manifest() {
+  //   return this.__zip.then(function (zip) {
+  //     const packageFile = this.__zip.file('package.json');
+  //     const baubleFile = this.__zip.file('bauble.json');
+  //     const bowerFile = this.__zip.file('bower.json');
 
-      const manifestFile = packageFile || bowerFile || baubleFile;
-      const manifestContent = (!!manifestFile) ? manifestFile.async('string') : UNKNOWN_MANIFEST;
+  //     const manifestFile = packageFile || bowerFile || baubleFile;
+  //     const manifestContent = (!!manifestFile) ? manifestFile.async('string') : UNKNOWN_MANIFEST;
 
-      return ZipPackage.__defineManifest(manifestContent);
-    });
-  }
+  //     return ZipPackage.__defineManifest(manifestContent);
+  //   });
+  // }
 
   static __defineManifest({
     name,
