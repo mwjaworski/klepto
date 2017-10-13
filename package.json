@@ -53,7 +53,6 @@
     "jsonfile": "4.0.0",
     "jszip": "^3.1.4",
     "lodash": "4.17.4",
-    "nodegit": "^0.20.2",
     "semver-compare": "1.0.0",
     "vorpal": "^1.12.0"
   },

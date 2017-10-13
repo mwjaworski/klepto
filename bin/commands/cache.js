@@ -4,15 +4,15 @@ const _ = require('lodash');
 const fs = require('fs');
 const path = require('path');
 
+const IOStrategy = require(`../strategies/io_strategy`);
 const fileSystem = require('../support/file_system');
-const WebIO = require('../io/web');
 
-const ZipBuilder = require('../packages/zip');
-const TarBuilder = require('../packages/tar');
+const ZipPackage = require('../packages/zip');
+const TarPackage = require('../packages/tar');
 
 const FileTypeStrategy = {
-  '.zip': ZipBuilder,
-  '.tar': TarBuilder
+  '.zip': ZipPackage,
+  '.tar': TarPackage
 };
 
 // 1. download a new version
@@ -25,32 +25,36 @@ const FileTypeStrategy = {
 module.exports = {
   registerVorpalCommand: (vorpal, configuration) => {
     return vorpal
-      .command(`cache [path]`)
+      .command(`cache <ref>`)
       .alias(`c`)
       .description(`Download a component package.`)
       .validate(function (args) {
-        // if no path, then fail
+        // if no ref, then fail
         // vorpal.log(`as ${clc.red('Text in red')} dfads`);
         return true;
       })
       .action((args, done) => {
-        const fileTypeBuilder = FileTypeStrategy[path.extname(args.path)];
+        const fileTypePackage = FileTypeStrategy[ref.extname(args.ref)];
 
-        // detect path
-          // LOCAL    file://
-          // WEB      http:// or https://
-          // GITHUB   http:// or https:// (too...)
-          // GIT      @path
-
-        WebIO
-          .pullToCache(args.path)
+        IOStrategy
+          .of(args.ref)
+          .pullToCache(args.ref)
           .then(({ writePath }) => {
+
+            // ZIP would be unzipped
+            // TAR would be untarred
+
+            // IF GIT or FOLDER we skip the extract and cut to the copy... but (why not just extract immediately!)
+
+            // GIT would be copied, but by rules
+
+            // FOLDER would be ...?! what if it is just a folder?!
 
             fileSystem
               .read(writePath)
               .then((binaryData) => {
 
-                fileTypeBuilder
+                fileTypePackage
                   .build(binaryData)
                   .extract()
                   .then(() => {

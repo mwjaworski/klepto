@@ -1,21 +1,27 @@
-const Git = require("nodegit");
+// const Git = require("nodegit");
+// const git = require('simple-git');
+const cp = require('child_process');
 
 class GitIO {
 
-  static pullToCache(path) {
-    const extension = path.extname(path);
+  static pullToCache(path, q) {
+    // const extension = path.extname(path);
     const file = path.basename(path, extension);
-    const cachePath = `.bauble/cache/${file}${extension}`;
+    const cachePath = `.bauble/cache/${file}`;
+
+    q(`started pull`);
+    q(`${process.cwd()}/capability-ng-deeplink`)
 
     return new Promise((resolve, reject) => {
+      q(`started pull`);
+      q(`${process.cwd()}/capability-ng-deeplink`)
 
-      Git.Clone("https://github.com/nodegit/nodegit", "nodegit").then(function(repository) {
-        // Work with the repository object here.
+      cp.exec(`cd capability-ng-deeplink; git tag`, (error, stdout, stderr) => {
+        q(`tag`);
+        q(stdout);
+        resolve();
       });
 
-      reject({
-        reason: `not implemented`
-      })
     });
 
   }

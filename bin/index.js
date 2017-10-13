@@ -8,6 +8,7 @@ const vorpal = require('vorpal')();
 //
 require('./commands/version').registerVorpalCommand(vorpal, configuration);
 require('./commands/cache').registerVorpalCommand(vorpal, configuration);
+require('./commands/audit').registerVorpalCommand(vorpal, configuration);
 
 // vorpal must parse arguments after all commands are registered
 //

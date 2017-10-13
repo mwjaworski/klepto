@@ -36,9 +36,6 @@ class WebIO {
           return {
             writePath
           };
-        })
-        .catch((a) => {
-          // vorpal.log('error');
         });
 
     });
