@@ -17,7 +17,7 @@ In our configuration which we can store in a couple of places and merge together
     },
     'local': {
       locator: '~/folder/<group>/<file>',
-      service: 'file'
+      service: 'local'
     },
     'phoenix': {
       locator: 'http://phoenix.eab.com/<group>/<file>',
