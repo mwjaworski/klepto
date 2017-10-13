@@ -1,4 +1,4 @@
-const configuration = require(`../core/configuration`);
+const { configuration } = require(`../core/configuration`);
 const axios = require('axios');
 const path = require('path');
 const _ = require('lodash');

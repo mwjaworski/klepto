@@ -1,38 +1,45 @@
 const convict = require('convict');
+const process = require('process');
 const _ = require('lodash');
-
-const VERSION = `0.1.0`;
-const Constants = {
-  MAJOR_VERSION: parseInt(_.head(VERSION.split(`.`)), 10),
-  NAME: `babule`,
-  VERSION
-};
+const os = require('os');
 
 const configuration = convict({
   application: {
     name: {
       doc: `application name`,
-      default: Constants.NAME,
-      format: String
-    },
-    handle: {
-      doc: `application name`,
-      default: `${Constants.NAME}-${Constants.MAJOR_VERSION}`,
+      default: `bauble`,
       format: String
     },
     version: {
-      tag: {
-        doc: `application version`,
-        default: Constants.VERSION,
-        format: String
-      },
-      major: {
-        doc: `application major version`,
-        default: Constants.MAJOR_VERSION,
-        format: Number
-      }
+      doc: `application version`,
+      default: `0.1.0`,
+      format: String
     }
+  },
+  sources: {
+    doc: `sources to search for components`,
+    sensitive: true,
+    format: `*`
   }
 });
 
-module.exports = configuration;
+_.each([
+  `${os.homedir()}/.bauble`,
+  `${process.cwd()}/.bauble`,
+], (configurationFilePath) => {
+  try {
+    configuration.loadFile(configurationFilePath);
+  }
+  catch(e) {
+    ;
+  }
+});
+
+configuration.default(`application.version`);
+configuration.default(`application.name`);
+
+// TODO review the configuration
+
+module.exports = {
+  configuration
+};

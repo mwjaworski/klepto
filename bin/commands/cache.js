@@ -1,4 +1,4 @@
-const configuration = require(`../core/configuration`);
+const { configuration } = require(`../core/configuration`);
 const clc = require('cli-color');
 const _ = require('lodash');
 const fs = require('fs');

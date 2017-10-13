@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-const configuration = require('./core/configuration');
+const { configuration } = require('./core/configuration');
 const vorpal = require('vorpal')();
 
 // register all commands available to vorpal

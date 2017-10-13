@@ -1,13 +1,17 @@
-const configuration = require('./configuration');
+const { configuration } = require('./configuration');
+const _ = require('lodash');
 
 module.exports = {
   registerVorpalCommand: (vorpal, configuration) => {
     const isInteractive = process.argv.length <= 2;
+    const versionTag = configuration.get('application.version');
+    const majorVersion = parseInt(_.head(versionTag.split(`.`)), 10);
+    const applicationHandle = `${configuration.get('application.name')}-${majorVersion}`;
 
     vorpal
       .delimiter(`::}`)
-      .history(configuration.get('application.handle'))
-      .localStorage(configuration.get('application.handle'));
+      .history(applicationHandle)
+      .localStorage(applicationHandle);
 
     if (isInteractive) {
       vorpal.show();

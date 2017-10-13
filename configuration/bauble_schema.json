@@ -1,0 +1,16 @@
+{
+  "application": {
+    "name": {
+      "doc": "application name",
+      "format": "String"
+    },
+    "version": {
+      "doc": "application version",
+      "format": "Number"
+    }
+  },
+  "sources": {
+    "doc": "sources to search for components",
+    "format": "*"
+  }
+}

@@ -1,6 +1,6 @@
 const Git = require("nodegit");
 
-class GithubIO {
+class GitIO {
 
   static pullToCache(path) {
     const extension = path.extname(path);
@@ -8,6 +8,11 @@ class GithubIO {
     const cachePath = `.bauble/cache/${file}${extension}`;
 
     return new Promise((resolve, reject) => {
+
+      Git.Clone("https://github.com/nodegit/nodegit", "nodegit").then(function(repository) {
+        // Work with the repository object here.
+      });
+
       reject({
         reason: `not implemented`
       })
@@ -16,4 +21,4 @@ class GithubIO {
   }
 }
 
-module.exports = GithubIO;
+module.exports = GitIO;
