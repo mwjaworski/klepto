@@ -28,13 +28,13 @@ module.exports = {
       .command(`cache <ref>`)
       .alias(`c`)
       .description(`Download a component package.`)
-      .validate(function (args) {
-        // if no ref, then fail
-        // vorpal.log(`as ${clc.red('Text in red')} dfads`);
-        return true;
-      })
+      // .validate(function (args) {
+      //   // if no ref, then fail
+      //   // vorpal.log(`as ${clc.red('Text in red')} dfads`);
+      //   return true;
+      // })
       .action((args, done) => {
-        const fileTypePackage = FileTypeStrategy[ref.extname(args.ref)];
+        const fileTypePackage = FileTypeStrategy[path.extname(args.ref)];
 
         IOStrategy
           .of(args.ref)

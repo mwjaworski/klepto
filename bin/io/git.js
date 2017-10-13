@@ -1,5 +1,3 @@
-// const Git = require("nodegit");
-// const git = require('simple-git');
 const cp = require('child_process');
 
 class GitIO {
@@ -15,6 +13,8 @@ class GitIO {
     return new Promise((resolve, reject) => {
       q(`started pull`);
       q(`${process.cwd()}/capability-ng-deeplink`)
+
+      // TODO clone the component or fetch all and prune
 
       cp.exec(`cd capability-ng-deeplink; git tag`, (error, stdout, stderr) => {
         q(`tag`);

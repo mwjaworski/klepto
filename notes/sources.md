@@ -27,6 +27,26 @@ In our configuration which we can store in a couple of places and merge together
 }
 ```
 
+// 1. zip
+
+local + zip
+web + zip
+
+// 2. git folder of zips
+
+git + folder/zip
+
+// 3. git folder (entire repo)
+
+git + folder
+
+// 4. tar
+
+git + folder/tar
+local + tar
+web + tar
+
+
 <!--
 // source/group/file
 `bauble install repo/data-ng-academic-planner/core-ply-brand_3.8.0`

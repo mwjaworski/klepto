@@ -28,9 +28,8 @@ class IOStrategy {
     const ofSources = IOStrategy.__ofSources(reference);
     const ofLocal = IOStrategy.__ofLocal(reference);
     const ofWeb = IOStrategy.__ofWeb(reference);
-    const IO = ofLocal || ofWeb || ofSources || NullIO;
 
-    return new IO();
+    return ofLocal || ofWeb || ofSources || NullIO;
   }
 
   /**

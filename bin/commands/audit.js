@@ -18,7 +18,7 @@ module.exports = {
       .action((args, done) => {
 
         if (args.options.reference) {
-          vorpal.log(`${args.ref} => ${IOStrategy.of(args.ref).constructor.name}`);
+          vorpal.log(`${args.ref} => ${IOStrategy.of(args.ref).name}`);
         }
 
         done();
