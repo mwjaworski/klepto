@@ -93,11 +93,12 @@ D. node bin/index.js cache --audit ../ bower-alternative-source-resolver.zip 1.2
 E. node bin/index.js cache --audit ../bower-alternative-source-resolver.zip 1.2.3
 F. node bin/index.js cache --audit ../test  1.2.3
 
-A. cache (zip)          staging (folder)    component (folder-refined)
-B. cache (folder/zip)   staging (folder)    component (folder-refined)
-C. cache (folder)       staging (folder)    component (folder-refined)
-D. cache (folder/zip)   staging (folder)    component (folder-refined)
-E. cache (zip)          staging (folder)    component (folder-refined)
-F. cache (folder)       staging (folder)    component (folder-refined)
+A. cache (zip)          staging (folder)    component (folder-refined)    DONE
+B. cache (folder/zip)   staging (folder)    component (folder-refined)    ----
+C. cache (folder)       staging (folder)    component (folder-refined)    ----
+D. cache (folder/zip)   staging (folder)    component (folder-refined)    DONE
+E. cache (zip)          staging (folder)    component (folder-refined)    DONE
+F. cache (folder)       staging (folder)    component (folder-refined)    DONE
 
 node bin/index.js cache --audit ../folder_a/ xew.zip
+

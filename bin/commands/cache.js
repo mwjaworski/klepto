@@ -50,7 +50,7 @@ module.exports = {
         FileSystem.makeDirectory(`.bauble/cache/`);
 
         IOTool
-          .pullToCache(specifier, (msg) => vorpal.log(msg))
+          .pullToCache(specifier)
           .then(({ writePath }) => {
 
             vorpal.log(`path: ${writePath}`);
@@ -58,20 +58,20 @@ module.exports = {
             // turn on only if we have a zip file
             // we need a (do nothing) for packages...
 
-            FileSystem
-              .read(writePath)
-              .catch((err) => {
-                vorpal.log(err.reason);
-              })
-              .then((binaryData) => {
+            // FileSystem
+            //   .read(writePath)
+            //   .catch((err) => {
+            //     vorpal.log(err.reason);
+            //   })
+            //   .then((binaryData) => {
 
-                fileTypePackage
-                  .build(binaryData)
-                  .extract()
-                  .then(() => {
-                    done();
-                  });
-              });
+            //     fileTypePackage
+            //       .build(binaryData)
+            //       .extract()
+            //       .then(() => {
+            //         done();
+            //       });
+            //   });
 
           });
 

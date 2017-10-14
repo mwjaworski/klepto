@@ -2,31 +2,31 @@ const cp = require('child_process');
 const process = require('process');
 const path = require('path');
 
+const OperatingSystem = require('../support/operating_system');
+
 class GitIO {
 
-  static pullToCache(specifier) {
-    const extension = path.extname(ref);
-    const file = path.basename(ref, extension);
-    const writePath = `.bauble/cache/${file}`;
-
+  static pullToCache({ uri }) {
     return new Promise((resolve, reject) => {
+      const extension = path.extname(uri);
+      const file = path.basename(uri, extension);
+      const writePath = `.bauble/cache/${file}`;
 
-      const command = `
-        git clone --depth 1 ${ref} ${writePath};
-        cd ${writePath};
-        git fetch --all;
-        git pull;
-        cd ${process.cwd()};
-      `;
-
-      cp.exec(command, (error, stdout, stderr) => {
-        resolve({
-          writePath
+      OperatingSystem
+        .execute([
+          `git clone --depth 1 ${uri} ${writePath}`,
+          `cd ${writePath}`,
+          `git fetch --all`,
+          `git pull`,
+          `cd ${process.cwd()}`
+        ], msg)
+        .then(() => {
+          resolve({
+            writePath
+          });
         });
-      });
 
     });
-
   }
 }
 
