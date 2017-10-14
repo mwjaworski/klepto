@@ -4,11 +4,13 @@ const path = require('path');
 const _ = require('lodash');
 const fs = require('fs');
 
+
 const ReferenceStrategy = require(`../strategies/reference_strategy`);
 const PackageStrategy = require(`../strategies/package_strategy`);
 const IOStrategy = require(`../strategies/io_strategy`);
 
 const FileSystem = require('../support/file_system');
+const AuditLog = require('../support/audit_log');
 
 // 1. download a new version
 // 2. if cannot download, look for cached version
@@ -37,14 +39,14 @@ module.exports = {
         const PackageTool = PackageStrategy.of(specifier);
 
         if (args.options.audit) {
-          vorpal.log(args.reference, args.addendum);
-          vorpal.log(scopeOrResource);
-          vorpal.log(resource);
-          vorpal.log(JSON.stringify(specifier, null, 2));
-          vorpal.log(IOTool.name);
-          vorpal.log(PackageTool.name);
-          done();
-          return;
+          vorpal.log(AuditLog.variableValue({
+            uri: specifier.uri,
+            version: specifier.version || ``,
+            io: IOTool.name,
+            package: PackageTool.name
+          }));
+
+          return done();
         }
 
         FileSystem.makeDirectory(`.bauble/cache/`);
@@ -58,20 +60,22 @@ module.exports = {
             // turn on only if we have a zip file
             // we need a (do nothing) for packages...
 
-            // FileSystem
-            //   .read(writePath)
-            //   .catch((err) => {
-            //     vorpal.log(err.reason);
-            //   })
-            //   .then((binaryData) => {
+            //
 
-            //     fileTypePackage
-            //       .build(binaryData)
-            //       .extract()
-            //       .then(() => {
-            //         done();
-            //       });
-            //   });
+            FileSystem
+              .read(writePath)
+              .catch((err) => {
+                vorpal.log(err.reason);
+              })
+              .then((binaryData) => {
+
+                fileTypePackage
+                  .build(binaryData)
+                  .extract()
+                  .then(() => {
+                    done();
+                  });
+              });
 
           });
 
