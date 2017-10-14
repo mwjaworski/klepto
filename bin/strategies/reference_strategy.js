@@ -91,8 +91,8 @@ class ReferenceStrategy {
     const [uri, version] = reference.split(`#`);
 
     return {
+      version: version || `master`,
       addendum,
-      version,
       uri
     };
   }

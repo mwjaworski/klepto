@@ -41,7 +41,7 @@ module.exports = {
         if (args.options.audit) {
           vorpal.log(AuditLog.variableValue({
             uri: specifier.uri,
-            version: specifier.version || ``,
+            version: specifier.version,
             io: IOTool.name,
             package: PackageTool.name
           }));
@@ -53,6 +53,9 @@ module.exports = {
 
         IOTool
           .pullToCache(specifier)
+          .catch((o) => {
+            vorpal.log(o);
+          })
           .then(({ writePath }) => {
 
             vorpal.log(`path: ${writePath}`);
@@ -62,20 +65,20 @@ module.exports = {
 
             //
 
-            FileSystem
-              .read(writePath)
-              .catch((err) => {
-                vorpal.log(err.reason);
-              })
-              .then((binaryData) => {
+            // FileSystem
+            //   .read(writePath)
+            //   .catch((err) => {
+            //     vorpal.log(err.reason);
+            //   })
+            //   .then((binaryData) => {
 
-                fileTypePackage
-                  .build(binaryData)
-                  .extract()
-                  .then(() => {
-                    done();
-                  });
-              });
+            //     fileTypePackage
+            //       .build(binaryData)
+            //       .extract()
+            //       .then(() => {
+            //         done();
+            //       });
+            //   });
 
           });
 
