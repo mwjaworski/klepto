@@ -19,7 +19,7 @@ const Discover = {
  * "@source/group/resource version" ==> "url resource version"
  *
  * resource-reference to specifier-reference
- * "url resource version" ===> { location, component, version }
+ * "uri#version addendum" ===> { url, addendum, version }
  */
 class ReferenceStrategy {
 
@@ -29,14 +29,14 @@ class ReferenceStrategy {
    * folder#1.2.3      => folder#1.2.3
    * folder res        => folder#master res
    *
-   * @param { reference, path } reference
-   * @return "reference path"
+   * @param { reference, addendum } reference
+   * @return "reference addendum"
    */
   static normalizeReference({
     reference,
-    path
+    addendum
   }) {
-    return _.trimEnd(`${reference} ${path || ''}`);
+    return _.trimEnd(`${reference} ${addendum || ''}`);
   }
 
   static scopeToResource(scope) {
@@ -87,12 +87,12 @@ class ReferenceStrategy {
   }
 
   static resourceToSpecifier(resource) {
-    const [reference, path] = resource.split(` `);
+    const [reference, addendum] = resource.split(` `);
     const [uri, version] = reference.split(`#`);
 
     return {
+      addendum,
       version,
-      path,
       uri
     };
   }

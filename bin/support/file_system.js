@@ -71,7 +71,9 @@ class FileSystem {
     return new Promise((resolve, reject) => {
       fs.readFile(`${folder}/${file}`, 'binary', (err, data) => {
         if (err) {
-          return reject(err);
+          return reject({
+            reason: err
+          });
         }
         resolve(data);
       });

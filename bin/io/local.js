@@ -1,3 +1,4 @@
+const copyDir = require('copy-dir');
 const path = require('path');
 const _ = require('lodash');
 const fs = require('fs');
@@ -11,49 +12,68 @@ class LocalIO {
 
   // TODO if we provide a file:// prefix then we have to tear it off
   static pullToCache(specifier) {
-    const extension = path.extname(specifier.uri);
-    const file = path.basename(specifier.uri, extension);
-    const writePath = `.bauble/cache/${file}${extension}`;
-    const toFolder = {
-      extension,
-      writePath,
-      file
+    const {
+      uri,
+      addendum
+    } = specifier;
+    const relativePath = _.trimEnd(`${uri}${addendum || ''}`);
+    const extSpecifier = {
+      extension: path.extname(relativePath),
+      relativePath
     };
 
-    if (true) {
-      return this.__pullToCacheZip(specifier, toFolder);
-    }
-    else {
-      return this.__pullToCacheFolder(specifier, toFolder);
+    if (_.size(extSpecifier.extension) > 0) {
+      return this.__pullToCacheZip(specifier, extSpecifier);
+    } else {
+      return this.__pullToCacheFolder(specifier, extSpecifier);
     }
   }
 
-  static __pullToCacheZip(specifier, toFolder) {
-    fileSystem.makeDirectory(fileSystem.explodePath(toFolder.writePath).folder);
+  static __pullToCacheZip({
+    uri,
+    addendum
+  }, {
+    extension,
+    relativePath
+  }) {
+    const zipFile = path.basename(relativePath, extension);
+    const writePath = `.bauble/cache/${zipFile}${extension}`;
 
     return new Promise((resolve, reject) => {
       fs
-        .createReadStream(specifier.uri)
-        .pipe(fs.createWriteStream(toFolder.writePath))
-        .on(`error`, () => reject())
+        .createReadStream(relativePath)
+        .pipe(fs.createWriteStream(writePath))
+        .on(`error`, (reason) => reject({
+          reason
+        }))
         .on(`close`, () => resolve({
-          writePath: toFolder.writePath
+          writePath
         }))
         .end();
     });
   }
 
-  static __pullToCacheFolder(specifier, toFolder) {
-    return new Promise((resolve, reject) => {
-      const command = `
-        rm -Rf ${toFolder.writePath};
-        cp -Rf ${specifier.uri} ${toFolder.writePath};
-      `;
+  static __pullToCacheFolder({
+    uri,
+    addendum
+  }, {
+    extension,
+    relativePath
+  }) {
 
-      cp.exec(command, (error, stdout, stderr) => {
-        resolve({
-          writePath: toFolder.writePath
-        });
+    return new Promise((resolve, reject) => {
+      const writePath = `.bauble/cache/${path.basename(uri)}`;
+
+      copyDir(relativePath, writePath, (err) => {
+        if (err) {
+          reject({
+            reason: err
+          });
+        } else {
+          resolve({
+            writePath
+          });
+        }
       });
     });
   }

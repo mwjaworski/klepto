@@ -20,7 +20,7 @@ const FileSystem = require('../support/file_system');
 module.exports = {
   registerVorpalCommand: (vorpal, configuration) => {
     return vorpal
-      .command(`cache <reference> [path]`)
+      .command(`cache <reference> [addendum]`)
       .alias(`c`)
       .option('-a, --audit', `Inspect the tools selected for a reference`)
       .description(`Download a component package.`)
@@ -37,7 +37,7 @@ module.exports = {
         const PackageTool = PackageStrategy.of(specifier);
 
         if (args.options.audit) {
-          vorpal.log(args.reference, args.path);
+          vorpal.log(args.reference, args.addendum);
           vorpal.log(scopeOrResource);
           vorpal.log(resource);
           vorpal.log(JSON.stringify(specifier, null, 2));
@@ -53,21 +53,16 @@ module.exports = {
           .pullToCache(specifier, (msg) => vorpal.log(msg))
           .then(({ writePath }) => {
 
-            vorpal.log(writePath);
-            // ZIP would be unzipped
-            // TAR would be untarred
+            vorpal.log(`path: ${writePath}`);
 
-            // IF GIT or FOLDER we skip the extract and cut to the copy... but (why not just extract immediately!)
-
-            // GIT would be copied, but by rules
-
-            // FOLDER would be ...?! what if it is just a folder?!
-
-            // always a zip file - so we should create a new path!
-            // writePath
+            // turn on only if we have a zip file
+            // we need a (do nothing) for packages...
 
             FileSystem
               .read(writePath)
+              .catch((err) => {
+                vorpal.log(err.reason);
+              })
               .then((binaryData) => {
 
                 fileTypePackage
