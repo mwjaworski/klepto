@@ -14,7 +14,7 @@ class PackageStrategy {
    * we only support zip currently
    */
   static of ({ uri, addendum }) {
-    const fullURI = _.trim(`${uri}${addendum}`)
+    const fullURI = _.trim(`${uri || ''}${addendum || ''}`)
     const isPackageFile = !!fullURI.match(Discover.IS_PACKAGE_FILE)
 
     return isPackageFile ? ZipPackage : FolderPackage

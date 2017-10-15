@@ -7,7 +7,7 @@ class WebIO {
   static sendToCache ({ uri }) {
     const extension = path.extname(uri)
     const file = path.basename(uri, extension)
-    const writePath = `.bauble/cache/${file}${extension}`
+    const cachePath = `.bauble/cache/${file}${extension}`
 
     return axios({
       responseType: `arraybuffer`,
@@ -20,9 +20,9 @@ class WebIO {
         'X-Requested-With': 'XMLHttpRequest'
       }
     }).then(response => {
-      return fileSystem.write(writePath, response.data).then(() => {
+      return fileSystem.write(cachePath, response.data).then(() => {
         return {
-          writePath
+          cachePath
         }
       })
     })

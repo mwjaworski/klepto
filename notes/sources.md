@@ -102,3 +102,6 @@ F. cache (folder)       staging (folder)    component (folder-refined)    DONE
 
 node bin/index.js cache --audit ../folder_a/ xew.zip
 
+node bin/index.js cache
+
+node bin/index.js cache  https://github.com/advisory/phoenix/blob/master/ui-ply-input_3.8.0.zip?raw=true

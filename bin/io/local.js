@@ -21,18 +21,18 @@ class LocalIO {
 
   static __sendToCacheZip ({ uri, addendum }, { extension, relativePath }) {
     const zipFile = path.basename(relativePath, extension)
-    const writePath = `.bauble/cache/${zipFile}${extension}`
+    const cachePath = `.bauble/cache/${zipFile}${extension}`
 
     return new Promise((resolve, reject) => {
       fs
         .createReadStream(relativePath)
-        .pipe(fs.createWriteStream(writePath))
+        .pipe(fs.createWriteStream(cachePath))
         .on(`error`, reason =>
           reject(new Error(reason))
         )
         .on(`close`, () =>
           resolve({
-            writePath
+            cachePath
           })
         )
         .end()
@@ -41,14 +41,14 @@ class LocalIO {
 
   static __sendToCacheFolder ({ uri, addendum }, { extension, relativePath }) {
     return new Promise((resolve, reject) => {
-      const writePath = `.bauble/cache/${path.basename(uri)}`
+      const cachePath = `.bauble/cache/${path.basename(uri)}`
 
-      fs.copy(relativePath, writePath, err => {
+      fs.copy(relativePath, cachePath, err => {
         if (err) {
           reject(new Error(err))
         } else {
           resolve({
-            writePath
+            cachePath
           })
         }
       })

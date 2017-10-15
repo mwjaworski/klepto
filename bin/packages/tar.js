@@ -1,16 +1,16 @@
 
 class TarPackage {
-  load () {
-    return this
-  }
-
-  extract () {
+  static sendToStaging (writePath, msg) {
     return new Promise((resolve, reject) => {
       reject(new Error(`not implemented`))
     })
   }
 
-  static build () {
+  load () {
+    return this
+  }
+
+  extract () {
     return new Promise((resolve, reject) => {
       reject(new Error(`not implemented`))
     })

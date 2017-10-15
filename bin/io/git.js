@@ -8,17 +8,17 @@ class GitIO {
     return new Promise((resolve, reject) => {
       const extension = path.extname(uri)
       const file = path.basename(uri, extension)
-      const writePath = `.bauble/cache/${file}`
+      const cachePath = `.bauble/cache/${file}`
 
       OperatingSystem.execute([
-        `git clone --depth 1 --branch master ${uri} ${writePath}`,
-        `cd ${writePath}`,
+        `git clone --depth 1 --branch master ${uri} ${cachePath}`,
+        `cd ${cachePath}`,
         `git fetch --all`,
         `git pull`,
         `cd ${process.cwd()}`
       ]).then(() => {
         resolve({
-          writePath
+          cachePath
         })
       })
     })

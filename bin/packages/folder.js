@@ -1,6 +1,13 @@
 
 class FolderPackage {
-  sendToStaging (packagePath) {}
+  static sendToStaging (writePath, msg) {
+    return new Promise((resolve, reject) => {
+      msg(`folder ${writePath}`)
+      resolve()
+    })
+
+    // return (new ZipPackage()).load(zipBinary)
+  }
 
   load () {
     return this
