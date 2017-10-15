@@ -1,32 +1,42 @@
-const fileSystem = require('../support/file_system')
+const FileSystem = require('../support/file_system')
 const JSZip = require('jszip')
-const fs = require('fs')
+const fs = require('fs-extra')
+
+const { configuration } = require('../core/configuration')
+const paths = configuration.get(`paths`)
 
 class ZipPackage {
-  sendToStaging (packagePath) {}
-
-  load (zipBinary) {
-    this.__zip = JSZip.loadAsync(zipBinary)
-    return this
+  static sendToStaging (specifier, cachePath) {
+    return FileSystem
+      .read(cachePath)
+      .then((binaryData) => {
+        return this.__extractZip(binaryData, specifier)
+      })
   }
 
-  extract (ref) {
-    // TODO configuration should be set and all code reviewed
-    fileSystem.makeDirectory(`.bauble/extract/`)
-
-    return this.__zip.then(function (zip) {
+  // TODO configuration should be set and all code reviewed
+  static __extractZip (binaryData, { component }, msg) {
+    return JSZip
+    .loadAsync(binaryData)
+    .then(function (zip) {
       const filesWritten = []
 
       zip.forEach((relativePath, file) => {
+        const componentPrefix = `${component}`;
+
+        if (relativePath.indexOf(componentPrefix) >= 0) {
+          relativePath = relativePath.substr(`${componentPrefix}/`.length)
+        }
+
         const isFolder = relativePath.lastIndexOf(`/`) === relativePath.length - 1
-        const writePath = `.bauble/extract/${ref}/${relativePath}`
+        const stagingPath = `${paths.staging}/${component}/${relativePath}`
 
         if (isFolder) {
-          fileSystem.makeDirectory(writePath)
+          FileSystem.makeDirectory(stagingPath)
         } else {
           filesWritten.push(
             new Promise(resolve => {
-              const writeStream = fs.createWriteStream(writePath)
+              const writeStream = fs.createWriteStream(stagingPath)
 
               writeStream.on(`close`, () => {
                 resolve()
@@ -40,10 +50,6 @@ class ZipPackage {
 
       return Promise.all(filesWritten)
     })
-  }
-
-  static build (zipBinary) {
-    return (new ZipPackage()).load(zipBinary)
   }
 }
 

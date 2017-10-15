@@ -1,19 +1,21 @@
+const fs = require('fs-extra')
+
+const { configuration } = require('../core/configuration')
+const paths = configuration.get(`paths`)
 
 class FolderPackage {
-  sendToStaging (packagePath) {}
+  static sendToStaging ({ component }, cachePath) {
+    const stagingPath = `${paths.staging}/${component}/`
 
-  load () {
-    return this
-  }
-
-  extract () {
     return new Promise((resolve, reject) => {
-      reject(new Error(`not implemented`))
+      fs.copy(cachePath, stagingPath, err => {
+        if (err) {
+          reject(new Error(err))
+        } else {
+          resolve()
+        }
+      })
     })
-  }
-
-  static build () {
-    return new FolderPackage()
   }
 }
 

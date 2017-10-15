@@ -3,11 +3,12 @@ const path = require('path')
 
 const fileSystem = require('../support/file_system')
 
+const { configuration } = require('../core/configuration')
+const paths = configuration.get(`paths`)
+
 class WebIO {
   static sendToCache ({ uri }) {
-    const extension = path.extname(uri)
-    const file = path.basename(uri, extension)
-    const writePath = `.bauble/cache/${file}${extension}`
+    const cachePath = this.__cachePath({ uri })
 
     return axios({
       responseType: `arraybuffer`,
@@ -20,12 +21,19 @@ class WebIO {
         'X-Requested-With': 'XMLHttpRequest'
       }
     }).then(response => {
-      return fileSystem.write(writePath, response.data).then(() => {
+      return fileSystem.write(cachePath, response.data).then(() => {
         return {
-          writePath
+          cachePath
         }
       })
     })
+  }
+
+  static __cachePath ({ uri }) {
+    const extension = path.extname(uri)
+    const file = path.basename(uri, extension)
+
+    return `${paths.cache}/${file}${extension}`
   }
 }
 

@@ -20,6 +20,11 @@ const configuration = convict({
     doc: `sources to search for components`,
     sensitive: true,
     format: `*`
+  },
+  paths: {
+    staging: `.packages/staging`,
+    cache: `.packages/cache`,
+    components: `./components`
   }
 })
 

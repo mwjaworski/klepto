@@ -1,11 +1,15 @@
 const IOStrategy = require('./io_strategy')
+const path = require('path')
 const _ = require('lodash')
 
-const { configuration } = require('../core/configuration')
+const {
+  configuration
+} = require('../core/configuration')
 
 const Discover = {
   IS_SCOPE: /^@/i,
-  IS_VERSION: /^[~^]?\d{1,2}\.\d{1,2}\.\d{1,2}$/i
+  IS_VERSION: /^[~^]?\d{1,2}\.\d{1,2}\.\d{1,2}$/i,
+  COMPONENT_NAME: /([a-z0-9-]*).*?\.(?:zip|tar|tgz|gz|tar\.gz)?$/i
 }
 
 /**
@@ -18,6 +22,14 @@ const Discover = {
  * "uri#version addendum" ===> { url, addendum, version }
  */
 class ReferenceStrategy {
+  static referenceToSpecifier (reference) {
+    const scopeOrResource = this.normalizeReference(reference)
+    const resource = this.scopeToResource(scopeOrResource)
+    const specifier = this.resourceToSpecifier(resource)
+
+    return specifier
+  }
+
   /**
    *
    * folder#1.2.3 res  => folder#1.2.3 res
@@ -28,7 +40,7 @@ class ReferenceStrategy {
    * @return "reference addendum"
    */
   static normalizeReference ({ reference, addendum }) {
-    return _.trimEnd(`${reference} ${addendum || ''}`)
+    return _.trimEnd(`${reference || ''} ${addendum || ''}`)
   }
 
   static scopeToResource (scope) {
@@ -80,12 +92,23 @@ class ReferenceStrategy {
   static resourceToSpecifier (resource) {
     const [reference, addendum] = resource.split(` `)
     const [uri, version] = reference.split(`#`)
+    const component = this.__findComponent(reference, addendum)
 
     return {
       version: version || `master`,
+      component,
       addendum,
       uri
     }
+  }
+
+  static __findComponent (reference, addendum) {
+    const fullURI = `${reference || ''}/${addendum || ''}`
+    const lastAspect = _.last(_.compact(fullURI.split(path.sep || `/`)))
+    const extractZipName = Discover.COMPONENT_NAME.exec(lastAspect)
+    const componentName = (extractZipName) ? _.last(extractZipName) : lastAspect
+
+    return componentName
   }
 }
 

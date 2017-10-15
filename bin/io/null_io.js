@@ -1,3 +1,4 @@
+
 class NullIO {
   static sendToCache () {
     return new Promise((resolve, reject) => {
