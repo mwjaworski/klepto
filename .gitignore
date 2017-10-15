@@ -7,7 +7,7 @@
 .idea/
 .vscode/
 .nyc_output/
-.bauble/
+.packages/
 
 /vendor/
 /node_modules/
