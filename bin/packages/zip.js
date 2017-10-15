@@ -7,7 +7,7 @@ class ZipPackage {
     return FileSystem
       .read(cachePath)
       .then((binaryData) => {
-        return this.__extractZip(binaryData, specifier, msg)
+        return this.__extractZip(binaryData, specifier)
       })
   }
 

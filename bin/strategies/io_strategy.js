@@ -1,7 +1,7 @@
-const LocalIO = require('../io/local')
-const NullIO = require('../io/null')
-const GitIO = require('../io/git')
-const WebIO = require('../io/web')
+const LocalIO = require('../io/local_io')
+const NullIO = require('../io/null_io')
+const GitIO = require('../io/git_io')
+const WebIO = require('../io/web_io')
 
 const Discover = {
   IS_EXTENSION: /\.(?:zip|tar|gz|tar\.gz)$/i,
@@ -18,13 +18,11 @@ class IOStrategy {
    * @return {IO} the IO if the uri passes, if the uri does not match then NullIO is returned
    */
   static of ({ uri }) {
-    const ofLocal = IOStrategy.__ofLocal(uri)
-    const ofNull = IOStrategy.__ofNull(uri)
-    const ofWeb = IOStrategy.__ofWeb(uri)
-    const ofGit = IOStrategy.__ofGit(uri)
-
     // NOTE order matters, ofNull is the default case
-    return ofLocal || ofWeb || ofGit || ofNull
+    return this.__ofLocal(uri) ||
+      this.__ofWeb(uri) ||
+      this.__ofGit(uri) ||
+      this.__ofNull(uri)
   }
 
   /**
@@ -33,7 +31,8 @@ class IOStrategy {
    */
   static __ofLocal (uri) {
     const isNotURLBySignature = uri.match(Discover.IS_URL) === null
-    const isLocal = isNotURLBySignature
+    const isNotGitByExtension = uri.match(Discover.IS_GIT) === null
+    const isLocal = isNotURLBySignature && isNotGitByExtension
 
     return isLocal ? LocalIO : undefined
   }

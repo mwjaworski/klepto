@@ -2,12 +2,13 @@
 
 [![Build Status](https://img.shields.io/badge/bauble-available-green.svg)](https://www.npmjs.com/package/bauble)
 [![Build Status](https://travis-ci.org/mwjaworski/bauble.svg?branch=docs-and-testing)](https://travis-ci.org/mwjaworski/bauble)
+[![Coverage Status](https://coveralls.io/repos/github/mwjaworski/bauble/badge.svg?branch=master)](https://coveralls.io/github/mwjaworski/bauble?branch=master)
 
 > The do-it-yourself package manager
 
 ### What does Bauble do?
 
-Bauble is a package manager supporting self-hosted component sets. Bauble provides the standard set of package management tools, but is designed to work alongside existing bower or npm package configurations. 
+Bauble is a package manager supporting self-hosted component sets. Bauble provides the standard set of package management tools, but is designed to work alongside existing bower or npm package configurations.
 
 Bauble supports components distributed through the web, github repositories, or local folders. It supports components being pulled from multiple sources and also searching across multiple sources.
 

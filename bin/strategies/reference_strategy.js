@@ -103,11 +103,11 @@ class ReferenceStrategy {
   }
 
   static __findComponent (reference, addendum) {
-    const fullURI = `${reference || ''}/${addendum || ''}`;
+    const fullURI = `${reference || ''}/${addendum || ''}`
     const lastAspect = _.last(fullURI.split(path.sep || `/`))
     const componentName = _.last(Discover.COMPONENT_NAME.exec(lastAspect))
 
-    return componentName;
+    return componentName
   }
 }
 
