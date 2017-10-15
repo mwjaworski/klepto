@@ -14,6 +14,10 @@ class ZipPackage {
     this.__zip;
   }
 
+  sendToStaging(packagePath) {
+
+  }
+
   load(zipBinary) {
     this.__zip = JSZip.loadAsync(zipBinary);
     return this;

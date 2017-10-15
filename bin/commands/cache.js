@@ -1,4 +1,6 @@
-const { configuration } = require(`../core/configuration`);
+const {
+  configuration
+} = require(`../core/configuration`);
 const clc = require('cli-color');
 const path = require('path');
 const _ = require('lodash');
@@ -11,13 +13,6 @@ const IOStrategy = require(`../strategies/io_strategy`);
 
 const FileSystem = require('../support/file_system');
 const AuditLog = require('../support/audit_log');
-
-// 1. download a new version
-// 2. if cannot download, look for cached version
-// 3. if have file, then write file to cache
-// 4. read file from cache and parse (read bower.json, package.json, ...)
-// 5. write to folder in json
-// 6. if no file in json, then use folder name (function to extract name?!)
 
 module.exports = {
   registerVorpalCommand: (vorpal, configuration) => {
@@ -38,6 +33,7 @@ module.exports = {
         const IOTool = IOStrategy.of(specifier);
         const PackageTool = PackageStrategy.of(specifier);
 
+
         if (args.options.audit) {
           vorpal.log(AuditLog.variableValue({
             uri: specifier.uri,
@@ -49,36 +45,37 @@ module.exports = {
           return done();
         }
 
+
         FileSystem.makeDirectory(`.bauble/cache/`);
 
         IOTool
-          .pullToCache(specifier)
+          .sendToCache(specifier)
           .catch((o) => {
             vorpal.log(o);
           })
-          .then(({ writePath }) => {
+          .then(({
+            writePath
+          }) => {
 
             vorpal.log(`path: ${writePath}`);
 
-            // turn on only if we have a zip file
-            // we need a (do nothing) for packages...
+            PackageTool
+              .sendToStaging(writePath)
 
-            //
+          //   FileSystem
+          //     .read(writePath)
+          //     .catch((err) => {
+          //       vorpal.log(err.reason);
+          //     })
+          //     .then((binaryData) => {
 
-            // FileSystem
-            //   .read(writePath)
-            //   .catch((err) => {
-            //     vorpal.log(err.reason);
-            //   })
-            //   .then((binaryData) => {
-
-            //     fileTypePackage
-            //       .build(binaryData)
-            //       .extract()
-            //       .then(() => {
-            //         done();
-            //       });
-            //   });
+          //       fileTypePackage
+          //         .build(binaryData)
+          //         .extract()
+          //         .then(() => {
+          //           done();
+          //         });
+          //     });
 
           });
 

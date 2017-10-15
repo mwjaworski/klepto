@@ -13,7 +13,7 @@ const ResponseTypeStrategy = {
 
 class WebIO {
 
-  static pullToCache({ uri }) {
+  static sendToCache({ uri }) {
     const extension = path.extname(uri);
     const file = path.basename(uri, extension);
     const writePath = `.bauble/cache/${file}${extension}`;

@@ -1,7 +1,7 @@
 
 class NullIO {
 
-  static pullToCache() {
+  static sendToCache() {
     return new Promise((_0, reject) => {
       reject({
         reason: `no matching IO service`

@@ -6,18 +6,17 @@ const OperatingSystem = require('../support/operating_system');
 
 class GitIO {
 
-  static pullToCache({ uri, version }) {
+  static sendToCache({ uri }) {
     return new Promise((resolve, reject) => {
       const extension = path.extname(uri);
       const file = path.basename(uri, extension);
       const writePath = `.bauble/cache/${file}`;
 
-      // TODO resolve version (it may have ~ and ^)
-
       OperatingSystem
         .execute([
-          `git clone --depth 1 --branch ${version} ${uri} ${writePath}`,
+          `git clone --depth 1 --branch master ${uri} ${writePath}`,
           `cd ${writePath}`,
+          `git fetch --all`,
           `git pull`,
           `cd ${process.cwd()}`
         ])

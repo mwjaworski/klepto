@@ -1,7 +1,7 @@
-const copyDir = require('copy-dir');
+const fs = require('fs.extra');
 const path = require('path');
 const _ = require('lodash');
-const fs = require('fs');
+
 
 const fileSystem = require('../support/file_system');
 const {
@@ -11,7 +11,7 @@ const {
 class LocalIO {
 
   // TODO if we provide a file:// prefix then we have to tear it off
-  static pullToCache(specifier) {
+  static sendToCache(specifier) {
     const {
       uri,
       addendum
@@ -23,13 +23,13 @@ class LocalIO {
     };
 
     if (_.size(extSpecifier.extension) > 0) {
-      return this.__pullToCacheZip(specifier, extSpecifier);
+      return this.__sendToCacheZip(specifier, extSpecifier);
     } else {
-      return this.__pullToCacheFolder(specifier, extSpecifier);
+      return this.__sendToCacheFolder(specifier, extSpecifier);
     }
   }
 
-  static __pullToCacheZip({
+  static __sendToCacheZip({
     uri,
     addendum
   }, {
@@ -53,7 +53,7 @@ class LocalIO {
     });
   }
 
-  static __pullToCacheFolder({
+  static __sendToCacheFolder({
     uri,
     addendum
   }, {
@@ -64,7 +64,7 @@ class LocalIO {
     return new Promise((resolve, reject) => {
       const writePath = `.bauble/cache/${path.basename(uri)}`;
 
-      copyDir(relativePath, writePath, (err) => {
+      fs.copyRecursive(relativePath, writePath, (err) => {
         if (err) {
           reject({
             reason: err
