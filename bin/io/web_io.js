@@ -5,9 +5,7 @@ const fileSystem = require('../support/file_system')
 
 class WebIO {
   static sendToCache ({ uri }) {
-    const extension = path.extname(uri)
-    const file = path.basename(uri, extension)
-    const cachePath = `.bauble/cache/${file}${extension}`
+    const cachePath = this.__cachePath({ uri })
 
     return axios({
       responseType: `arraybuffer`,
@@ -27,6 +25,14 @@ class WebIO {
       })
     })
   }
+
+  static __cachePath({ uri }) {
+    const extension = path.extname(uri)
+    const file = path.basename(uri, extension)
+
+    return `.bauble/cache/${file}${extension}`
+  }
+
 }
 
 module.exports = WebIO

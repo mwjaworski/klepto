@@ -1,6 +1,6 @@
 const path = require('path')
 const _ = require('lodash')
-const fs = require('fs')
+const fs = require('fs-extra')
 
 class FileSystem {
   /**
@@ -51,7 +51,7 @@ class FileSystem {
     const { folder, file } = this.explodePath(path)
 
     return new Promise((resolve, reject) => {
-      fs.readFile(`${folder}/${file}`, 'binary', (err, data) => {
+      fs.readFile(`${folder}/${file}`, `binary`, (err, data) => {
         if (err) {
           return reject(new Error(err))
         }

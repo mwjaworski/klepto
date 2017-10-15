@@ -5,45 +5,11 @@ const _ = require('lodash')
 class LocalIO {
   // TODO if we provide a file:// prefix then we have to tear it off
   static sendToCache (specifier) {
-    const { uri, addendum } = specifier
-    const relativePath = _.trimEnd(`${uri}${addendum || ''}`)
-    const extSpecifier = {
-      extension: path.extname(relativePath),
-      relativePath
-    }
-
-    if (_.size(extSpecifier.extension) > 0) {
-      return this.__sendToCacheZip(specifier, extSpecifier)
-    } else {
-      return this.__sendToCacheFolder(specifier, extSpecifier)
-    }
-  }
-
-  static __sendToCacheZip ({ uri, addendum }, { extension, relativePath }) {
-    const zipFile = path.basename(relativePath, extension)
-    const cachePath = `.bauble/cache/${zipFile}${extension}`
+    const originalLocation = this.__originalLocation(specifier)
+    const cachePath = this.__cachePath(specifier)
 
     return new Promise((resolve, reject) => {
-      fs
-        .createReadStream(relativePath)
-        .pipe(fs.createWriteStream(cachePath))
-        .on(`error`, reason =>
-          reject(new Error(reason))
-        )
-        .on(`close`, () =>
-          resolve({
-            cachePath
-          })
-        )
-        .end()
-    })
-  }
-
-  static __sendToCacheFolder ({ uri, addendum }, { extension, relativePath }) {
-    return new Promise((resolve, reject) => {
-      const cachePath = `.bauble/cache/${path.basename(uri)}`
-
-      fs.copy(relativePath, cachePath, err => {
+      fs.copy(originalLocation, cachePath, err => {
         if (err) {
           reject(new Error(err))
         } else {
@@ -54,6 +20,22 @@ class LocalIO {
       })
     })
   }
+
+  static __originalLocation({ uri, addendum }) {
+    return _.trimEnd(`${uri}${addendum || ''}`)
+  }
+
+  static __cachePath({ uri, addendum }) {
+    const originalLocation = this.__originalLocation({ uri, addendum })
+    const extension = path.extname(originalLocation)
+    const zipFile = path.basename(originalLocation, extension)
+
+    const cachePathZip = `.bauble/cache/${zipFile}${extension}`
+    const cachePathFolder = `.bauble/cache/${path.basename(uri)}`
+
+    return (_.size(extension) > 0) ? cachePathZip : cachePathFolder
+  }
+
 }
 
 module.exports = LocalIO

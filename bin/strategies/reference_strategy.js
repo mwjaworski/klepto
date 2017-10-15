@@ -104,8 +104,9 @@ class ReferenceStrategy {
 
   static __findComponent (reference, addendum) {
     const fullURI = `${reference || ''}/${addendum || ''}`
-    const lastAspect = _.last(fullURI.split(path.sep || `/`))
-    const componentName = _.last(Discover.COMPONENT_NAME.exec(lastAspect))
+    const lastAspect = _.last(_.compact(fullURI.split(path.sep || `/`)))
+    const extractZipName = Discover.COMPONENT_NAME.exec(lastAspect);
+    const componentName = (!!extractZipName) ? _.last(extractZipName) : lastAspect;
 
     return componentName
   }

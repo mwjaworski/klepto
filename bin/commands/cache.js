@@ -37,7 +37,6 @@ module.exports = {
         }
 
         FileSystem.makeDirectory(`.bauble/staging/${specifier.component}/`)
-        FileSystem.makeDirectory(`.bauble/staging/`)
         FileSystem.makeDirectory(`.bauble/cache/`)
 
         IOTool
@@ -47,7 +46,7 @@ module.exports = {
           })
           .then(({ cachePath }) => {
             return PackageTool
-              .sendToStaging(specifier, `${cachePath}/${specifier.addendum}`, (m) => vorpal.log(m))
+              .sendToStaging(specifier, cachePath)
               .then(() => {
                 done()
               })

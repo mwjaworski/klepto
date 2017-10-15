@@ -1,27 +1,21 @@
+const FileSystem = require('../support/file_system')
+const fs = require('fs-extra')
 
 class FolderPackage {
-  static sendToStaging (writePath, msg) {
+  static sendToStaging ({ component }, cachePath) {
+    const stagingPath = `.bauble/staging/${component}/`
+
     return new Promise((resolve, reject) => {
-      msg(`folder ${writePath}`)
-      resolve()
-    })
-
-    // return (new ZipPackage()).load(zipBinary)
-  }
-
-  load () {
-    return this
-  }
-
-  extract () {
-    return new Promise((resolve, reject) => {
-      reject(new Error(`not implemented`))
+      fs.copy(cachePath, stagingPath, err => {
+        if (err) {
+          reject(new Error(err))
+        } else {
+          resolve()
+        }
+      })
     })
   }
 
-  static build () {
-    return new FolderPackage()
-  }
 }
 
 module.exports = FolderPackage

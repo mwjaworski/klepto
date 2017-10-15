@@ -101,6 +101,7 @@ E. cache (zip)          staging (folder)    component (folder-refined)    DONE
 F. cache (folder)       staging (folder)    component (folder-refined)    DONE
 
 node bin/index.js cache --audit ../folder_a/ xew.zip
+node bin/index.js cache  ../link-talk
 
 node bin/index.js cache
 
