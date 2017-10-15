@@ -3,33 +3,32 @@
 [![Build Status](https://img.shields.io/badge/bauble-available-green.svg)](https://www.npmjs.com/package/bauble)
 [![Build Status](https://travis-ci.org/mwjaworski/bauble.svg?branch=docs-and-testing)](https://travis-ci.org/mwjaworski/bauble)
 
-> An archive (zip or tar) component package manager
+> The do-it-yourself package manager
 
-# &lt;Bauble&gt; is an [OPEN Open Source Project](http://openopensource.org/).
+### What does Bauble do?
 
-## What does Bauble do?
+Bauble is a package manager supporting self-hosted component sets. Bauble provides the standard set of package management tools, but is designed to work alongside existing bower or npm package configurations. 
 
-Bauble is a package manager for zip or tar files. It's primary use-case is corporations which are not using npm (e.g. slow adoption because of red-tape) and cannot use bower (because bower has terrible support for installing zip/tar files).
+Bauble supports components distributed through the web, github repositories, or local folders. It supports components being pulled from multiple sources and also searching across multiple sources.
 
-Bauble provides a simple interface to install components hosted on a server or file system in to a `bower_components/`, `node_modules/`, or other folder as a simple package delivery system.
+### How does Bauble work?
 
-## Why Bauble?
+When Bauble installs components it:
 
-Bauble exists as a stop-gap for development groups who:
+1. Resolves the reference against configurable scoping rules (eg @internal/sub-folder/repo)
+2. Pulls and caches a zip, tar, or folder from the web, git, or local folder
+3. Reviews the _bower.json_, _package.json_ or _bauble.json_ rules to install further components (ie. configurable per scope or url match)
+4. All components are placed in project component folders, defined by the scope or match rule
 
-1. Need private packages (otherwise use npm)
-2. Are not hosting an internal npm server (e.g. red-tape)
-3. Cannot use bower because of it's poor support for zip/tar files
+Bauble does not pass through any commands to existing package managers. It is a stand-alone package manager which allows a development team to distribute packages as they choose.
 
-## Features
+### Why Bauble?
 
-- [ ] Download files from HTTPS
-- [ ] Download files from GitHub
-- [ ] Unzip ZIP files
-- [ ] Untar TAR files
-- [ ] `install` a component based on NPM, Bower, or Bauble configurations
+The primary use-case is for corporations with their own internal component sets.
 
 ## Installation
+
+> Bauble relies on Node v6 and upwards
 
 Install globally via [npm](npmjs.org).
 
@@ -42,8 +41,6 @@ Install globally via [yarn](https://yarnpkg.com/).
 ```bash
 yarn global add bauble;
 ```
-
-> bauble relies on Node v4 upwards.
 
 ## Usage
 
@@ -61,9 +58,19 @@ bauble [command] <options>
 
 ## Commands
 
-| Command         | Purpose
-|:----------------|:-----------------------------------------
-| `version`       | Write the current version
+| Command       | Status| Purpose
+|:--------------|:------|:-----------------------------------------
+| `version`     | [x]   | Write the current version
+| `cache`       | [x]   | Install a component(s) to local cache
+| `uncache`     | [ ]   | Remove a component from local cache
+| `install`     | [ ]   | Install a component(s) to the project
+| `uninstall`   | [ ]   | Remove a component to the project
+| `resolve`     | [ ]   | Report on component version and access
+| `status`      | [ ]   | Write a summary of the projects component rules
+
+## OPEN Statuc
+
+Bauble is an [OPEN Open Source Project](http://openopensource.org/).
 
 ## License
 
