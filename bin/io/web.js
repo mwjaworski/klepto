@@ -1,24 +1,16 @@
-const { configuration } = require(`../core/configuration`);
-const axios = require('axios');
-const path = require('path');
-const _ = require('lodash');
-const fs = require('fs');
+const axios = require('axios')
+const path = require('path')
 
-const fileSystem = require('../support/file_system');
-
-const ResponseTypeStrategy = {
-  '.zip': `arraybuffer`,
-  '.tar': `arraybuffer`
-};
+const fileSystem = require('../support/file_system')
 
 class WebIO {
-  static sendToCache({ uri }) {
-    const extension = path.extname(uri);
-    const file = path.basename(uri, extension);
-    const writePath = `.bauble/cache/${file}${extension}`;
+  static sendToCache ({ uri }) {
+    const extension = path.extname(uri)
+    const file = path.basename(uri, extension)
+    const writePath = `.bauble/cache/${file}${extension}`
 
     return axios({
-      responseType: ResponseTypeStrategy[extension],
+      responseType: `arraybuffer`,
       maxContentLength: 2000000,
       withCredentials: false,
       method: `get`,
@@ -31,10 +23,10 @@ class WebIO {
       return fileSystem.write(writePath, response.data).then(() => {
         return {
           writePath
-        };
-      });
-    });
+        }
+      })
+    })
   }
 }
 
-module.exports = WebIO;
+module.exports = WebIO

@@ -40,7 +40,7 @@
   ],
   "scripts": {
     "validate": "node_modules/.bin/standard --fix bin/**/*.js",
-    "format": "node_modules/.bin/prettier --write bin/**/*.js",
+    "format": "node_modules/.bin/standard --fix bin/**/*.js",
     "test": "node_modules/.bin/ava --timeout=3s test/test.js",
     "coverage": "./node_modules/.bin/nyc npm run test",
     "coveralls": "npm run coverage"
@@ -61,7 +61,6 @@
   "devDependencies": {
     "ava": "0.22.0",
     "nyc": "^11.2.1",
-    "prettier": "^1.7.4",
     "standard": "^10.0.3"
   },
   "ava": {

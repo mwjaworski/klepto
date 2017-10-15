@@ -4,12 +4,12 @@ module.exports = {
       .command(`audit`)
       .alias(`a`)
       .description(`Audit internal rules.`)
-      .validate(function(args) {
-        return true;
+      .validate(function (args) {
+        return true
       })
       .action((args, done) => {
-        vorpal.log(`pending...`);
-        done();
-      });
+        vorpal.log(`pending...`)
+        done()
+      })
   }
-};
+}

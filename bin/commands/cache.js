@@ -1,11 +1,9 @@
-const fs = require('fs-extra');
+const ReferenceStrategy = require(`../strategies/reference_strategy`)
+const PackageStrategy = require(`../strategies/package_strategy`)
+const IOStrategy = require(`../strategies/io_strategy`)
 
-const ReferenceStrategy = require(`../strategies/reference_strategy`);
-const PackageStrategy = require(`../strategies/package_strategy`);
-const IOStrategy = require(`../strategies/io_strategy`);
-
-const FileSystem = require('../support/file_system');
-const AuditLog = require('../support/audit_log');
+const FileSystem = require('../support/file_system')
+const AuditLog = require('../support/audit_log')
 
 module.exports = {
   registerVorpalCommand: (vorpal, configuration) => {
@@ -14,16 +12,16 @@ module.exports = {
       .alias(`c`)
       .option('-a, --audit', `Inspect the tools selected for a reference`)
       .description(`Download a component package.`)
-      .validate(function(args) {
-        return true;
+      .validate(function (args) {
+        return true
       })
       .action((args, done) => {
-        const scopeOrResource = ReferenceStrategy.normalizeReference(args);
-        const resource = ReferenceStrategy.scopeToResource(scopeOrResource);
-        const specifier = ReferenceStrategy.resourceToSpecifier(resource);
+        const scopeOrResource = ReferenceStrategy.normalizeReference(args)
+        const resource = ReferenceStrategy.scopeToResource(scopeOrResource)
+        const specifier = ReferenceStrategy.resourceToSpecifier(resource)
 
-        const IOTool = IOStrategy.of(specifier);
-        const PackageTool = PackageStrategy.of(specifier);
+        const IOTool = IOStrategy.of(specifier)
+        const PackageTool = PackageStrategy.of(specifier)
 
         if (args.options.audit) {
           vorpal.log(
@@ -33,21 +31,21 @@ module.exports = {
               io: IOTool.name,
               package: PackageTool.name
             })
-          );
+          )
 
-          return done();
+          return done()
         }
 
-        FileSystem.makeDirectory(`.bauble/cache/`);
+        FileSystem.makeDirectory(`.bauble/cache/`)
 
         IOTool.sendToCache(specifier)
           .catch(o => {
-            vorpal.log(o);
+            vorpal.log(o)
           })
           .then(({ writePath }) => {
-            vorpal.log(`path: ${writePath}`);
+            vorpal.log(`path: ${writePath}`)
 
-            PackageTool.sendToStaging(writePath);
+            PackageTool.sendToStaging(writePath)
 
             //   FileSystem
             //     .read(writePath)
@@ -63,7 +61,7 @@ module.exports = {
             //           done();
             //         });
             //     });
-          });
-      });
+          })
+      })
   }
-};
+}

@@ -14,7 +14,3 @@ require('./commands/audit').registerVorpalCommand(vorpal, configuration)
 //
 //
 require('./core/terminal').registerVorpalCommand(vorpal, configuration)
-
-// Promise.onPossiblyUnhandledRejection(function(error){
-//   throw error;
-// });

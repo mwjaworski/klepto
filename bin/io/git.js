@@ -1,14 +1,14 @@
-const process = require('process');
-const path = require('path');
+const process = require('process')
+const path = require('path')
 
-const OperatingSystem = require('../support/operating_system');
+const OperatingSystem = require('../support/operating_system')
 
 class GitIO {
-  static sendToCache({ uri }) {
+  static sendToCache ({ uri }) {
     return new Promise((resolve, reject) => {
-      const extension = path.extname(uri);
-      const file = path.basename(uri, extension);
-      const writePath = `.bauble/cache/${file}`;
+      const extension = path.extname(uri)
+      const file = path.basename(uri, extension)
+      const writePath = `.bauble/cache/${file}`
 
       OperatingSystem.execute([
         `git clone --depth 1 --branch master ${uri} ${writePath}`,
@@ -19,10 +19,10 @@ class GitIO {
       ]).then(() => {
         resolve({
           writePath
-        });
-      });
-    });
+        })
+      })
+    })
   }
 }
 
-module.exports = GitIO;
+module.exports = GitIO

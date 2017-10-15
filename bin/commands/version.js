@@ -5,8 +5,8 @@ module.exports = {
       .description(`Write the current version.`)
       .alias(`ver`)
       .action((args, done) => {
-        vorpal.log(configuration.get('application.version'));
-        done();
-      });
+        vorpal.log(configuration.get('application.version'))
+        done()
+      })
   }
-};
+}

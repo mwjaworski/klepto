@@ -1,7 +1,7 @@
-const convict = require('convict');
-const process = require('process');
-const _ = require('lodash');
-const os = require('os');
+const convict = require('convict')
+const process = require('process')
+const _ = require('lodash')
+const os = require('os')
 
 const configuration = convict({
   application: {
@@ -21,25 +21,24 @@ const configuration = convict({
     sensitive: true,
     format: `*`
   }
-});
+})
 
 _.each([
   `${os.homedir()}/.bauble`,
-  `${process.cwd()}/.bauble`,
+  `${process.cwd()}/.bauble`
 ], (configurationFilePath) => {
   try {
-    configuration.loadFile(configurationFilePath);
-  }
-  catch(e) {
+    configuration.loadFile(configurationFilePath)
+  } catch (e) {
     ;
   }
-});
+})
 
-configuration.default(`application.version`);
-configuration.default(`application.name`);
+configuration.default(`application.version`)
+configuration.default(`application.name`)
 
 // TODO review the configuration
 
 module.exports = {
   configuration
-};
+}
