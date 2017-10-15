@@ -39,7 +39,7 @@
     "/*.bkp"
   ],
   "scripts": {
-    "format": "node_modules/.bin/prettier --write bin/**/*.js",
+    "validate": "node_modules/.bin/standard --fix bin/**/*.js",
     "test": "node_modules/.bin/ava --timeout=3s test/test.js",
     "coverage": "./node_modules/.bin/nyc npm run test",
     "coveralls": "npm run coverage"
@@ -48,18 +48,19 @@
     "axios": "^0.16.2",
     "cli-color": "1.2.0",
     "cli-table": "0.3.1",
-    "commander": "2.11.0",
+    "convict": "^4.0.1",
+    "fs-extra": "^4.0.2",
     "jschardet": "^1.5.1",
     "jsonfile": "4.0.0",
     "jszip": "^3.1.4",
     "lodash": "4.17.4",
-    "nyc": "^11.2.1",
     "semver-compare": "1.0.0",
     "vorpal": "^1.12.0"
   },
   "devDependencies": {
     "ava": "0.22.0",
-    "prettier": "^1.7.4"
+    "nyc": "^11.2.1",
+    "standard": "^10.0.3"
   },
   "ava": {
     "files": [

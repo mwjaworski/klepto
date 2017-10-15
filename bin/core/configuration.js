@@ -1,12 +1,44 @@
-const _ = require('lodash');
+const convict = require('convict')
+const process = require('process')
+const _ = require('lodash')
+const os = require('os')
 
-const configuration = {
-  version: `0.1.0`,
-  interface: {
-
+const configuration = convict({
+  application: {
+    name: {
+      doc: `application name`,
+      default: `bauble`,
+      format: String
+    },
+    version: {
+      doc: `application version`,
+      default: `0.1.0`,
+      format: String
+    }
+  },
+  sources: {
+    doc: `sources to search for components`,
+    sensitive: true,
+    format: `*`
   }
-};
+})
 
-configuration.major = _.toNumber(_.head(configuration.version.split(`.`)));
+_.each([
+  `${os.homedir()}/.bauble`,
+  `${process.cwd()}/.bauble`
+], (configurationFilePath) => {
+  try {
+    configuration.loadFile(configurationFilePath)
+  } catch (e) {
+    ;
+  }
+})
 
-module.exports = configuration;
+configuration.default(`application.version`)
+configuration.default(`application.name`)
+
+// TODO review the configuration
+
+module.exports = {
+  configuration
+}

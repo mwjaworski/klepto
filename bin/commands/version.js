@@ -1,5 +1,3 @@
-const configuration = require(`../core/configuration`);
-
 module.exports = {
   registerVorpalCommand: (vorpal, configuration) => {
     return vorpal
@@ -7,8 +5,8 @@ module.exports = {
       .description(`Write the current version.`)
       .alias(`ver`)
       .action((args, done) => {
-        vorpal.log(configuration.version);
-        done();
-      });
+        vorpal.log(configuration.get('application.version'))
+        done()
+      })
   }
-};
+}
