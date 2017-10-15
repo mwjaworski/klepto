@@ -40,7 +40,6 @@
   ],
   "scripts": {
     "validate": "node_modules/.bin/standard --fix bin/**/*.js",
-    "format": "node_modules/.bin/standard --fix bin/**/*.js",
     "test": "node_modules/.bin/ava --timeout=3s test/test.js",
     "coverage": "./node_modules/.bin/nyc npm run test",
     "coveralls": "npm run coverage"
