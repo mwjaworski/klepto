@@ -1,9 +1,11 @@
-const FileSystem = require('../support/file_system')
 const fs = require('fs-extra')
+
+const { configuration } = require('../core/configuration')
+const paths = configuration.get(`paths`)
 
 class FolderPackage {
   static sendToStaging ({ component }, cachePath) {
-    const stagingPath = `.bauble/staging/${component}/`
+    const stagingPath = `${paths.staging}/${component}/`
 
     return new Promise((resolve, reject) => {
       fs.copy(cachePath, stagingPath, err => {
@@ -15,7 +17,6 @@ class FolderPackage {
       })
     })
   }
-
 }
 
 module.exports = FolderPackage

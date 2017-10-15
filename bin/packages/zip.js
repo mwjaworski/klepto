@@ -2,6 +2,9 @@ const FileSystem = require('../support/file_system')
 const JSZip = require('jszip')
 const fs = require('fs-extra')
 
+const { configuration } = require('../core/configuration')
+const paths = configuration.get(`paths`)
+
 class ZipPackage {
   static sendToStaging (specifier, cachePath) {
     return FileSystem
@@ -19,8 +22,14 @@ class ZipPackage {
       const filesWritten = []
 
       zip.forEach((relativePath, file) => {
+        const componentPrefix = `${component}`;
+
+        if (relativePath.indexOf(componentPrefix) >= 0) {
+          relativePath = relativePath.substr(`${componentPrefix}/`.length)
+        }
+
         const isFolder = relativePath.lastIndexOf(`/`) === relativePath.length - 1
-        const stagingPath = `.bauble/staging/${component}/${relativePath}`
+        const stagingPath = `${paths.staging}/${component}/${relativePath}`
 
         if (isFolder) {
           FileSystem.makeDirectory(stagingPath)

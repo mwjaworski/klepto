@@ -16,6 +16,7 @@ module.exports = {
         return true
       })
       .action((args, done) => {
+        const paths = configuration.get(`paths`)
         // TODO cache works on one component at a time, try `all` for every component? or *
 
         const specifier = ReferenceStrategy.referenceToSpecifier(args)
@@ -36,8 +37,8 @@ module.exports = {
           return done()
         }
 
-        FileSystem.makeDirectory(`.bauble/staging/${specifier.component}/`)
-        FileSystem.makeDirectory(`.bauble/cache/`)
+        FileSystem.makeDirectory(`${paths.staging}/${specifier.component}/`)
+        FileSystem.makeDirectory(`${paths.cache}/`)
 
         IOTool
           .sendToCache(specifier)

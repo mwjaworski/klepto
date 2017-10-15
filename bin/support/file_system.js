@@ -27,12 +27,10 @@ class FileSystem {
   }
 
   static write (path, data, streamOptions = { encoding: `binary` }) {
-    const { folder, file } = this.explodePath(path)
-
     return new Promise((resolve, reject) => {
       this.makeDirectory(folder)
 
-      const writer = fs.createWriteStream(`${folder}/${file}`, streamOptions)
+      const writer = fs.createWriteStream(this.readPath(path), streamOptions)
 
       writer
         .on('error', function (err) {
@@ -48,10 +46,8 @@ class FileSystem {
   }
 
   static read (path, streamOptions = { encoding: `binary` }) {
-    const { folder, file } = this.explodePath(path)
-
     return new Promise((resolve, reject) => {
-      fs.readFile(`${folder}/${file}`, `binary`, (err, data) => {
+      fs.readFile(this.readPath(path), `binary`, (err, data) => {
         if (err) {
           return reject(new Error(err))
         }
@@ -60,8 +56,15 @@ class FileSystem {
     })
   }
 
+  static readPath (path) {
+    const { folder, file } = this.explodePath(path)
+
+    return `${folder}/${file}`
+  }
+
   static explodePath (path) {
     const _path = _.reverse(path.split(`/`))
+
     return {
       folder: _.reverse(_.tail(_path)).join(`/`),
       file: _.head(_path)

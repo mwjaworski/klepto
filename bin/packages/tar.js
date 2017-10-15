@@ -1,20 +1,23 @@
+const FileSystem = require('../support/file_system')
+const fs = require('fs-extra')
+const tar = require('tar')
+
+const { configuration } = require('../core/configuration')
+const paths = configuration.get(`paths`)
 
 class TarPackage {
-  static sendToStaging (writePath, msg) {
+  static sendToStaging (specifier, cachePath) {
     return new Promise((resolve, reject) => {
-      reject(new Error(`not implemented`))
+      return tar.extract({
+        cwd: `${paths.staging}/${specifier.component}/`,
+        file: FileSystem.readPath(cachePath),
+        preserveOwner: false,
+        unlink: true,
+        strip: 1
+      })
     })
   }
 
-  load () {
-    return this
-  }
-
-  extract () {
-    return new Promise((resolve, reject) => {
-      reject(new Error(`not implemented`))
-    })
-  }
 }
 
 module.exports = TarPackage

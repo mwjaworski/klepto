@@ -3,11 +3,15 @@ const path = require('path')
 
 const OperatingSystem = require('../support/operating_system')
 
+const { configuration } = require('../core/configuration')
+const paths = configuration.get(`paths`)
+
 class GitIO {
   static sendToCache (specifier) {
     return new Promise((resolve, reject) => {
       const cacheTo = this.__cacheTo(specifier)
       const cachePath = this.__cachePath(specifier)
+      const { uri } = specifier
 
       OperatingSystem.execute([
         `git clone --depth 1 --branch master ${uri} ${cacheTo}`,
@@ -23,17 +27,16 @@ class GitIO {
     })
   }
 
-  static __cachePath({ uri, addendum }) {
+  static __cachePath ({ uri, addendum }) {
     return `${this.__cacheTo({ uri })}/${addendum || ''}`
   }
 
-  static __cacheTo({ uri }) {
+  static __cacheTo ({ uri }) {
     const extension = path.extname(uri)
     const file = path.basename(uri, extension)
 
-    return `.bauble/cache/${file}`
+    return `${paths.cache}/${file}`
   }
-
 }
 
 module.exports = GitIO

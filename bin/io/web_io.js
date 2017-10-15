@@ -3,6 +3,9 @@ const path = require('path')
 
 const fileSystem = require('../support/file_system')
 
+const { configuration } = require('../core/configuration')
+const paths = configuration.get(`paths`)
+
 class WebIO {
   static sendToCache ({ uri }) {
     const cachePath = this.__cachePath({ uri })
@@ -26,13 +29,12 @@ class WebIO {
     })
   }
 
-  static __cachePath({ uri }) {
+  static __cachePath ({ uri }) {
     const extension = path.extname(uri)
     const file = path.basename(uri, extension)
 
-    return `.bauble/cache/${file}${extension}`
+    return `${paths.cache}/${file}${extension}`
   }
-
 }
 
 module.exports = WebIO

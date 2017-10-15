@@ -4,7 +4,7 @@ const GitIO = require('../io/git_io')
 const WebIO = require('../io/web_io')
 
 const Discover = {
-  IS_EXTENSION: /\.(?:zip|tar|gz|tar\.gz)$/i,
+  IS_EXTENSION: /\.(?:zip|tar|tgz|gz|tar\.gz)$/i,
   IS_URL: /^https?:\/\//i,
   IS_GIT: /\.(?:git)$/i
 }

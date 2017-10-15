@@ -9,7 +9,7 @@ const {
 const Discover = {
   IS_SCOPE: /^@/i,
   IS_VERSION: /^[~^]?\d{1,2}\.\d{1,2}\.\d{1,2}$/i,
-  COMPONENT_NAME: /([a-z0-9-]*).*?\.(?:zip|tar|gz|tar\.gz)?$/i
+  COMPONENT_NAME: /([a-z0-9-]*).*?\.(?:zip|tar|tgz|gz|tar\.gz)?$/i
 }
 
 /**
@@ -105,8 +105,8 @@ class ReferenceStrategy {
   static __findComponent (reference, addendum) {
     const fullURI = `${reference || ''}/${addendum || ''}`
     const lastAspect = _.last(_.compact(fullURI.split(path.sep || `/`)))
-    const extractZipName = Discover.COMPONENT_NAME.exec(lastAspect);
-    const componentName = (!!extractZipName) ? _.last(extractZipName) : lastAspect;
+    const extractZipName = Discover.COMPONENT_NAME.exec(lastAspect)
+    const componentName = (extractZipName) ? _.last(extractZipName) : lastAspect
 
     return componentName
   }
