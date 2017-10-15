@@ -9,14 +9,11 @@ const UNKNOWN_MANIFEST = {
 };
 
 class ZipPackage {
-
   constructor() {
     this.__zip;
   }
 
-  sendToStaging(packagePath) {
-
-  }
+  sendToStaging(packagePath) {}
 
   load(zipBinary) {
     this.__zip = JSZip.loadAsync(zipBinary);
@@ -24,11 +21,10 @@ class ZipPackage {
   }
 
   extract(ref) {
-
     // TODO configuration should be set and all code reviewed
     fileSystem.makeDirectory(`.bauble/extract/`);
 
-    return this.__zip.then(function (zip) {
+    return this.__zip.then(function(zip) {
       const filesWritten = [];
 
       zip.forEach((relativePath, file) => {
@@ -38,24 +34,22 @@ class ZipPackage {
         if (isFolder) {
           fileSystem.makeDirectory(writePath);
         } else {
-          filesWritten.push(new Promise((resolve) => {
-            const writeStream = fs.createWriteStream(writePath);
+          filesWritten.push(
+            new Promise(resolve => {
+              const writeStream = fs.createWriteStream(writePath);
 
-            writeStream.on(`close`, () => {
-              resolve();
-            });
+              writeStream.on(`close`, () => {
+                resolve();
+              });
 
-            file
-              .nodeStream()
-              .pipe(writeStream);
-          }));
+              file.nodeStream().pipe(writeStream);
+            })
+          );
         }
-
       });
 
       return Promise.all(filesWritten);
-
-    })
+    });
   }
 
   // manifest() {
@@ -71,18 +65,18 @@ class ZipPackage {
   //   });
   // }
 
-  static __defineManifest({
-    name,
-    version
-  }) {
-    return {
-      version,
-      name
-    };
-  }
+  // static __defineManifest({
+  //   name,
+  //   version
+  // }) {
+  //   return {
+  //     version,
+  //     name
+  //   };
+  // }
 
   static build(zipBinary) {
-    return (new ZipPackage()).load(zipBinary);
+    return new ZipPackage().load(zipBinary);
   }
 }
 

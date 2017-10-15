@@ -4,9 +4,7 @@ const GitIO = require('../io/git');
 const WebIO = require('../io/web');
 const _ = require('lodash');
 
-const {
-  configuration
-} = require('../core/configuration');
+const { configuration } = require('../core/configuration');
 
 const Discover = {
   IS_EXTENSION: /\.(?:zip|tar|gz|tar\.gz)$/i,
@@ -18,14 +16,11 @@ const Discover = {
  *
  */
 class IOStrategy {
-
   /**
    * @param {String} uri uri for resource
    * @return {IO} the IO if the uri passes, if the uri does not match then NullIO is returned
    */
-  static of ({
-    uri
-  }) {
+  static of({ uri }) {
     const ofLocal = IOStrategy.__ofLocal(uri);
     const ofNull = IOStrategy.__ofNull(uri);
     const ofWeb = IOStrategy.__ofWeb(uri);
@@ -43,7 +38,7 @@ class IOStrategy {
     const isNotURLBySignature = uri.match(Discover.IS_URL) === null;
     const isLocal = isNotURLBySignature;
 
-    return (isLocal) ? LocalIO : undefined;
+    return isLocal ? LocalIO : undefined;
   }
 
   /**
@@ -55,7 +50,7 @@ class IOStrategy {
     const isURLBySignature = uri.match(Discover.IS_URL) !== null;
     const isWeb = isFileByExtension && isURLBySignature;
 
-    return (isWeb) ? WebIO : undefined;
+    return isWeb ? WebIO : undefined;
   }
 
   /**
@@ -67,7 +62,7 @@ class IOStrategy {
     const isURLBySignature = uri.match(Discover.IS_URL) !== null;
     const isGit = isGitByExtension && isURLBySignature;
 
-    return (isGit) ? GitIO : undefined;
+    return isGit ? GitIO : undefined;
   }
 
   /**
@@ -77,7 +72,6 @@ class IOStrategy {
   static __ofNull(uri) {
     return NullIO;
   }
-
 }
 
 module.exports = IOStrategy;

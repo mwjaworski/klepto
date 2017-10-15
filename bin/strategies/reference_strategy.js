@@ -3,9 +3,7 @@ const IOStrategy = require('./io_strategy');
 const path = require('path');
 const _ = require('lodash');
 
-const {
-  configuration
-} = require('../core/configuration');
+const { configuration } = require('../core/configuration');
 
 const Discover = {
   IS_SCOPE: /^@/i,
@@ -22,7 +20,6 @@ const Discover = {
  * "uri#version addendum" ===> { url, addendum, version }
  */
 class ReferenceStrategy {
-
   /**
    *
    * folder#1.2.3 res  => folder#1.2.3 res
@@ -32,15 +29,11 @@ class ReferenceStrategy {
    * @param { reference, addendum } reference
    * @return "reference addendum"
    */
-  static normalizeReference({
-    reference,
-    addendum
-  }) {
+  static normalizeReference({ reference, addendum }) {
     return _.trimEnd(`${reference} ${addendum || ''}`);
   }
 
   static scopeToResource(scope) {
-
     const isNotScope = !scope.match(Discover.IS_SCOPE);
     if (isNotScope) {
       return scope;
@@ -80,10 +73,10 @@ class ReferenceStrategy {
     const hasGroup = _.size(aspects) > 2;
 
     return {
-      resource: _.nth(aspects, (hasGroup) ? 1 : 2),
-      group: (hasGroup) ? _.nth(aspects, 1) : ``,
+      resource: _.nth(aspects, hasGroup ? 1 : 2),
+      group: hasGroup ? _.nth(aspects, 1) : ``,
       source: _.nth(aspects, 0)
-    }
+    };
   }
 
   static resourceToSpecifier(resource) {
@@ -96,7 +89,6 @@ class ReferenceStrategy {
       uri
     };
   }
-
 }
 
 module.exports = ReferenceStrategy;

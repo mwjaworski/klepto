@@ -6,19 +6,16 @@ const variableValueTable = new Table({
 });
 
 class AuditLog {
-
   static variableValue(body) {
-    const table = (_.isArray(body)) ? body : _.toPairs(body);
+    const table = _.isArray(body) ? body : _.toPairs(body);
 
-    _.each(table, (row) => {
-      row[1] = (_.isNil(row[1])) ? `` : row[1];
+    _.each(table, row => {
+      row[1] = _.isNil(row[1]) ? `` : row[1];
       variableValueTable.push(row);
     });
 
     return variableValueTable.toString();
   }
-
 }
-
 
 module.exports = AuditLog;

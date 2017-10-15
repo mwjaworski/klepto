@@ -1,4 +1,3 @@
-const { configuration } = require('./configuration');
 const _ = require('lodash');
 
 module.exports = {

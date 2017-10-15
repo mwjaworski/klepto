@@ -12,7 +12,6 @@ const ResponseTypeStrategy = {
 };
 
 class WebIO {
-
   static sendToCache({ uri }) {
     const extension = path.extname(uri);
     const file = path.basename(uri, extension);
@@ -28,21 +27,14 @@ class WebIO {
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.7; rv:22.0) Gecko/20100101 Firefox/22.0',
         'X-Requested-With': 'XMLHttpRequest'
       }
-    }).then((response) => {
-
-      return fileSystem
-        .write(writePath, response.data)
-        .then(() => {
-          return {
-            writePath
-          };
-        });
-
+    }).then(response => {
+      return fileSystem.write(writePath, response.data).then(() => {
+        return {
+          writePath
+        };
+      });
     });
-
   }
 }
 
 module.exports = WebIO;
-
-

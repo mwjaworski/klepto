@@ -3,14 +3,9 @@ const _ = require('lodash');
 const fs = require('fs');
 
 class FolderPackage {
+  constructor() {}
 
-  constructor() {
-
-  }
-
-  sendToStaging(packagePath) {
-
-  }
+  sendToStaging(packagePath) {}
 
   load() {
     return this;
@@ -36,7 +31,7 @@ class FolderPackage {
   // }
 
   static build() {
-    return (new FolderPackage());
+    return new FolderPackage();
   }
 }
 

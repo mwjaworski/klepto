@@ -1,5 +1,3 @@
-const { configuration } = require(`../core/configuration`);
-
 module.exports = {
   registerVorpalCommand: (vorpal, configuration) => {
     return vorpal

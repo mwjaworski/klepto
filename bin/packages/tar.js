@@ -1,11 +1,9 @@
-
 const UNKNOWN_MANIFEST = {
   version: `0.0.0`,
   name: `unknown`
 };
 
 class TarPackage {
-
   load() {
     return this;
   }

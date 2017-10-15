@@ -1,11 +1,4 @@
-const {
-  configuration
-} = require(`../core/configuration`);
-const clc = require('cli-color');
-const path = require('path');
-const _ = require('lodash');
-const fs = require('fs');
-
+const fs = require('fs-extra');
 
 const ReferenceStrategy = require(`../strategies/reference_strategy`);
 const PackageStrategy = require(`../strategies/package_strategy`);
@@ -21,11 +14,10 @@ module.exports = {
       .alias(`c`)
       .option('-a, --audit', `Inspect the tools selected for a reference`)
       .description(`Download a component package.`)
-      .validate(function (args) {
+      .validate(function(args) {
         return true;
       })
       .action((args, done) => {
-
         const scopeOrResource = ReferenceStrategy.normalizeReference(args);
         const resource = ReferenceStrategy.scopeToResource(scopeOrResource);
         const specifier = ReferenceStrategy.resourceToSpecifier(resource);
@@ -33,52 +25,45 @@ module.exports = {
         const IOTool = IOStrategy.of(specifier);
         const PackageTool = PackageStrategy.of(specifier);
 
-
         if (args.options.audit) {
-          vorpal.log(AuditLog.variableValue({
-            uri: specifier.uri,
-            version: specifier.version,
-            io: IOTool.name,
-            package: PackageTool.name
-          }));
+          vorpal.log(
+            AuditLog.variableValue({
+              uri: specifier.uri,
+              version: specifier.version,
+              io: IOTool.name,
+              package: PackageTool.name
+            })
+          );
 
           return done();
         }
 
-
         FileSystem.makeDirectory(`.bauble/cache/`);
 
-        IOTool
-          .sendToCache(specifier)
-          .catch((o) => {
+        IOTool.sendToCache(specifier)
+          .catch(o => {
             vorpal.log(o);
           })
-          .then(({
-            writePath
-          }) => {
-
+          .then(({ writePath }) => {
             vorpal.log(`path: ${writePath}`);
 
-            PackageTool
-              .sendToStaging(writePath)
+            PackageTool.sendToStaging(writePath);
 
-          //   FileSystem
-          //     .read(writePath)
-          //     .catch((err) => {
-          //       vorpal.log(err.reason);
-          //     })
-          //     .then((binaryData) => {
+            //   FileSystem
+            //     .read(writePath)
+            //     .catch((err) => {
+            //       vorpal.log(err.reason);
+            //     })
+            //     .then((binaryData) => {
 
-          //       fileTypePackage
-          //         .build(binaryData)
-          //         .extract()
-          //         .then(() => {
-          //           done();
-          //         });
-          //     });
-
+            //       fileTypePackage
+            //         .build(binaryData)
+            //         .extract()
+            //         .then(() => {
+            //           done();
+            //         });
+            //     });
           });
-
       });
   }
 };

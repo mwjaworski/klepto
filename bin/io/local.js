@@ -1,21 +1,11 @@
-const fs = require('fs.extra');
+const fs = require('fs-extra');
 const path = require('path');
 const _ = require('lodash');
 
-
-const fileSystem = require('../support/file_system');
-const {
-  configuration
-} = require(`../core/configuration`);
-
 class LocalIO {
-
   // TODO if we provide a file:// prefix then we have to tear it off
   static sendToCache(specifier) {
-    const {
-      uri,
-      addendum
-    } = specifier;
+    const { uri, addendum } = specifier;
     const relativePath = _.trimEnd(`${uri}${addendum || ''}`);
     const extSpecifier = {
       extension: path.extname(relativePath),
@@ -29,13 +19,7 @@ class LocalIO {
     }
   }
 
-  static __sendToCacheZip({
-    uri,
-    addendum
-  }, {
-    extension,
-    relativePath
-  }) {
+  static __sendToCacheZip({ uri, addendum }, { extension, relativePath }) {
     const zipFile = path.basename(relativePath, extension);
     const writePath = `.bauble/cache/${zipFile}${extension}`;
 
@@ -43,28 +27,25 @@ class LocalIO {
       fs
         .createReadStream(relativePath)
         .pipe(fs.createWriteStream(writePath))
-        .on(`error`, (reason) => reject({
-          reason
-        }))
-        .on(`close`, () => resolve({
-          writePath
-        }))
+        .on(`error`, reason =>
+          reject({
+            reason
+          })
+        )
+        .on(`close`, () =>
+          resolve({
+            writePath
+          })
+        )
         .end();
     });
   }
 
-  static __sendToCacheFolder({
-    uri,
-    addendum
-  }, {
-    extension,
-    relativePath
-  }) {
-
+  static __sendToCacheFolder({ uri, addendum }, { extension, relativePath }) {
     return new Promise((resolve, reject) => {
       const writePath = `.bauble/cache/${path.basename(uri)}`;
 
-      fs.copyRecursive(relativePath, writePath, (err) => {
+      fs.copy(relativePath, writePath, err => {
         if (err) {
           reject({
             reason: err
