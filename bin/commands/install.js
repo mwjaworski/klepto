@@ -38,8 +38,8 @@ module.exports = {
           }
 
           return stageArchiveAction(archiveRequest)
-            .then(({ stagingPath }) => {
-              return promoteArchiveAction(specifier, stagingPath)
+            .then(() => {
+              return promoteArchiveAction(specifier)
                 .then(() => {
                   done()
                 })

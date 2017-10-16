@@ -15,11 +15,10 @@ class ZipPackage {
   }
 
   // TODO configuration should be set and all code reviewed
-  static __extractZip (binaryData, { archive }, msg) {
+  static __extractZip (binaryData, { stagingPath, archive }, msg) {
     return JSZip
       .loadAsync(binaryData)
       .then(function (zip) {
-        const stagingPath = `${paths.staging}/${archive}`
         const filesWritten = []
 
         zip.forEach((relativePath, file) => {
@@ -52,9 +51,7 @@ class ZipPackage {
         return Promise
           .all(filesWritten)
           .then(() => {
-            return {
-              stagingPath
-            }
+            return {}
           })
       })
   }

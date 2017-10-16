@@ -6,12 +6,11 @@ const _ = require('lodash')
 
 // TODO cache works on one archive at a time, try `all` for every package? or *
 
-module.exports = (specifier, stagingPath) => {
+module.exports = (specifier) => {
   const configurationJson = PackageSystem.selectConfiguration()
   const paths = configuration.get(`paths`)
-  const archivePath = `${paths.archives}/${specifier.archive}/`
 
   return FileSystem
     .makeDirectory(`${paths.archives}/`)
-    .copyNonIgnoredFiles(stagingPath, archivePath, _.get(configurationJson, `ignore`, []))
+    .copyNonIgnoredFiles(specifier.stagingPath, specifier.archivePath, _.get(configurationJson, `ignore`, []))
 }

@@ -2,9 +2,7 @@ const IOStrategy = require('./io_strategy')
 const path = require('path')
 const _ = require('lodash')
 
-const {
-  configuration
-} = require('../core/configuration')
+const { configuration } = require('../core/configuration')
 
 const Discover = {
   IS_SCOPE: /^@/i,
@@ -95,14 +93,21 @@ class ReferenceStrategy {
   }
 
   static resourceToSpecifier (resource) {
+    const paths = configuration.get(`paths`)
+
     const [reference, addendum] = resource.split(` `)
     const [uri, version] = reference.split(`#`)
     const archive = this.__findComponent(uri, addendum)
 
+    const archivePath = `${paths.archives}/${archive}/`
+    const stagingPath = `${paths.staging}/${archive}/`
+
     return {
       version: version || `master`,
-      archive,
+      stagingPath,
+      archivePath,
       addendum,
+      archive,
       uri
     }
   }

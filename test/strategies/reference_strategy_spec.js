@@ -2,11 +2,14 @@
 
 const test = require('ava')
 const ReferenceStrategy = require('../../bin/strategies/reference_strategy')
+const { configuration } = require(`../../bin/core/configuration`)
 
 test.cb('strategy: reference (folder)', t => {
-  t.plan(4)
+  t.plan(6)
 
   const {
+    stagingPath,
+    archivePath,
     addendum,
     version,
     archive,
@@ -17,6 +20,9 @@ test.cb('strategy: reference (folder)', t => {
   t.is(version, `master`, `version defaults to master`)
   t.is(archive, `sub_folder`, `the archive is the last folder name`)
   t.is(uri, `../folder/`, `uri is the base path to the resource and needs the addendum to resolve the full path`)
+
+  t.is(stagingPath, `${configuration.get('paths.staging')}/${archive}/`, `staging path is the archive name in staging folder`)
+  t.is(archivePath, `${configuration.get('paths.archives')}/${archive}/`, `archive path is the archive name in staging folder`)
 
   t.end()
 })
