@@ -6,9 +6,10 @@ const vorpal = require('vorpal')()
 // register all commands available to vorpal
 //
 //
-require('./commands/version').registerVorpalCommand(vorpal, configuration)
 require('./commands/cache').registerVorpalCommand(vorpal, configuration)
-require('./commands/audit').registerVorpalCommand(vorpal, configuration)
+require('./commands/install').registerVorpalCommand(vorpal, configuration)
+require('./commands/status').registerVorpalCommand(vorpal, configuration)
+require('./commands/version').registerVorpalCommand(vorpal, configuration)
 
 // vorpal must parse arguments after all commands are registered
 //

@@ -60,15 +60,15 @@ bauble [command] <options>
 
 ## Commands
 
-| Command       | Status| Purpose
-|:--------------|:------|:-----------------------------------------
-| `version`     | [x]   | Write the current version
-| `cache`       | [x]   | Install a component(s) to local cache
-| `uncache`     | [ ]   | Remove a component from local cache
-| `install`     | [ ]   | Install a component(s) to the project
-| `uninstall`   | [ ]   | Remove a component to the project
-| `resolve`     | [ ]   | Report on component version and access
-| `status`      | [ ]   | Write a summary of the projects component rules
+| Command       | Purpose
+|:--------------|:-----------------------------------------
+| `version`     | Write the current version
+| `cache`       | Install a component(s) to local cache
+| `uncache`     | Remove a component from local cache
+| `install`     | Install a component(s) to the project
+| `uninstall`   | Remove a component to the project
+| `resolve`     | Report on component version and access
+| `status`      | Write a summary of the projects component rules
 
 ## OPEN Statuc
 
