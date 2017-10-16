@@ -42,7 +42,8 @@
     "validate": "node_modules/.bin/standard --fix bin/**/*.js test/**/*.js",
     "test": "node_modules/.bin/ava --timeout=3s test/**/*.js",
     "coverage": "./node_modules/.bin/nyc npm run test",
-    "coveralls": "npm run coverage"
+    "coveralls": "./node_modules/.bin/nyc npm run test; node_modules/.bin/coveralls < coverage/lcov.info",
+    "postcoveralls": "rm -Rf ./coverage"
   },
   "dependencies": {
     "axios": "^0.16.2",
@@ -59,6 +60,7 @@
   },
   "devDependencies": {
     "ava": "0.22.0",
+    "coveralls": "*",
     "nyc": "^11.2.1",
     "standard": "^10.0.3"
   },
@@ -86,6 +88,6 @@
     ],
     "cache": true,
     "all": true,
-    "report-dir": "./reports/coverage"
+    "report-dir": "./coverage"
   }
 }
