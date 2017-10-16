@@ -1,8 +1,5 @@
-const ReferenceStrategy = require(`../strategies/reference_strategy`)
-const PackageStrategy = require(`../strategies/package_strategy`)
-const IOStrategy = require(`../strategies/io_strategy`)
-
-const FileSystem = require('../support/file_system')
+const createArchiveRequestAction = require('../actions/create_archive_request_action');
+const stageArchiveAction = require('../actions/stage_archive_action');
 const AuditLog = require('../support/audit_log')
 
 module.exports = {
@@ -11,47 +8,45 @@ module.exports = {
       .command(`cache <reference> [addendum]`)
       .alias(`c`)
       .option('-a, --audit', `Inspect the tools selected for a reference`)
-      .description(`Download a component package.`)
+      .description(`Download a archive.`)
       .validate(function (args) {
         return true
       })
       .action((args, done) => {
-        const paths = configuration.get(`paths`)
-        // TODO cache works on one component at a time, try `all` for every component? or *
 
-        const specifier = ReferenceStrategy.referenceToSpecifier(args)
-        const PackageTool = PackageStrategy.of(specifier)
-        const IOTool = IOStrategy.of(specifier)
+        // TODO cache works on one archive at a time, try `all` for every package? or *
 
-        if (args.options.audit) {
-          vorpal.log(
-            AuditLog.variableValue({
-              uri: specifier.uri,
-              version: specifier.version,
-              component: specifier.component,
-              io: IOTool.name,
-              package: PackageTool.name
-            })
-          )
-
-          return done()
-        }
-
-        FileSystem.makeDirectory(`${paths.staging}/${specifier.component}/`)
-        FileSystem.makeDirectory(`${paths.cache}/`)
-
-        IOTool
-          .sendToCache(specifier)
+        createArchiveRequestAction(args)
           .catch(err => {
             vorpal.log(err.toString())
           })
-          .then(({ cachePath }) => {
-            return PackageTool
-              .sendToStaging(specifier, cachePath)
-              .then(() => {
-                done()
+          .then((archiveRequest) => {
+            const { specifier, IOTool, PackageTool } = archiveRequest
+
+            if (args.options.audit) {
+              vorpal.log(
+                AuditLog.variableValue({
+                  uri: specifier.uri,
+                  version: specifier.version,
+                  archive: specifier.archive,
+                  io: IOTool.name,
+                  package: PackageTool.name
+                })
+              )
+
+              return done()
+            }
+
+            stageArchiveAction(archiveRequest)
+              .catch(err => {
+                vorpal.log(err.toString())
               })
+              .then(() => {
+                done();
+              })
+
           })
+
       })
   }
 }

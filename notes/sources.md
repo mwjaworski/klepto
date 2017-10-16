@@ -86,12 +86,12 @@ D. local + folder/zip  a/b/c/ folder/file.zip 1.2.3
 E. local + zip         a/b/c/folder/file.zip 1.2.3
 F. local + folder      a/b/c/ 1.2.3
 
-A. node bin/index.js cache --audit http://phoenix.eab.com/projects/core-ply-brand_3.8.0.zip 1.2.3
-B. node bin/index.js cache --audit https://repo.advisory.com/scm/~jaworskm/test-test.git core-ply-brand_3.8.0.zip 1.2.3
-C. node bin/index.js cache --audit https://repo.advisory.com/scm/~jaworskm/test-test.git 1.2.3
-D. node bin/index.js cache --audit ../ bower-alternative-source-resolver.zip 1.2.3
-E. node bin/index.js cache --audit ../bower-alternative-source-resolver.zip 1.2.3
-F. node bin/index.js cache --audit ../test  1.2.3
+A. node bin/index.js cache  http://phoenix.eab.com/projects/core-ply-brand_3.8.0.zip#1.2.3
+B. node bin/index.js cache  https://repo.advisory.com/scm/~jaworskm/test-test.git#1.2.3 core-ply-brand_3.8.0.zip
+C. node bin/index.js cache  https://repo.advisory.com/scm/~jaworskm/test-test.git 1.2.3
+D. node bin/index.js cache  ../ bower-alternative-source-resolver.zip 1.2.3
+E. node bin/index.js cache  ../bower-alternative-source-resolver.zip 1.2.3
+F. node bin/index.js cache  ../test  1.2.3
 
 A. cache (zip)          staging (folder)    component (folder-refined)    DONE
 B. cache (folder/zip)   staging (folder)    component (folder-refined)    ----

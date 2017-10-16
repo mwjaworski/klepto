@@ -22,8 +22,8 @@ const Discover = {
  * "uri#version addendum" ===> { url, addendum, version }
  */
 class ReferenceStrategy {
-  static referenceToSpecifier (reference) {
-    const scopeOrResource = this.normalizeReference(reference)
+  static referenceToSpecifier (reference, addendum) {
+    const scopeOrResource = this.normalizeReference(reference, addendum)
     const resource = this.scopeToResource(scopeOrResource)
     const specifier = this.resourceToSpecifier(resource)
 
@@ -39,7 +39,7 @@ class ReferenceStrategy {
    * @param { reference, addendum } reference
    * @return "reference addendum"
    */
-  static normalizeReference ({ reference, addendum }) {
+  static normalizeReference (reference, addendum) {
     return _.trimEnd(`${reference || ''} ${addendum || ''}`)
   }
 
@@ -92,11 +92,11 @@ class ReferenceStrategy {
   static resourceToSpecifier (resource) {
     const [reference, addendum] = resource.split(` `)
     const [uri, version] = reference.split(`#`)
-    const component = this.__findComponent(reference, addendum)
+    const archive = this.__findComponent(uri, addendum)
 
     return {
       version: version || `master`,
-      component,
+      archive,
       addendum,
       uri
     }
@@ -106,9 +106,9 @@ class ReferenceStrategy {
     const fullURI = `${reference || ''}/${addendum || ''}`
     const lastAspect = _.last(_.compact(fullURI.split(path.sep || `/`)))
     const extractZipName = Discover.COMPONENT_NAME.exec(lastAspect)
-    const componentName = (extractZipName) ? _.last(extractZipName) : lastAspect
+    const archiveName = (extractZipName) ? _.last(extractZipName) : lastAspect
 
-    return componentName
+    return archiveName
   }
 }
 

@@ -15,21 +15,21 @@ class ZipPackage {
   }
 
   // TODO configuration should be set and all code reviewed
-  static __extractZip (binaryData, { component }, msg) {
+  static __extractZip (binaryData, { archive }, msg) {
     return JSZip
     .loadAsync(binaryData)
     .then(function (zip) {
       const filesWritten = []
 
       zip.forEach((relativePath, file) => {
-        const componentPrefix = `${component}`;
+        const archivePrefix = `${archive}`;
 
-        if (relativePath.indexOf(componentPrefix) >= 0) {
-          relativePath = relativePath.substr(`${componentPrefix}/`.length)
+        if (relativePath.indexOf(archivePrefix) >= 0) {
+          relativePath = relativePath.substr(`${archivePrefix}/`.length)
         }
 
         const isFolder = relativePath.lastIndexOf(`/`) === relativePath.length - 1
-        const stagingPath = `${paths.staging}/${component}/${relativePath}`
+        const stagingPath = `${paths.staging}/${archive}/${relativePath}`
 
         if (isFolder) {
           FileSystem.makeDirectory(stagingPath)

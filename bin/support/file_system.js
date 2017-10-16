@@ -28,6 +28,8 @@ class FileSystem {
 
   static write (path, data, streamOptions = { encoding: `binary` }) {
     return new Promise((resolve, reject) => {
+      const { folder } = this.explodePath(path)
+
       this.makeDirectory(folder)
 
       const writer = fs.createWriteStream(this.readPath(path), streamOptions)
