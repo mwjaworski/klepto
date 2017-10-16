@@ -1,5 +1,5 @@
-const createArchiveRequestAction = require('../actions/create_archive_request_action');
-const stageArchiveAction = require('../actions/stage_archive_action');
+const createArchiveRequestAction = require('../actions/create_archive_request_action')
+const stageArchiveAction = require('../actions/stage_archive_action')
 const AuditLog = require('../support/audit_log')
 
 module.exports = {
@@ -13,7 +13,6 @@ module.exports = {
         return true
       })
       .action((args, done) => {
-
         // TODO cache works on one archive at a time, try `all` for every package? or *
 
         createArchiveRequestAction(args)
@@ -23,6 +22,7 @@ module.exports = {
           .then((archiveRequest) => {
             const { specifier, IOTool, PackageTool } = archiveRequest
 
+            // TODO evaluate how useful audit is and how it works with a full install
             if (args.options.audit) {
               vorpal.log(
                 AuditLog.variableValue({
@@ -42,11 +42,9 @@ module.exports = {
                 vorpal.log(err.toString())
               })
               .then(() => {
-                done();
+                done()
               })
-
           })
-
       })
   }
 }

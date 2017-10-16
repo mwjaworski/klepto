@@ -1,5 +1,4 @@
 const FileSystem = require('../support/file_system')
-const fs = require('fs-extra')
 const tar = require('tar')
 
 const { configuration } = require('../core/configuration')
@@ -17,7 +16,6 @@ class TarPackage {
       })
     })
   }
-
 }
 
 module.exports = TarPackage
