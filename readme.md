@@ -3,6 +3,7 @@
 [![Build Status](https://img.shields.io/badge/bauble-available-green.svg)](https://www.npmjs.com/package/bauble)
 [![Build Status](https://travis-ci.org/mwjaworski/bauble.svg?branch=docs-and-testing)](https://travis-ci.org/mwjaworski/bauble)
 [![Coverage Status](https://coveralls.io/repos/github/mwjaworski/bauble/badge.svg?branch=master)](https://coveralls.io/github/mwjaworski/bauble?branch=master)
+[![npm version](https://badge.fury.io/js/bauble.svg)](https://badge.fury.io/js/bauble)
 
 > The do-it-yourself package manager
 
