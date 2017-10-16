@@ -2,12 +2,12 @@ const { configuration } = require('../core/configuration')
 const fs = require('fs-extra')
 
 class PackageSystem {
-  static selectConfiguration () {
+  static selectConfiguration (stagingPath) {
     const priority = configuration.get(`rules.configurationPriority`)
 
     let json
     for (const file of priority) {
-      json = fs.readJsonSync(file, {
+      json = fs.readJsonSync(`${stagingPath}/${file}`, {
         throws: false
       })
 

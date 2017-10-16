@@ -8,6 +8,7 @@ const Discover = {
   IS_SCOPE: /^@/i,
   IS_VERSION: /^[~^]?\d{1,2}\.\d{1,2}\.\d{1,2}$/i,
   COMPONENT_NAME: /([a-z0-9-]*).*?\.(?:zip|tar|tgz|gz|tar\.gz)?$/i,
+  FULL_COMPONENT_NAME: /(.*?)\.(?:zip|tar|tgz|gz|tar\.gz)?$/i,
   DUPLICATE_SEPERATOR: new RegExp(`${path.sep}+`, `g`)
 }
 
@@ -97,28 +98,38 @@ class ReferenceStrategy {
 
     const [reference, addendum] = resource.split(` `)
     const [uri, version] = reference.split(`#`)
-    const archive = this.__findComponent(uri, addendum)
+    const fullURI = `${reference || ''}/${addendum || ''}`
+    const fullFolderURI = this.__findPathAspect(fullURI, Discover.FULL_COMPONENT_NAME)
+    const archive = this.__findPathAspect(fullURI, Discover.COMPONENT_NAME)
 
-    const archivePath = `${paths.archives}/${archive}/`
-    const stagingPath = `${paths.staging}/${archive}/`
+    const stagingPath = `${paths.staging}/${fullFolderURI}/`
 
     return {
       version: version || `master`,
       stagingPath,
-      archivePath,
       addendum,
       archive,
       uri
     }
   }
 
-  static __findComponent (reference, addendum) {
-    const fullURI = `${reference || ''}/${addendum || ''}`
+  static __findPathAspect (fullURI, regexFind) {
     const lastAspect = _.last(_.compact(fullURI.split(path.sep || `/`)))
-    const extractZipName = Discover.COMPONENT_NAME.exec(lastAspect)
-    const archiveName = (extractZipName) ? _.last(extractZipName) : lastAspect
+    const extractZipName = regexFind.exec(lastAspect)
+    const pathAspect = (extractZipName) ? _.last(extractZipName) : lastAspect
 
-    return archiveName
+    return pathAspect
+  }
+
+  static buildArchivePath (specifier, archiveManifest) {
+    const paths = configuration.get(`paths`)
+    const archiveName = (archiveManifest.name) ? archiveManifest.name : specifier.name
+
+    return `${paths.archives}/${archiveName}/`
+  }
+
+  static buildStagingPath (specifier) {
+    return specifier.stagingPath
   }
 }
 

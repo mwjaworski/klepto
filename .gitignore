@@ -8,7 +8,7 @@
 .idea/
 .vscode/
 .nyc_output/
-.packages/
+.archives/
 
 /vendor/
 /node_modules/

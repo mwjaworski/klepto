@@ -2,9 +2,6 @@ const FileSystem = require('../support/file_system')
 const JSZip = require('jszip')
 const fs = require('fs-extra')
 
-const { configuration } = require('../core/configuration')
-const paths = configuration.get(`paths`)
-
 class ZipPackage {
   static sendToStaging (specifier, cachePath) {
     return FileSystem
