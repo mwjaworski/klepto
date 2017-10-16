@@ -2,8 +2,7 @@ const { configuration } = require('../core/configuration')
 const fs = require('fs-extra')
 
 class PackageSystem {
-
-  static selectConfiguration() {
+  static selectConfiguration () {
     const priority = configuration.get(`rules.configurationPriority`)
 
     let json
@@ -19,7 +18,6 @@ class PackageSystem {
 
     return json
   }
-
 }
 
 module.exports = PackageSystem

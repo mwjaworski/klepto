@@ -11,11 +11,7 @@ module.exports = (specifier, stagingPath) => {
   const paths = configuration.get(`paths`)
   const archivePath = `${paths.archives}/${specifier.archive}/`
 
-  FileSystem
+  return FileSystem
     .makeDirectory(`${paths.archives}/`)
     .copyNonIgnoredFiles(stagingPath, archivePath, _.get(configurationJson, `ignore`, []))
-    .then(() => {
-      done()
-    })
-
 }
