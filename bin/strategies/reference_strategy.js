@@ -9,7 +9,8 @@ const {
 const Discover = {
   IS_SCOPE: /^@/i,
   IS_VERSION: /^[~^]?\d{1,2}\.\d{1,2}\.\d{1,2}$/i,
-  COMPONENT_NAME: /([a-z0-9-]*).*?\.(?:zip|tar|tgz|gz|tar\.gz)?$/i
+  COMPONENT_NAME: /([a-z0-9-]*).*?\.(?:zip|tar|tgz|gz|tar\.gz)?$/i,
+  DUPLICATE_SEPERATOR: new RegExp(`${path.sep}+`, `g`)
 }
 
 /**
@@ -40,7 +41,11 @@ class ReferenceStrategy {
    * @return "reference addendum"
    */
   static normalizeReference (reference, addendum) {
-    return _.trimEnd(`${reference || ''} ${addendum || ''}`)
+    addendum = _.trimStart(addendum || '', path.sep)
+    reference = reference || ''
+
+    return _.trimEnd(`${reference} ${addendum}`)
+      .replace(Discover.DUPLICATE_SEPERATOR, path.sep)
   }
 
   static scopeToResource (scope) {

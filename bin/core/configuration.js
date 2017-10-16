@@ -10,8 +10,8 @@ const configuration = convict({
     format: `*`
   },
   paths: {
-    staging: `.packages/staging`,
-    cache: `.packages/cache`,
+    staging: `.archives/staging`,
+    cache: `.archives/cache`,
     archives: `./archives`
   },
   rules: {

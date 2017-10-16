@@ -106,3 +106,9 @@ node bin/index.js cache  ../link-talk
 node bin/index.js cache
 
 node bin/index.js cache  https://github.com/advisory/phoenix/blob/master/ui-ply-input_3.8.0.zip?raw=true
+
+
+https://github.com/advisory/phoenix/ ui-ply-input_3.8.0.zip
+
+bauble cache https://github.com/advisory/phoenix.git ui-ply-input_3.8.0.zip
+bauble install https://github.com/advisory/phoenix.git ui-ply-input_3.8.0.zip

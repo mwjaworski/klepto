@@ -8,7 +8,7 @@ module.exports = {
     const applicationHandle = `${package.name}-${majorVersion}`
 
     vorpal
-      .delimiter(`::}`)
+      .delimiter(`>> `)
       .history(applicationHandle)
       .localStorage(applicationHandle)
 

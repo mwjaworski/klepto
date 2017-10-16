@@ -1,5 +1,10 @@
 # Bauble Changelog
 
+## 0.2.2
+
+- REFACTORED command prompt in interactive mode in Vorpal
+-
+
 ## 0.2.1
 
 - FIXED `version` always shows the correct version
