@@ -42,7 +42,7 @@
     "validate": "node_modules/.bin/standard --fix bin/**/*.js test/**/*.js",
     "test": "node_modules/.bin/ava --timeout=3s test/**/*.js",
     "coverage": "./node_modules/.bin/nyc npm run test",
-    "coveralls": "npm run coverage && node_modules/.bin/coveralls < coverage/lcov.info",
+    "coveralls": "./node_modules/.bin/nyc npm run test; node_modules/.bin/coveralls < coverage/lcov.info",
     "postcoveralls": "rm -Rf ./coverage"
   },
   "dependencies": {
