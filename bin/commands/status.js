@@ -1,9 +1,9 @@
 module.exports = {
   registerVorpalCommand: (vorpal, configuration) => {
     return vorpal
-      .command(`audit`)
-      .alias(`a`)
-      .description(`Audit internal rules.`)
+      .command(`status`)
+      .alias(`s`)
+      .description(`Review internal settings.`)
       .validate(function (args) {
         return true
       })

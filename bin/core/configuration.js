@@ -17,14 +17,22 @@ const configuration = convict({
     }
   },
   sources: {
-    doc: `sources to search for components`,
+    doc: `sources to search for archives`,
     sensitive: true,
     format: `*`
   },
   paths: {
     staging: `.packages/staging`,
     cache: `.packages/cache`,
-    components: `./components`
+    archives: `./archives`
+  },
+  rules: {
+    configurationPriority: [
+      `bower.json`,
+      `package.json`,
+      `component.json`,
+      `bauble.json`
+    ]
   }
 })
 

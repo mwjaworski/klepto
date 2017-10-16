@@ -1,6 +1,6 @@
-const FolderPackage = require('../packages/folder')
-const ZipPackage = require('../packages/zip')
-const TarPackage = require('../packages/tar')
+const FolderPackage = require('../packages/folder_package')
+const ZipPackage = require('../packages/zip_package')
+const TarPackage = require('../packages/tar_package')
 const _ = require('lodash')
 
 const Discover = {
