@@ -1,6 +1,13 @@
 const createArchiveRequestAction = require('../actions/create_archive_request_action')
+const promoteArchiveAction = require('../actions/promote_archive_action')
 const stageArchiveAction = require('../actions/stage_archive_action')
+
+const PackageSystem = require('../support/package_system')
+const FileSystem = require('../support/file_system')
 const AuditLog = require('../support/audit_log')
+
+const fs = require('fs-extra')
+const _ = require('lodash')
 
 module.exports = {
   registerVorpalCommand: (vorpal, configuration) => {
@@ -35,12 +42,12 @@ module.exports = {
             return done()
           }
 
-          stageArchiveAction(archiveRequest)
-            .catch(err => {
-              vorpal.log(err.toString())
-            })
-            .then(() => {
-              done()
+          return stageArchiveAction(archiveRequest)
+            .then(({ stagingPath }) => {
+              return promoteArchiveAction(specifier, stagingPath)
+                .then(() => {
+                  done()
+                })
             })
         })
       })

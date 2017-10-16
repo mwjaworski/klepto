@@ -25,6 +25,14 @@ const configuration = convict({
     staging: `.packages/staging`,
     cache: `.packages/cache`,
     archives: `./archives`
+  },
+  rules: {
+    configurationPriority: [
+      `bower.json`,
+      `package.json`,
+      `component.json`,
+      `bauble.json`
+    ]
   }
 })
 

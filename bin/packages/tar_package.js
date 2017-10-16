@@ -7,12 +7,18 @@ const paths = configuration.get(`paths`)
 class TarPackage {
   static sendToStaging (specifier, cachePath) {
     return new Promise((resolve, reject) => {
+      const stagingPath = `${paths.staging}/${specifier.archive}/`
+
       return tar.extract({
-        cwd: `${paths.staging}/${specifier.archive}/`,
+        cwd: stagingPath,
         file: FileSystem.readPath(cachePath),
         preserveOwner: false,
         unlink: true,
         strip: 1
+      }).then(() => {
+        return {
+          stagingPath
+        }
       })
     })
   }

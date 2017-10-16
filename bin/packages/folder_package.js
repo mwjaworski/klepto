@@ -12,7 +12,9 @@ class FolderPackage {
         if (err) {
           reject(new Error(err))
         } else {
-          resolve()
+          resolve({
+            stagingPath
+          })
         }
       })
     })

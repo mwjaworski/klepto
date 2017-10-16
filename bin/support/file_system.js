@@ -1,8 +1,31 @@
+const { configuration } = require('../core/configuration')
+const mm = require('micromatch')
+const fs = require('fs-extra')
 const path = require('path')
 const _ = require('lodash')
-const fs = require('fs-extra')
 
 class FileSystem {
+
+  /**
+   *
+   * @param {String} from read from folder
+   * @param {String} to write to folder
+   * @param {Array<String>} ignoredFolders folders to ignore with micromatch
+   */
+  static copyNonIgnoredFiles(from, to, ignoredFolders) {
+    const copyOptions = {
+      filter: (source, destination) => {
+        const relativePath = _.last(source.split(from))
+        const filesFoldersIgnored = mm([relativePath], ignoredFolders)
+        const anyAreIgnored = filesFoldersIgnored.length <= 0
+
+        return anyAreIgnored
+      }
+    }
+
+    return fs.copy(from, to, copyOptions)
+  }
+
   /**
    *
    * @param {*} directoryPath
@@ -24,6 +47,8 @@ class FileSystem {
         fs.mkdirSync(pathInQuestion)
       }
     })
+
+    return this;
   }
 
   static write (path, data, streamOptions = { encoding: `binary` }) {

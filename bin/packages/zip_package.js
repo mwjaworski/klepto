@@ -17,39 +17,46 @@ class ZipPackage {
   // TODO configuration should be set and all code reviewed
   static __extractZip (binaryData, { archive }, msg) {
     return JSZip
-    .loadAsync(binaryData)
-    .then(function (zip) {
-      const filesWritten = []
+      .loadAsync(binaryData)
+      .then(function (zip) {
+        const stagingPath = `${paths.staging}/${archive}`
+        const filesWritten = []
 
-      zip.forEach((relativePath, file) => {
-        const archivePrefix = `${archive}`
+        zip.forEach((relativePath, file) => {
+          const archivePrefix = `${archive}`
 
-        if (relativePath.indexOf(archivePrefix) >= 0) {
-          relativePath = relativePath.substr(`${archivePrefix}/`.length)
-        }
+          if (relativePath.indexOf(archivePrefix) >= 0) {
+            relativePath = relativePath.substr(`${archivePrefix}/`.length)
+          }
 
-        const isFolder = relativePath.lastIndexOf(`/`) === relativePath.length - 1
-        const stagingPath = `${paths.staging}/${archive}/${relativePath}`
+          const isFolder = relativePath.lastIndexOf(`/`) === relativePath.length - 1
+          const stagingFilePath = `${stagingPath}/${relativePath}`
 
-        if (isFolder) {
-          FileSystem.makeDirectory(stagingPath)
-        } else {
-          filesWritten.push(
-            new Promise(resolve => {
-              const writeStream = fs.createWriteStream(stagingPath)
+          if (isFolder) {
+            FileSystem.makeDirectory(stagingFilePath)
+          } else {
+            filesWritten.push(
+              new Promise(resolve => {
+                const writeStream = fs.createWriteStream(stagingFilePath)
 
-              writeStream.on(`close`, () => {
-                resolve()
+                writeStream.on(`close`, () => {
+                  resolve()
+                })
+
+                file.nodeStream().pipe(writeStream)
               })
+            )
+          }
+        })
 
-              file.nodeStream().pipe(writeStream)
-            })
-          )
-        }
+        return Promise
+          .all(filesWritten)
+          .then(() => {
+            return {
+              stagingPath
+            }
+          })
       })
-
-      return Promise.all(filesWritten)
-    })
   }
 }
 
