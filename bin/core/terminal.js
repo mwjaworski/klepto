@@ -1,11 +1,11 @@
+const package = require('../../package')
 const _ = require('lodash')
 
 module.exports = {
   registerVorpalCommand: (vorpal, configuration) => {
     const isInteractive = process.argv.length <= 2
-    const versionTag = configuration.get('application.version')
-    const majorVersion = parseInt(_.head(versionTag.split(`.`)), 10)
-    const applicationHandle = `${configuration.get('application.name')}-${majorVersion}`
+    const majorVersion = parseInt(_.head(package.version.split(`.`)), 10)
+    const applicationHandle = `${package.name}-${majorVersion}`
 
     vorpal
       .delimiter(`::}`)

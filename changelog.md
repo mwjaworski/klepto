@@ -1,5 +1,10 @@
 # Bauble Changelog
 
+## 0.2.1
+
+- FIXED `version` always shows the correct version
+- REMOVED version and name from configuration; they should not be hard-coded
+
 ## 0.2.0
 
 - ADDED `install` to promote folders to an archive folder (ignoring from configuration)
