@@ -2,6 +2,7 @@
 
 ## 0.2.2
 
+- ADDED load configuration from application (default), home, and project
 - UPGRADED source/scope rules to match shorthand resources to uri
 - REFACTORED command prompt in interactive mode in Vorpal
 - REFACTORED expand staging folder fully to avoid collisions
