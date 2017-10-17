@@ -8,22 +8,23 @@ In our configuration which we can store in a couple of places and merge together
 
 node bin/index.js cache --audit ../bower-alternative-source-resolver.zip 1.2.3
 
-```
+```json
 {
   sources: {
-    '@repo': {
-      reference: 'https://${username}@repo.advisory.com/scm/eabui/${group}.git ${resource}.zip',
-      service: 'git',
-      username: `sadf`,
-      password: `sdf`
+    "repo": {
+      "pattern": "source/group/resource",
+      "template": "https://${username}@repo.advisory.com/scm/eabui/${group}.git ${resource}.zip",
+      "constants": {
+        "username": "jaworskm"
+      }
     },
-    '@local': {
-      reference: '~/folder/<group>/<file>',
-      service: 'local'
+    "local": {
+      "pattern": "${source}/${group}/${sub_group}/${resource}",
+      "template": "~/folder/${group}/${sub_group}/${resource}"
     },
-    '@phoenix': {
-      reference: 'http://phoenix.eab.com/<group>/<file>',
-      service: 'web'
+    "phoenix": {
+      "pattern": "${source}/${group}/${resource}",
+      "template": "http://phoenix.eab.com/${group}/${resource}.zip"
     }
   }
 }
@@ -106,3 +107,9 @@ node bin/index.js cache  ../link-talk
 node bin/index.js cache
 
 node bin/index.js cache  https://github.com/advisory/phoenix/blob/master/ui-ply-input_3.8.0.zip?raw=true
+
+
+https://github.com/advisory/phoenix/ ui-ply-input_3.8.0.zip
+
+bauble cache https://github.com/advisory/phoenix.git ui-ply-input_3.8.0.zip
+bauble install https://github.com/advisory/phoenix.git ui-ply-input_3.8.0.zip

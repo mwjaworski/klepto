@@ -1,42 +1,50 @@
-const convict = require('convict')
 const process = require('process')
+const fs = require('fs-extra')
 const _ = require('lodash')
 const os = require('os')
 
-const configuration = convict({
-  sources: {
-    doc: `sources to search for archives`,
-    sensitive: true,
-    format: `*`
-  },
-  paths: {
-    staging: `.packages/staging`,
-    cache: `.packages/cache`,
-    archives: `./archives`
-  },
-  rules: {
-    configurationPriority: [
-      `bower.json`,
-      `package.json`,
-      `component.json`,
-      `bauble.json`
-    ]
-  }
-})
+const frozenConfiguration = {}
 
-_.each([
-  `${os.homedir()}/.bauble`,
-  `${process.cwd()}/.bauble`
-], (configurationFilePath) => {
-  try {
-    configuration.loadFile(configurationFilePath)
-  } catch (e) {
-    ;
+class Configuration {
+  constructor() {
+    this.__configuration = {}
   }
-})
 
-// TODO review the configuration
+  override(manifestJson) {
+    this.__configuration = _.merge({}, this.__configuration, manifestJson)
+  }
+
+  load() {
+
+    _.each([
+      `configuration/standard.json`,
+      `${os.homedir()}/.bauble`,
+      `${process.cwd()}/.bauble`
+    ], (configurationPath) => {
+      this.loadFile(configurationPath)
+    })
+
+    return this
+  }
+
+  loadFile(filename) {
+    try {
+      this.__configuration = _.merge(this.__configuration,
+        JSON.parse(fs.readFileSync(filename).toString() || '{}')
+      )
+    }
+    catch(e) {
+      ;
+    }
+  }
+
+  get(path, defaultValue = '') {
+    return (path)
+      ? _.get(this.__configuration, path, defaultValue)
+      : this.__configuration
+  }
+}
 
 module.exports = {
-  configuration
+  configuration: new Configuration().load()
 }

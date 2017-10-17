@@ -1,0 +1,23 @@
+{
+  "sources": {
+
+  },
+  "paths": {
+    "staging": ".archives/staging",
+    "cache": ".archives/cache",
+    "archives": "./archives"
+  },
+  "rules": {
+    "patternMarkers": {
+      "separator": "/",
+      "version": "@",
+      "source": "$"
+    },
+    "configurationPriority": [
+      "bower.json",
+      "package.json",
+      "component.json",
+      "bauble.json"
+    ]
+  }
+}

@@ -7,7 +7,7 @@ const { configuration } = require('../core/configuration')
 module.exports = ({ specifier, PackageTool, IOTool }) => {
   const paths = configuration.get(`paths`)
 
-  FileSystem.makeDirectory(`${paths.staging}/${specifier.archive}/`)
+  FileSystem.makeDirectory(`${specifier.stagingPath}/`)
   FileSystem.makeDirectory(`${paths.cache}/`)
 
   return IOTool

@@ -2,9 +2,6 @@ const FileSystem = require('../support/file_system')
 const JSZip = require('jszip')
 const fs = require('fs-extra')
 
-const { configuration } = require('../core/configuration')
-const paths = configuration.get(`paths`)
-
 class ZipPackage {
   static sendToStaging (specifier, cachePath) {
     return FileSystem
@@ -15,11 +12,10 @@ class ZipPackage {
   }
 
   // TODO configuration should be set and all code reviewed
-  static __extractZip (binaryData, { archive }, msg) {
+  static __extractZip (binaryData, { stagingPath, archive }, msg) {
     return JSZip
       .loadAsync(binaryData)
       .then(function (zip) {
-        const stagingPath = `${paths.staging}/${archive}`
         const filesWritten = []
 
         zip.forEach((relativePath, file) => {
@@ -52,9 +48,7 @@ class ZipPackage {
         return Promise
           .all(filesWritten)
           .then(() => {
-            return {
-              stagingPath
-            }
+            return {}
           })
       })
   }
