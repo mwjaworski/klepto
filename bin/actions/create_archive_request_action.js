@@ -12,8 +12,8 @@ module.exports = ({ reference, addendum }) => {
 
     resolve({
       PackageTool,
-      specifier,
-      TransitTool
+      TransitTool,
+      specifier
     })
   })
 }

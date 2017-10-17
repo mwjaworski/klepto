@@ -109,7 +109,7 @@ class ReferenceStrategy {
 
   static buildArchivePath (specifier, archiveManifest) {
     const paths = applicationConfiguration.get(`paths`)
-    const archiveName = (archiveManifest.name) ? archiveManifest.name : specifier.name
+    const archiveName = (archiveManifest.name) ? archiveManifest.name : specifier.archive
 
     return `${paths.archives}/${archiveName}/`
   }

@@ -101,15 +101,22 @@ D. cache (folder/zip)   staging (folder)    component (folder-refined)    DONE
 E. cache (zip)          staging (folder)    component (folder-refined)    DONE
 F. cache (folder)       staging (folder)    component (folder-refined)    DONE
 
-node bin/index.js cache --audit ../folder_a/ xew.zip
+## Detect Version
+
+A. cache (zip)          [look for a bauble-manifest.json on the server at one level down from the file]
+B. cache (folder/zip)   [look for other files with the same prefix (remove version from filename)]
+C. cache (folder)       [look for other folders with the same prefix (remove version from filename)]
+D. cache (folder/zip)   []
+E. cache (zip)          []
+F. cache (folder)       []
+
+
+```bash
+node bin/index.js install  ../folder_a/ xew.zip
 node bin/index.js cache  ../link-talk
-
 node bin/index.js cache
-
 node bin/index.js cache  https://github.com/advisory/phoenix/blob/master/ui-ply-input_3.8.0.zip?raw=true
-
-
 https://github.com/advisory/phoenix/ ui-ply-input_3.8.0.zip
-
 bauble cache https://github.com/advisory/phoenix.git ui-ply-input_3.8.0.zip
 bauble install https://github.com/advisory/phoenix.git ui-ply-input_3.8.0.zip
+```

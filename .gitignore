@@ -8,10 +8,10 @@
 .idea/
 .vscode/
 .nyc_output/
-.archives/
+.archive_vault/
 
 /vendor/
 /node_modules/
 /reports/
 /coverage/
-/archives/
+/archive_vault/
