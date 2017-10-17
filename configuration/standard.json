@@ -8,6 +8,11 @@
     "archives": "./archives"
   },
   "rules": {
+    "patternMarkers": {
+      "separator": "/",
+      "version": "@",
+      "source": "$"
+    },
     "configurationPriority": [
       "bower.json",
       "package.json",

@@ -24,3 +24,61 @@ test.cb('strategy: reference (folder)', t => {
 
   t.end()
 })
+
+test.cb('strategy: scope-to-resource (git)', t => {
+  t.plan(1)
+
+  configuration.override({
+    "sources": {
+      "git_source": {
+        "pattern": "source/group/resource",
+        "template": "https://${username}@repo.advisory.com/scm/eabui/${group}.git#${version} ${resource}.zip",
+        "constants": {
+          "username": "jaworskm"
+        }
+      }
+    }
+  })
+
+  const uri = ReferenceStrategy.scopeToResource(`$git_source/def/ghi@1.2.3`)
+
+  t.is(uri, `https://jaworskm@repo.advisory.com/scm/eabui/def.git#1.2.3 ghi.zip`)
+  t.end()
+})
+
+test.cb('strategy: scope-to-resource (local)', t => {
+  t.plan(1)
+
+  configuration.override({
+    "sources": {
+      "local_source": {
+        "pattern": "source/group/sub_group/resource",
+        "template": "~/${source}/components/${group}/${sub_group}/${resource}/${version}/"
+      }
+    }
+  })
+
+  const uri = ReferenceStrategy.scopeToResource(`$local_source/def/ghi/hij@1.2.3`)
+
+  t.is(uri, `~/local_source/components/def/ghi/hij/1.2.3/`)
+  t.end()
+})
+
+
+test.cb('strategy: scope-to-resource (web)', t => {
+  t.plan(1)
+
+  configuration.override({
+    "sources": {
+      "web-source": {
+        "pattern": "source/resource",
+        "template": "http://phoenix.eab.com/eabui/${resource}__${version}.zip"
+      }
+    }
+  })
+
+  const uri = ReferenceStrategy.scopeToResource(`$web-source/blueprint@1.2.3`)
+
+  t.is(uri, `http://phoenix.eab.com/eabui/blueprint__1.2.3.zip`)
+  t.end()
+})

@@ -2,6 +2,7 @@
 
 ## 0.2.2
 
+- UPGRADED source/scope rules to match shorthand resources to uri
 - REFACTORED command prompt in interactive mode in Vorpal
 - REFACTORED expand staging folder fully to avoid collisions
 - FIXED read component name from manifest on archive or fallback to folder name without version
