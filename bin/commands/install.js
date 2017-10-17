@@ -20,7 +20,7 @@ module.exports = {
           vorpal.log(err.toString())
         })
         .then((archiveRequest) => {
-          const { specifier, IOTool, PackageTool } = archiveRequest
+          const { specifier, TransitTool, PackageTool } = archiveRequest
 
           // TODO evaluate how useful audit is and how it works with a full install
           if (args.options.audit) {
@@ -29,7 +29,7 @@ module.exports = {
                 uri: specifier.uri,
                 version: specifier.version,
                 archive: specifier.archive,
-                io: IOTool.name,
+                io: TransitTool.name,
                 package: PackageTool.name
               })
             )

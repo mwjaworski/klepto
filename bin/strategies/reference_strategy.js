@@ -1,4 +1,4 @@
-const IOStrategy = require('./io_strategy')
+const TransitStrategy = require('./transit_strategy')
 const path = require('path')
 const _ = require('lodash')
 
@@ -6,7 +6,7 @@ const { configuration } = require('../core/configuration')
 
 const Discover = {
   IS_SCOPE: /^@/i,
-  IS_VERSION: /^[~^]?\d{1,2}\.\d{1,2}\.\d{1,2}$/i,
+  IS_VERSTransitN: /^[~^]?\d{1,2}\.\d{1,2}\.\d{1,2}$/i,
   COMPONENT_NAME: /([a-z0-9-]*).*?\.(?:zip|tar|tgz|gz|tar\.gz)?$/i,
   FULL_COMPONENT_NAME: /(.*?)\.(?:zip|tar|tgz|gz|tar\.gz)?$/i
 }

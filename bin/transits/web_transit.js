@@ -6,7 +6,7 @@ const fileSystem = require('../support/file_system')
 const { configuration } = require('../core/configuration')
 const paths = configuration.get(`paths`)
 
-class WebIO {
+class WebTransit {
   static sendToCache ({ uri }) {
     const cachePath = this.__cachePath({ uri })
 
@@ -37,4 +37,4 @@ class WebIO {
   }
 }
 
-module.exports = WebIO
+module.exports = WebTransit
