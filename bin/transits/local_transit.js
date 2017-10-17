@@ -5,7 +5,7 @@ const _ = require('lodash')
 const { configuration } = require('../core/configuration')
 const paths = configuration.get(`paths`)
 
-class LocalIO {
+class LocalTransit {
   // TODO if we provide a file:// prefix then we have to tear it off
   static sendToCache (specifier) {
     const originalLocation = this.__originalLocation(specifier)
@@ -40,4 +40,4 @@ class LocalIO {
   }
 }
 
-module.exports = LocalIO
+module.exports = LocalTransit

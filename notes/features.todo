@@ -1,0 +1,26 @@
+commands:
+
+  cache:
+
+    ☐ Handle if an update wipes out folers/files in cache or does not
+
+  install:
+
+    ☐ Install without references will look in manifest and install all
+    ☐ When installing we want --save to save components
+
+  publish:
+
+    ☐ Package a tar, zip or folder (add a bauble.json if no other manifest exists)
+    ☐ With GIT - pull repository, copy, and push
+    ☐ With Folder - copy to folder
+    ☐ With Web - define a server API to PUT, POST, and DELETE like a form file saving
+
+configuration:
+
+  ☐ Define what the bauble.json format will be
+  ☐ Define what properties `bauble` will read from <manifest>.json files
+
+extended ideas:
+
+  ☐ Support FTP as an io transit

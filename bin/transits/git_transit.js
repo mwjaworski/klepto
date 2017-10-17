@@ -6,7 +6,7 @@ const OperatingSystem = require('../support/operating_system')
 const { configuration } = require('../core/configuration')
 const paths = configuration.get(`paths`)
 
-class GitIO {
+class GitTransit {
   static sendToCache (specifier) {
     return new Promise((resolve, reject) => {
       const cacheTo = this.__cacheTo(specifier)
@@ -39,4 +39,4 @@ class GitIO {
   }
 }
 
-module.exports = GitIO
+module.exports = GitTransit
