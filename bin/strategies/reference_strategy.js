@@ -2,7 +2,7 @@ const TransitStrategy = require('./transit_strategy')
 const path = require('path')
 const _ = require('lodash')
 
-const { configuration } = require('../core/configuration')
+const applicationConfiguration = require('../configurations/application')
 
 const Discover = {
   IS_SCOPE: /^@/i,
@@ -48,7 +48,7 @@ class ReferenceStrategy {
   }
 
   static scopeToResource (scopeOrResource) {
-    const patternMarkers = configuration.get(`rules.patternMarkers`)
+    const patternMarkers = applicationConfiguration.get(`rules.patternMarkers`)
 
     const isNotScope = _.first(scopeOrResource) !== patternMarkers.source
     if (isNotScope) {
@@ -71,8 +71,8 @@ class ReferenceStrategy {
   }
 
   static __matchCoversionRule(uri, uriAspects) {
-    const patternMarkers = configuration.get(`rules.patternMarkers`)
-    const sources = configuration.get(`sources`)
+    const patternMarkers = applicationConfiguration.get(`rules.patternMarkers`)
+    const sources = applicationConfiguration.get(`sources`)
     const scope = uriAspects[0] = (_.first(uriAspects) || '').substring(1)
 
     return _.find(sources, ({ pattern, reference }, sourceKey) => {
@@ -82,10 +82,10 @@ class ReferenceStrategy {
 
   static resourceToSpecifier (resource) {
 
-    // console.log(configuration.get())
+    // console.log(applicationConfiguration.get())
 
-    const versionMarker = configuration.get(`rules.patternMarkers.version`)
-    const stagingFolder = configuration.get(`paths.staging`)
+    const versionMarker = applicationConfiguration.get(`rules.patternMarkers.version`)
+    const stagingFolder = applicationConfiguration.get(`paths.staging`)
 
     const [reference, addendum] = resource.split(` `)
     const [uri, version] = reference.split(versionMarker)
@@ -113,7 +113,7 @@ class ReferenceStrategy {
   }
 
   static buildArchivePath (specifier, archiveManifest) {
-    const paths = configuration.get(`paths`)
+    const paths = applicationConfiguration.get(`paths`)
     const archiveName = (archiveManifest.name) ? archiveManifest.name : specifier.name
 
     return `${paths.archives}/${archiveName}/`

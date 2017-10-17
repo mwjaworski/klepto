@@ -1,9 +1,9 @@
-const { configuration } = require('../core/configuration')
+const applicationConfiguration = require('../configurations/application')
 const fs = require('fs-extra')
 
 class PackageSystem {
   static selectConfiguration (stagingPath) {
-    const priority = configuration.get(`rules.configurationPriority`)
+    const priority = applicationConfiguration.get(`rules.configurationPriority`)
 
     let json
     for (const file of priority) {

@@ -3,8 +3,8 @@ const path = require('path')
 
 const OperatingSystem = require('../support/operating_system')
 
-const { configuration } = require('../core/configuration')
-const paths = configuration.get(`paths`)
+const applicationConfiguration = require('../configurations/application')
+const paths = applicationConfiguration.get(`paths`)
 
 class GitTransit {
   static sendToCache (specifier) {

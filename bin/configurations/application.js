@@ -3,9 +3,7 @@ const fs = require('fs-extra')
 const _ = require('lodash')
 const os = require('os')
 
-const frozenConfiguration = {}
-
-class Configuration {
+class ApplicationConfiguration {
   constructor() {
     this.__configuration = {}
   }
@@ -45,6 +43,4 @@ class Configuration {
   }
 }
 
-module.exports = {
-  configuration: new Configuration().load()
-}
+module.exports = new ApplicationConfiguration().load()

@@ -5,7 +5,7 @@ const stageArchiveAction = require('../actions/stage_archive_action')
 const AuditLog = require('../support/audit_log')
 
 module.exports = {
-  registerVorpalCommand: (vorpal, configuration) => {
+  registerVorpalCommand: (vorpal, applicationConfiguration) => {
     return vorpal
       .command(`install <reference> [addendum]`)
       .alias(`i`)

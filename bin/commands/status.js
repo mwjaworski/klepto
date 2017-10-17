@@ -1,5 +1,5 @@
 module.exports = {
-  registerVorpalCommand: (vorpal, configuration) => {
+  registerVorpalCommand: (vorpal, applicationConfiguration) => {
     return vorpal
       .command(`status`)
       .alias(`s`)

@@ -2,8 +2,8 @@ const fs = require('fs-extra')
 const path = require('path')
 const _ = require('lodash')
 
-const { configuration } = require('../core/configuration')
-const paths = configuration.get(`paths`)
+const applicationConfiguration = require('../configurations/application')
+const paths = applicationConfiguration.get(`paths`)
 
 class LocalTransit {
   // TODO if we provide a file:// prefix then we have to tear it off

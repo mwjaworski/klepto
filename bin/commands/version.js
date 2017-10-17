@@ -1,13 +1,13 @@
-const applicationConfiguration = require('../../package')
+const packageConfiguration = require('../../package')
 
 module.exports = {
-  registerVorpalCommand: (vorpal, configuration) => {
+  registerVorpalCommand: (vorpal, applicationConfiguration) => {
     return vorpal
       .command(`version`)
       .description(`Write the current version.`)
       .alias(`ver`)
       .action((args, done) => {
-        vorpal.log(applicationConfiguration.version)
+        vorpal.log(packageConfiguration.version)
         done()
       })
   }

@@ -3,9 +3,9 @@
 
   },
   "paths": {
-    "staging": ".archives/staging",
-    "cache": ".archives/cache",
-    "archives": "./archives"
+    "staging": ".archive_vault/staging",
+    "cache": ".archive_vault/cache",
+    "archives": "./archive_vault"
   },
   "rules": {
     "patternMarkers": {
@@ -13,6 +13,20 @@
       "version": "@",
       "source": "$"
     },
+    "ignoreFiles": [
+      ".git",
+      "CVS",
+      ".svn",
+      ".hg",
+      ".*.swp",
+      ".*.tmp",
+      "*.log",
+      ".DS_Store",
+      "node_modules",
+      "bower_components",
+      "archives",
+      "package-lock.json"
+    ],
     "configurationPriority": [
       "bower.json",
       "package.json",
