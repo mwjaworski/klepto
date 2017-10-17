@@ -1,4 +1,3 @@
-const TransitStrategy = require('./transit_strategy')
 const path = require('path')
 const _ = require('lodash')
 
@@ -6,7 +5,7 @@ const applicationConfiguration = require('../configurations/application')
 
 const Discover = {
   IS_SCOPE: /^@/i,
-  IS_VERSTransitN: /^[~^]?\d{1,2}\.\d{1,2}\.\d{1,2}$/i,
+  IS_VERSION: /^[~^]?\d{1,2}\.\d{1,2}\.\d{1,2}$/i,
   COMPONENT_NAME: /([a-z0-9-]*).*?\.(?:zip|tar|tgz|gz|tar\.gz)?$/i,
   FULL_COMPONENT_NAME: /(.*?)\.(?:zip|tar|tgz|gz|tar\.gz)?$/i
 }
@@ -55,10 +54,10 @@ class ReferenceStrategy {
       return scopeOrResource
     }
 
-    const [reference, _ignoreAddendum] = scopeOrResource.split(` `)
+    const reference = _.head(scopeOrResource.split(` `))
     const [uri, version] = reference.split(patternMarkers.version)
     const uriAspects = uri.split(patternMarkers.separator)
-    const sourceConversionRule = this.__matchCoversionRule(uri, uriAspects)
+    const sourceConversionRule = this.__matchConversionRule(uri, uriAspects)
 
     if (!sourceConversionRule) {
       return scopeOrResource
@@ -70,8 +69,7 @@ class ReferenceStrategy {
     return _.template(template)(_.merge({}, templateVariables, constants, { version }))
   }
 
-  static __matchCoversionRule(uri, uriAspects) {
-    const patternMarkers = applicationConfiguration.get(`rules.patternMarkers`)
+  static __matchConversionRule (uri, uriAspects) {
     const sources = applicationConfiguration.get(`sources`)
     const scope = uriAspects[0] = (_.first(uriAspects) || '').substring(1)
 
@@ -81,9 +79,6 @@ class ReferenceStrategy {
   }
 
   static resourceToSpecifier (resource) {
-
-    // console.log(applicationConfiguration.get())
-
     const versionMarker = applicationConfiguration.get(`rules.patternMarkers.version`)
     const stagingFolder = applicationConfiguration.get(`paths.staging`)
 

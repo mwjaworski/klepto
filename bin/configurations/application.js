@@ -4,16 +4,15 @@ const _ = require('lodash')
 const os = require('os')
 
 class ApplicationConfiguration {
-  constructor() {
+  constructor () {
     this.__configuration = {}
   }
 
-  override(manifestJson) {
+  override (manifestJson) {
     this.__configuration = _.merge({}, this.__configuration, manifestJson)
   }
 
-  load() {
-
+  load () {
     _.each([
       `configuration/standard.json`,
       `${os.homedir()}/.bauble`,
@@ -25,18 +24,17 @@ class ApplicationConfiguration {
     return this
   }
 
-  loadFile(filename) {
+  loadFile (filename) {
     try {
       this.__configuration = _.merge(this.__configuration,
         JSON.parse(fs.readFileSync(filename).toString() || '{}')
       )
-    }
-    catch(e) {
+    } catch (e) {
       ;
     }
   }
 
-  get(path, defaultValue = '') {
+  get (path, defaultValue = '') {
     return (path)
       ? _.get(this.__configuration, path, defaultValue)
       : this.__configuration

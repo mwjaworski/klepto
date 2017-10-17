@@ -29,12 +29,12 @@ test.cb('strategy: scope-to-resource (git)', t => {
   t.plan(1)
 
   applicationConfiguration.override({
-    "sources": {
-      "git_source": {
-        "pattern": "source/group/resource",
-        "template": "https://${username}@repo.advisory.com/scm/eabui/${group}.git#${version} ${resource}.zip",
-        "constants": {
-          "username": "jaworskm"
+    'sources': {
+      'git_source': {
+        'pattern': 'source/group/resource',
+        'template': 'https://<%= username %>@repo.advisory.com/scm/eabui/<%= group %>.git#<%= version %> <%=resource %>.zip',
+        'constants': {
+          'username': 'jaworskm'
         }
       }
     }
@@ -50,10 +50,10 @@ test.cb('strategy: scope-to-resource (local)', t => {
   t.plan(1)
 
   applicationConfiguration.override({
-    "sources": {
-      "local_source": {
-        "pattern": "source/group/sub_group/resource",
-        "template": "~/${source}/components/${group}/${sub_group}/${resource}/${version}/"
+    'sources': {
+      'local_source': {
+        'pattern': 'source/group/sub_group/resource',
+        'template': '~/<%= source %>/components/<%= group %>/<%= sub_group %>/<%= resource %>/<%= version %>/'
       }
     }
   })
@@ -64,15 +64,14 @@ test.cb('strategy: scope-to-resource (local)', t => {
   t.end()
 })
 
-
 test.cb('strategy: scope-to-resource (web)', t => {
   t.plan(1)
 
   applicationConfiguration.override({
-    "sources": {
-      "web-source": {
-        "pattern": "source/resource",
-        "template": "http://phoenix.eab.com/eabui/${resource}__${version}.zip"
+    'sources': {
+      'web-source': {
+        'pattern': 'source/resource',
+        'template': 'http://phoenix.eab.com/eabui/<%= resource %>__<%= version %>.zip'
       }
     }
   })

@@ -1,29 +1,34 @@
 const applicationConfiguration = require('../configurations/application')
-
+const fs = require('fs-extra')
 
 class ManifestConfiguration {
-
-  constructor() {
-
+  static build (archivePath) {
+    return new ManifestConfiguration(archivePath)
   }
 
-  __a () {
-    const priority = applicationConfiguration.get(`rules.configurationPriority`)
-
-        let json
-        for (const file of priority) {
-          json = fs.readJsonSync(`${stagingPath}/${file}`, {
-            throws: false
-          })
-
-          if (json) {
-            break
-          }
-        }
-
-        return json
+  constructor (archivePath) {
+    this.assignManifest(archivePath)
   }
 
+  assignManifest (archivePath) {
+    this.__manifest = this.__locatePrioritizedManifest(archivePath)
+  }
+
+  __locatePrioritizedManifest (archivePath, manifestPriorityList = applicationConfiguration.get(`rules.configurationPriority`)) {
+    let json
+
+    for (const file of manifestPriorityList) {
+      json = fs.readJsonSync(`${archivePath}/${file}`, {
+        throws: false
+      })
+
+      if (json) {
+        break
+      }
+    }
+
+    return json || {}
+  }
 }
 
 module.exports = ManifestConfiguration
