@@ -1,0 +1,18 @@
+{
+  "sources": {
+
+  },
+  "paths": {
+    "staging": ".archives/staging",
+    "cache": ".archives/cache",
+    "archives": "./archives"
+  },
+  "rules": {
+    "configurationPriority": [
+      "bower.json",
+      "package.json",
+      "component.json",
+      "bauble.json"
+    ]
+  }
+}

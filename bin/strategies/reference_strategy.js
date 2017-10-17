@@ -8,9 +8,10 @@ const Discover = {
   IS_SCOPE: /^@/i,
   IS_VERSION: /^[~^]?\d{1,2}\.\d{1,2}\.\d{1,2}$/i,
   COMPONENT_NAME: /([a-z0-9-]*).*?\.(?:zip|tar|tgz|gz|tar\.gz)?$/i,
-  FULL_COMPONENT_NAME: /(.*?)\.(?:zip|tar|tgz|gz|tar\.gz)?$/i,
-  DUPLICATE_SEPERATOR: new RegExp(`${path.sep}+`, `g`)
+  FULL_COMPONENT_NAME: /(.*?)\.(?:zip|tar|tgz|gz|tar\.gz)?$/i
 }
+
+// DUPLICATE_SEPERATOR: new RegExp(`${path.sep}+`, `g`)
 
 /**
  * a _reference_ can have a shape of scope, resource, or specifier
@@ -44,7 +45,6 @@ class ReferenceStrategy {
     reference = reference || ''
 
     return _.trimEnd(`${reference} ${addendum}`)
-      .replace(Discover.DUPLICATE_SEPERATOR, path.sep)
   }
 
   static scopeToResource (scope) {

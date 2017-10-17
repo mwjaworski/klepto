@@ -1,42 +1,30 @@
-const convict = require('convict')
 const process = require('process')
+const nconf = require('nconf')
 const _ = require('lodash')
 const os = require('os')
 
-const configuration = convict({
-  sources: {
-    doc: `sources to search for archives`,
-    sensitive: true,
-    format: `*`
-  },
-  paths: {
-    staging: `.archives/staging`,
-    cache: `.archives/cache`,
-    archives: `./archives`
-  },
-  rules: {
-    configurationPriority: [
-      `bower.json`,
-      `package.json`,
-      `component.json`,
-      `bauble.json`
-    ]
-  }
-})
+nconf.argv()
 
 _.each([
+  `configuration/standard.json`,
   `${os.homedir()}/.bauble`,
   `${process.cwd()}/.bauble`
-], (configurationFilePath) => {
+], (configurationPath, index) => {
   try {
-    configuration.loadFile(configurationFilePath)
+    nconf.file(index, configurationPath)
   } catch (e) {
     ;
   }
 })
 
-// TODO review the configuration
+// hi-jack the get method to implement depth searching on keys
+const _nconfGet = nconf.get
+nconf.get = function(path, defaultValue = ``) {
+  return (!!path)
+    ? _.get(_nconfGet.call(this), path, defaultValue)
+    : _nconfGet.call(this)
+}
 
 module.exports = {
-  configuration
+  configuration: nconf
 }

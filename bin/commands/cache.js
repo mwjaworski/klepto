@@ -37,10 +37,7 @@ module.exports = {
               return done()
             }
 
-            stageArchiveAction(archiveRequest)
-              .catch(err => {
-                vorpal.log(err.toString())
-              })
+            return stageArchiveAction(archiveRequest)
               .then(() => {
                 done()
               })
