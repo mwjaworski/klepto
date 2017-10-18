@@ -120,6 +120,9 @@ F. cache (local + folder)       other folders with the version stripped out
 2. (B, D, E, F*) tear version off of file/folder and scan
 3. (C) ask git for a tag list and review
 
+1. we pull remote
+2. we have to scan the cache/
+3. we have to scan the cache/
 
 ```bash
 node bin/index.js install  ../folder_a/ xew.zip

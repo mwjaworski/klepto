@@ -1,6 +1,6 @@
 
 
-class LocalVault {
+class NullVault {
   static getVersions(archiveName) {
     return new Promise((resolve, reject) => {
       resolve([specifier.version])
@@ -20,4 +20,4 @@ class LocalVault {
   }
 }
 
-module.exports = LocalVault
+module.exports = NullVault
