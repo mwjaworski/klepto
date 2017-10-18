@@ -1,8 +1,6 @@
 const promoteArchiveAction = require('./promote_archive_action')
 const downloadArchiveAction = require('./download_archive_action')
 
-// TODO cache works on one archive at a time, try `all` for every package? or *
-
 const installArchiveAction = (args) => {
   return downloadArchiveAction(args)
     .then((archiveRequest) => {

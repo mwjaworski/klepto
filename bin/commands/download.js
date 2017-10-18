@@ -12,9 +12,10 @@ module.exports = {
         return true
       })
       .action((args, done) => {
-        // TODO cache works on one archive at a time, try `all` for every package? or *
 
+        // TODO download works on one archive at a time, try `all` for every package? or *
         // TODO evaluate how useful audit is and how it works with a full install
+
         if (args.options.audit) {
           createArchiveRequestAction(args)
             .then(({ specifier, TransitTool, PackageTool }) => {

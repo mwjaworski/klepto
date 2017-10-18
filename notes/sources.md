@@ -103,12 +103,22 @@ F. cache (folder)       staging (folder)    component (folder-refined)    DONE
 
 ## Detect Version
 
-A. cache (web + zip)            [look for a archive-manifest.json on the server at one level down from the file]
-B. cache (git + folder/zip)     [--same as D--]
-C. cache (git + folder)         [scan git]
-D. cache (local + folder/zip)   [look for other files with the same prefix (remove version from filename)]
-E. cache (local + zip)          [--same as D--]
-F. cache (local + folder)       [look for other folders with the same prefix (remove version from filename)]
+1. download zip
+2. unzip to staging
+3. copy to vault
+
+where can I check version and compare against existing?
+
+A. cache (web + zip)            on a vault-manifest.json hosted at the site
+B. cache (git + folder/zip)     other files with the version stripped out
+C. cache (git + folder)         use git versioning (to see tags)
+D. cache (local + folder/zip)   other files with the version stripped out
+E. cache (local + zip)          other files with the version stripped out
+F. cache (local + folder)       other folders with the version stripped out
+
+1. (A) download a vault-manifest.json (PENDING)
+2. (B, D, E, F*) tear version off of file/folder and scan
+3. (C) ask git for a tag list and review
 
 
 ```bash

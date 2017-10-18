@@ -5,8 +5,6 @@ const ReferenceStrategy = require('../strategies/reference_strategy')
 const FileSystem = require('../support/file_system')
 const _ = require('lodash')
 
-// TODO cache works on one archive at a time, try `all` for every package? or *
-
 module.exports = ({ specifier }) => {
   const paths = applicationConfiguration.get(`paths`)
   const stagingPath = ReferenceStrategy.buildStagingPath(specifier)
