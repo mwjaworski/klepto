@@ -1,14 +1,13 @@
 const createArchiveRequestAction = require('../actions/create_archive_request_action')
-const cacheArchiveAction = require('../actions/cache_archive_action')
+const downloadArchiveAction = require('../actions/download_archive_action')
 const AuditLog = require('../support/audit_log')
 
 module.exports = {
   registerVorpalCommand: (vorpal, applicationConfiguration) => {
     return vorpal
-      .command(`cache <reference> [addendum]`)
-      .alias(`c`)
+      .command(`download <reference> [addendum]`)
       .option('-a, --audit', `Inspect the tools selected for a reference`)
-      .description(`Download a archive.`)
+      .description(`Download an archive.`)
       .validate(function (args) {
         return true
       })
@@ -33,7 +32,7 @@ module.exports = {
         }
 
         if (!args.options.audit) {
-          cacheArchiveAction(args, vorpal)
+          downloadArchiveAction(args, vorpal)
             .catch(err => {
               vorpal.log(err.toString())
             })

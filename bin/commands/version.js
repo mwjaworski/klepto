@@ -4,8 +4,7 @@ module.exports = {
   registerVorpalCommand: (vorpal, applicationConfiguration) => {
     return vorpal
       .command(`version`)
-      .description(`Write the current version.`)
-      .alias(`ver`)
+      .description(`View current version.`)
       .action((args, done) => {
         vorpal.log(packageConfiguration.version)
         done()

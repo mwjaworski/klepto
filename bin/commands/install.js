@@ -7,9 +7,8 @@ module.exports = {
   registerVorpalCommand: (vorpal, applicationConfiguration) => {
     return vorpal
       .command(`install <reference> [addendum]`)
-      .alias(`i`)
       .option('-a, --audit', `Inspect the tools selected for a reference`)
-      .description(`Install a package.`)
+      .description(`Install an archive.`)
       .validate(function (args) {
         return true
       })

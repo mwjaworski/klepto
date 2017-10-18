@@ -103,12 +103,12 @@ F. cache (folder)       staging (folder)    component (folder-refined)    DONE
 
 ## Detect Version
 
-A. cache (zip)          [look for a bauble-manifest.json on the server at one level down from the file]
-B. cache (folder/zip)   [look for other files with the same prefix (remove version from filename)]
-C. cache (folder)       [look for other folders with the same prefix (remove version from filename)]
-D. cache (folder/zip)   []
-E. cache (zip)          []
-F. cache (folder)       []
+A. cache (web + zip)            [look for a archive-manifest.json on the server at one level down from the file]
+B. cache (git + folder/zip)     [--same as D--]
+C. cache (git + folder)         [scan git]
+D. cache (local + folder/zip)   [look for other files with the same prefix (remove version from filename)]
+E. cache (local + zip)          [--same as D--]
+F. cache (local + folder)       [look for other folders with the same prefix (remove version from filename)]
 
 
 ```bash
