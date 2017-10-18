@@ -6,6 +6,13 @@ const applicationConfiguration = require('../configurations/application')
 const paths = applicationConfiguration.get(`paths`)
 
 class LocalTransit {
+
+  static getTagList(specifier) {
+    return new Promise((resolve, reject) => {
+      resolve([])
+    })
+  }
+
   // TODO if we provide a file:// prefix then we have to tear it off
   static sendToCache (specifier) {
     const originalLocation = this.__originalLocation(specifier)

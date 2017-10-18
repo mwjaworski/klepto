@@ -7,6 +7,13 @@ const applicationConfiguration = require('../configurations/application')
 const paths = applicationConfiguration.get(`paths`)
 
 class GitTransit {
+
+  static getTagList(specifier) {
+    return new Promise((resolve, reject) => {
+      resolve([])
+    })
+  }
+
   static sendToCache (specifier) {
     return new Promise((resolve, reject) => {
       const cacheTo = this.__cacheTo(specifier)

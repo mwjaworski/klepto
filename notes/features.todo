@@ -19,10 +19,11 @@ commands:
 
 rules:
 
-  ☐ Support semver installation
+  Support semver installation:
+
+    ☐ On Folder
     ☐ On GIT
-    ☐ On Folder - if an manifest.json exists
-    ☐ On Web - if an manifest.json exists
+    ☐ On Web // if an manifest.json exists
 
 configuration:
 
