@@ -11,21 +11,43 @@ class ManifestConfiguration {
   }
 
   assignManifest (archivePath) {
-    this.__manifest = this.__locatePrioritizedManifest(archivePath)
+    const { configurationSystem, json } = this.__locatePrioritizedManifest(archivePath)
+
+    this.__system = configurationSystem
+    this.__manifest = json
   }
 
-  __locatePrioritizedManifest (archivePath, manifestPriorityList = applicationConfiguration.get(`rules.configurationPriority`)) {
-    for (const file of manifestPriorityList) {
-      const json = fs.readJsonSync(`${archivePath}/${file}`, {
+  __locatePrioritizedManifest (archivePath, configurationSystemList = applicationConfiguration.get(`rules.configurationSystem`)) {
+    for (const configurationSystem of configurationSystemList) {
+      const json = fs.readJsonSync(`${archivePath}/${configurationSystem.archiveManifest}`, {
         throws: false
       })
 
       if (json) {
-        return json
+        return {
+          configurationSystem,
+          json
+        }
       }
     }
 
-    return {}
+    return {
+      configurationSystem: _.find(configurationSystemList, (system) => system.archiveManifest === `bauble.json`),
+      json: this.__defaultManifest()
+    }
+  }
+
+  __defaultManifest() {
+    return {
+      name: '',
+      version: '',
+      dependencies: [],
+      ignore: []
+    }
+  }
+
+  get system() {
+    return this.__system
   }
 
   get name () {

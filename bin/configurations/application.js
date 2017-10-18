@@ -14,7 +14,7 @@ class ApplicationConfiguration {
 
   load () {
     _.each([
-      `configuration/standard.json`,
+      `configuration/application.json`,
       `${os.homedir()}/.bauble`,
       `${process.cwd()}/.bauble`
     ], (configurationPath) => {

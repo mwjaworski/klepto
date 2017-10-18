@@ -1,0 +1,48 @@
+{
+  "sources": {
+
+  },
+  "paths": {
+    "staging": ".vault/staging",
+    "cache": ".vault/cache",
+    "archives": "./vault"
+  },
+  "rules": {
+    "patternMarkers": {
+      "separator": "/",
+      "version": "@",
+      "source": "$"
+    },
+    "ignoreFiles": [
+      ".git",
+      "CVS",
+      ".svn",
+      ".hg",
+      ".*.swp",
+      ".*.tmp",
+      "*.log",
+      ".DS_Store",
+      "node_modules",
+      "bower_components",
+      "archives",
+      "package-lock.json"
+    ],
+    "configurationSystem": [
+      {
+        "repositoryFolder": "bower_components",
+        "toolConfiguration": ".bowerrc",
+        "archiveManifest": "bower.json"
+      },
+      {
+        "repositoryFolder": "node_modules",
+        "toolConfiguration": ".npmrc",
+        "archiveManifest": "package.json"
+      },
+      {
+        "repositoryFolder": "vault",
+        "toolConfiguration": ".baublerc",
+        "archiveManifest": "bauble.json"
+      }
+    ]
+  }
+}

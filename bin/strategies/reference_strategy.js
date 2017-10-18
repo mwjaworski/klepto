@@ -46,6 +46,10 @@ class ReferenceStrategy {
     return _.trimEnd(`${reference} ${addendum}`)
   }
 
+  /**
+   *
+   * @param {*} scopeOrResource
+   */
   static scopeToResource (scopeOrResource) {
     const patternMarkers = applicationConfiguration.get(`rules.patternMarkers`)
 
@@ -69,6 +73,11 @@ class ReferenceStrategy {
     return _.template(template)(_.merge({}, templateVariables, constants, { version }))
   }
 
+  /**
+   *
+   * @param {*} uri
+   * @param {*} uriAspects
+   */
   static __matchConversionRule (uri, uriAspects) {
     const sources = applicationConfiguration.get(`sources`)
     const scope = uriAspects[0] = (_.first(uriAspects) || '').substring(1)
@@ -78,6 +87,10 @@ class ReferenceStrategy {
     })
   }
 
+  /**
+   *
+   * @param {*} resource
+   */
   static resourceToSpecifier (resource) {
     const versionMarker = applicationConfiguration.get(`rules.patternMarkers.version`)
     const stagingFolder = applicationConfiguration.get(`paths.staging`)
@@ -99,6 +112,11 @@ class ReferenceStrategy {
     }
   }
 
+  /**
+   *
+   * @param {*} fullURI
+   * @param {*} regexFind
+   */
   static __findPathAspect (fullURI, regexFind) {
     const lastAspect = _.last(_.compact(fullURI.split(path.sep || `/`)))
     const extractZipName = regexFind.exec(lastAspect)
@@ -107,13 +125,23 @@ class ReferenceStrategy {
     return pathAspect
   }
 
+  /**
+   *
+   * @param {*} specifier
+   * @param {*} archiveManifest
+   */
   static buildArchivePath (specifier, archiveManifest) {
     const paths = applicationConfiguration.get(`paths`)
     const archiveName = (archiveManifest.name) ? archiveManifest.name : specifier.archive
+    const archiveFolder = archiveManifest.repositoryFolder || paths.archives
 
-    return `${paths.archives}/${archiveName}/`
+    return `${archiveFolder}/${archiveName}/`
   }
 
+  /**
+   *
+   * @param {*} specifier
+   */
   static buildStagingPath (specifier) {
     return specifier.stagingPath
   }
