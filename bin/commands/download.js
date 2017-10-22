@@ -1,18 +1,21 @@
 const createArchiveRequestAction = require('../actions/create_archive_request_action')
-const installArchiveAction = require('../actions/install_archive_action')
-
+const downloadArchiveAction = require('../actions/download_archive_action')
 const AuditLog = require('../support/audit_log')
 
 module.exports = {
   registerVorpalCommand: (vorpal, applicationConfiguration) => {
     return vorpal
-      .command(`install <reference> [addendum]`)
+      .command(`download <reference> [addendum]`)
       .option('-a, --audit', `Inspect the tools selected for a reference`)
-      .description(`Install an archive.`)
+      .description(`Download an archive.`)
       .validate(function (args) {
         return true
       })
       .action((args, done) => {
+
+        // TODO download works on one archive at a time, try `all` for every package? or *
+        // TODO evaluate how useful audit is and how it works with a full install
+
         if (args.options.audit) {
           createArchiveRequestAction(args)
             .then(({ specifier, TransitTool, PackageTool }) => {
@@ -30,7 +33,7 @@ module.exports = {
         }
 
         if (!args.options.audit) {
-          installArchiveAction(args, vorpal)
+          downloadArchiveAction(args, vorpal)
             .catch(err => {
               vorpal.log(err.toString())
             })

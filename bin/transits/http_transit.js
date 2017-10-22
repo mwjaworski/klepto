@@ -3,10 +3,10 @@ const path = require('path')
 
 const fileSystem = require('../support/file_system')
 
-const { configuration } = require('../core/configuration')
-const paths = configuration.get(`paths`)
+const applicationConfiguration = require('../configurations/application')
+const paths = applicationConfiguration.get(`paths`)
 
-class WebTransit {
+class HTTPTransit {
   static sendToCache ({ uri }) {
     const cachePath = this.__cachePath({ uri })
 
@@ -37,4 +37,4 @@ class WebTransit {
   }
 }
 
-module.exports = WebTransit
+module.exports = HTTPTransit

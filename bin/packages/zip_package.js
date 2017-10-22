@@ -11,7 +11,6 @@ class ZipPackage {
       })
   }
 
-  // TODO configuration should be set and all code reviewed
   static __extractZip (binaryData, { stagingPath, archive }, msg) {
     return JSZip
       .loadAsync(binaryData)

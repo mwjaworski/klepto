@@ -8,6 +8,7 @@ commands:
 
     ☐ Install without references will look in manifest and install all
     ☐ When installing we want --save to save components
+    ☐ Install will look in manifest for more to install
 
   publish:
 
@@ -16,6 +17,14 @@ commands:
     ☐ With Folder - copy to folder
     ☐ With Web - define a server API to PUT, POST, and DELETE like a form file saving
 
+rules:
+
+  Support semver installation:
+
+    ☐ On Folder
+    ☐ On GIT
+    ☐ On Web // if an manifest.json exists
+
 configuration:
 
   ☐ Define what the bauble.json format will be
@@ -23,4 +32,4 @@ configuration:
 
 extended ideas:
 
-  ☐ Support FTP as an io transit
+  ☐ Support FTP as a Transit

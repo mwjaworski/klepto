@@ -1,19 +1,24 @@
-const { configuration } = require('../core/configuration')
+const applicationConfiguration = require('../configurations/application')
+const ManifestConfiguration = require('../configurations/manifest')
 
 const ReferenceStrategy = require('../strategies/reference_strategy')
-const PackageSystem = require('../support/package_system')
 const FileSystem = require('../support/file_system')
 const _ = require('lodash')
 
-// TODO cache works on one archive at a time, try `all` for every package? or *
-
-module.exports = (specifier) => {
-  const paths = configuration.get(`paths`)
+module.exports = ({ specifier }) => {
+  const paths = applicationConfiguration.get(`paths`)
   const stagingPath = ReferenceStrategy.buildStagingPath(specifier)
-  const configurationJson = PackageSystem.selectConfiguration(stagingPath)
-  const archivePath = ReferenceStrategy.buildArchivePath(specifier, configurationJson)
+  const manifestJson = ManifestConfiguration.build(stagingPath)
+  const archivePath = ReferenceStrategy.buildArchivePath(specifier, manifestJson)
+  const ignoreFolders = _.merge(
+    [ `${_.get(manifestJson.paths, `archives`, '')}` ],
+    applicationConfiguration.get(`rules.ignoreFiles`, []),
+    manifestJson.ignore
+  )
+
+  // TODO review the dependencies to load other components
 
   return FileSystem
     .makeDirectory(`${paths.archives}/`)
-    .copyNonIgnoredFiles(stagingPath, archivePath, _.get(configurationJson, `ignore`, []))
+    .copyNonIgnoredFiles(stagingPath, archivePath, ignoreFolders)
 }

@@ -3,21 +3,18 @@ const fs = require('fs-extra')
 const _ = require('lodash')
 const os = require('os')
 
-const frozenConfiguration = {}
-
-class Configuration {
-  constructor() {
+class ApplicationConfiguration {
+  constructor () {
     this.__configuration = {}
   }
 
-  override(manifestJson) {
+  override (manifestJson) {
     this.__configuration = _.merge({}, this.__configuration, manifestJson)
   }
 
-  load() {
-
+  load () {
     _.each([
-      `configuration/standard.json`,
+      `configuration/application.json`,
       `${os.homedir()}/.bauble`,
       `${process.cwd()}/.bauble`
     ], (configurationPath) => {
@@ -27,24 +24,21 @@ class Configuration {
     return this
   }
 
-  loadFile(filename) {
+  loadFile (filename) {
     try {
       this.__configuration = _.merge(this.__configuration,
         JSON.parse(fs.readFileSync(filename).toString() || '{}')
       )
-    }
-    catch(e) {
+    } catch (e) {
       ;
     }
   }
 
-  get(path, defaultValue = '') {
+  get (path, defaultValue = '') {
     return (path)
       ? _.get(this.__configuration, path, defaultValue)
       : this.__configuration
   }
 }
 
-module.exports = {
-  configuration: new Configuration().load()
-}
+module.exports = new ApplicationConfiguration().load()

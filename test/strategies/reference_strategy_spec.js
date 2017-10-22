@@ -2,7 +2,7 @@
 
 const test = require('ava')
 const ReferenceStrategy = require('../../bin/strategies/reference_strategy')
-const { configuration } = require(`../../bin/core/configuration`)
+const applicationConfiguration = require(`../../bin/configurations/application`)
 
 test.cb('strategy: reference (folder)', t => {
   t.plan(5)
@@ -20,7 +20,7 @@ test.cb('strategy: reference (folder)', t => {
   t.is(archive, `sub_folder`, `the archive is the last folder name`)
   t.is(uri, `../folder/`, `uri is the base path to the resource and needs the addendum to resolve the full path`)
 
-  t.is(stagingPath, `${configuration.get('paths.staging')}/${archive}/`, `staging path is the archive name in staging folder`)
+  t.is(stagingPath, `${applicationConfiguration.get('paths.staging')}/${archive}/`, `staging path is the archive name in staging folder`)
 
   t.end()
 })
@@ -28,13 +28,13 @@ test.cb('strategy: reference (folder)', t => {
 test.cb('strategy: scope-to-resource (git)', t => {
   t.plan(1)
 
-  configuration.override({
-    "sources": {
-      "git_source": {
-        "pattern": "source/group/resource",
-        "template": "https://${username}@repo.advisory.com/scm/eabui/${group}.git#${version} ${resource}.zip",
-        "constants": {
-          "username": "jaworskm"
+  applicationConfiguration.override({
+    'sources': {
+      'git_source': {
+        'pattern': 'source/group/resource',
+        'template': 'https://<%= username %>@repo.advisory.com/scm/eabui/<%= group %>.git#<%= version %> <%=resource %>.zip',
+        'constants': {
+          'username': 'jaworskm'
         }
       }
     }
@@ -49,11 +49,11 @@ test.cb('strategy: scope-to-resource (git)', t => {
 test.cb('strategy: scope-to-resource (local)', t => {
   t.plan(1)
 
-  configuration.override({
-    "sources": {
-      "local_source": {
-        "pattern": "source/group/sub_group/resource",
-        "template": "~/${source}/components/${group}/${sub_group}/${resource}/${version}/"
+  applicationConfiguration.override({
+    'sources': {
+      'local_source': {
+        'pattern': 'source/group/sub_group/resource',
+        'template': '~/<%= source %>/components/<%= group %>/<%= sub_group %>/<%= resource %>/<%= version %>/'
       }
     }
   })
@@ -64,15 +64,14 @@ test.cb('strategy: scope-to-resource (local)', t => {
   t.end()
 })
 
-
 test.cb('strategy: scope-to-resource (web)', t => {
   t.plan(1)
 
-  configuration.override({
-    "sources": {
-      "web-source": {
-        "pattern": "source/resource",
-        "template": "http://phoenix.eab.com/eabui/${resource}__${version}.zip"
+  applicationConfiguration.override({
+    'sources': {
+      'web-source': {
+        'pattern': 'source/resource',
+        'template': 'http://phoenix.eab.com/eabui/<%= resource %>__<%= version %>.zip'
       }
     }
   })

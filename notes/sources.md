@@ -101,15 +101,35 @@ D. cache (folder/zip)   staging (folder)    component (folder-refined)    DONE
 E. cache (zip)          staging (folder)    component (folder-refined)    DONE
 F. cache (folder)       staging (folder)    component (folder-refined)    DONE
 
-node bin/index.js cache --audit ../folder_a/ xew.zip
+## Detect Version
+
+1. download zip
+2. unzip to staging
+3. copy to vault
+
+where can I check version and compare against existing?
+
+A. cache (web + zip)            on a vault-manifest.json hosted at the site
+B. cache (git + folder/zip)     other files with the version stripped out
+C. cache (git + folder)         use git versioning (to see tags)
+D. cache (local + folder/zip)   other files with the version stripped out
+E. cache (local + zip)          other files with the version stripped out
+F. cache (local + folder)       other folders with the version stripped out
+
+1. (A) download a vault-manifest.json (PENDING)
+2. (B, D, E, F*) tear version off of file/folder and scan
+3. (C) ask git for a tag list and review
+
+1. we pull remote
+2. we have to scan the cache/
+3. we have to scan the cache/
+
+```bash
+node bin/index.js install  ../folder_a/ xew.zip
 node bin/index.js cache  ../link-talk
-
 node bin/index.js cache
-
 node bin/index.js cache  https://github.com/advisory/phoenix/blob/master/ui-ply-input_3.8.0.zip?raw=true
-
-
 https://github.com/advisory/phoenix/ ui-ply-input_3.8.0.zip
-
 bauble cache https://github.com/advisory/phoenix.git ui-ply-input_3.8.0.zip
 bauble install https://github.com/advisory/phoenix.git ui-ply-input_3.8.0.zip
+```

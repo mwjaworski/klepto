@@ -1,12 +1,11 @@
-const TransitStrategy = require('./transit_strategy')
 const path = require('path')
 const _ = require('lodash')
 
-const { configuration } = require('../core/configuration')
+const applicationConfiguration = require('../configurations/application')
 
 const Discover = {
   IS_SCOPE: /^@/i,
-  IS_VERSTransitN: /^[~^]?\d{1,2}\.\d{1,2}\.\d{1,2}$/i,
+  IS_VERSION: /^[~^]?\d{1,2}\.\d{1,2}\.\d{1,2}$/i,
   COMPONENT_NAME: /([a-z0-9-]*).*?\.(?:zip|tar|tgz|gz|tar\.gz)?$/i,
   FULL_COMPONENT_NAME: /(.*?)\.(?:zip|tar|tgz|gz|tar\.gz)?$/i
 }
@@ -47,18 +46,22 @@ class ReferenceStrategy {
     return _.trimEnd(`${reference} ${addendum}`)
   }
 
+  /**
+   *
+   * @param {*} scopeOrResource
+   */
   static scopeToResource (scopeOrResource) {
-    const patternMarkers = configuration.get(`rules.patternMarkers`)
+    const patternMarkers = applicationConfiguration.get(`rules.patternMarkers`)
 
     const isNotScope = _.first(scopeOrResource) !== patternMarkers.source
     if (isNotScope) {
       return scopeOrResource
     }
 
-    const [reference, _ignoreAddendum] = scopeOrResource.split(` `)
+    const reference = _.head(scopeOrResource.split(` `))
     const [uri, version] = reference.split(patternMarkers.version)
     const uriAspects = uri.split(patternMarkers.separator)
-    const sourceConversionRule = this.__matchCoversionRule(uri, uriAspects)
+    const sourceConversionRule = this.__matchConversionRule(uri, uriAspects)
 
     if (!sourceConversionRule) {
       return scopeOrResource
@@ -70,9 +73,13 @@ class ReferenceStrategy {
     return _.template(template)(_.merge({}, templateVariables, constants, { version }))
   }
 
-  static __matchCoversionRule(uri, uriAspects) {
-    const patternMarkers = configuration.get(`rules.patternMarkers`)
-    const sources = configuration.get(`sources`)
+  /**
+   *
+   * @param {*} uri
+   * @param {*} uriAspects
+   */
+  static __matchConversionRule (uri, uriAspects) {
+    const sources = applicationConfiguration.get(`sources`)
     const scope = uriAspects[0] = (_.first(uriAspects) || '').substring(1)
 
     return _.find(sources, ({ pattern, reference }, sourceKey) => {
@@ -80,12 +87,13 @@ class ReferenceStrategy {
     })
   }
 
+  /**
+   *
+   * @param {*} resource
+   */
   static resourceToSpecifier (resource) {
-
-    // console.log(configuration.get())
-
-    const versionMarker = configuration.get(`rules.patternMarkers.version`)
-    const stagingFolder = configuration.get(`paths.staging`)
+    const versionMarker = applicationConfiguration.get(`rules.patternMarkers.version`)
+    const stagingFolder = applicationConfiguration.get(`paths.staging`)
 
     const [reference, addendum] = resource.split(` `)
     const [uri, version] = reference.split(versionMarker)
@@ -104,6 +112,11 @@ class ReferenceStrategy {
     }
   }
 
+  /**
+   *
+   * @param {*} fullURI
+   * @param {*} regexFind
+   */
   static __findPathAspect (fullURI, regexFind) {
     const lastAspect = _.last(_.compact(fullURI.split(path.sep || `/`)))
     const extractZipName = regexFind.exec(lastAspect)
@@ -112,13 +125,23 @@ class ReferenceStrategy {
     return pathAspect
   }
 
+  /**
+   *
+   * @param {*} specifier
+   * @param {*} archiveManifest
+   */
   static buildArchivePath (specifier, archiveManifest) {
-    const paths = configuration.get(`paths`)
-    const archiveName = (archiveManifest.name) ? archiveManifest.name : specifier.name
+    const paths = applicationConfiguration.get(`paths`)
+    const archiveName = (archiveManifest.name) ? archiveManifest.name : specifier.archive
+    const archiveFolder = archiveManifest.repositoryFolder || paths.archives
 
-    return `${paths.archives}/${archiveName}/`
+    return `${archiveFolder}/${archiveName}/`
   }
 
+  /**
+   *
+   * @param {*} specifier
+   */
   static buildStagingPath (specifier) {
     return specifier.stagingPath
   }

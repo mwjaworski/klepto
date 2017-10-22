@@ -3,10 +3,17 @@ const path = require('path')
 
 const OperatingSystem = require('../support/operating_system')
 
-const { configuration } = require('../core/configuration')
-const paths = configuration.get(`paths`)
+const applicationConfiguration = require('../configurations/application')
+const paths = applicationConfiguration.get(`paths`)
 
 class GitTransit {
+
+  static getTagList(specifier) {
+    return new Promise((resolve, reject) => {
+      resolve([])
+    })
+  }
+
   static sendToCache (specifier) {
     return new Promise((resolve, reject) => {
       const cacheTo = this.__cacheTo(specifier)
