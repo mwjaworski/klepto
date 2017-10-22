@@ -1,5 +1,10 @@
 # Bauble Changelog
 
+## 0.3.0
+
+- ADDED semver rules for install
+- ADDED manifest recursive call
+
 ## 0.2.2
 
 - ADDED load configuration from application (default), home, and project
