@@ -12,7 +12,6 @@ module.exports = {
         return true
       })
       .action((args, done) => {
-
         // TODO download works on one archive at a time, try `all` for every package? or *
         // TODO evaluate how useful audit is and how it works with a full install
 

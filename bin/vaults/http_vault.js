@@ -1,19 +1,18 @@
 
-
 class HTTPVault {
-  static getVersions(archiveName) {
+  static getVersions (archiveName) {
     return new Promise((resolve, reject) => {
       resolve([specifier.version])
     })
   }
 
-  static matchAppropriateVersion(archiveName, versionRequest) {
+  static matchAppropriateVersion (archiveName, versionRequest) {
     return new Promise((resolve, reject) => {
       resolve([specifier.version])
     })
   }
 
-  static assignAppropriateVersion(specifier) {
+  static assignAppropriateVersion (specifier) {
     return new Promise((resolve, reject) => {
       resolve(specifier)
     })

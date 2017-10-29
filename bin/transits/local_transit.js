@@ -6,8 +6,7 @@ const applicationConfiguration = require('../configurations/application')
 const paths = applicationConfiguration.get(`paths`)
 
 class LocalTransit {
-
-  static getTagList(specifier) {
+  static getTagList (specifier) {
     return new Promise((resolve, reject) => {
       resolve([])
     })

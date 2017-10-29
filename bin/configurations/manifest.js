@@ -1,5 +1,6 @@
 const applicationConfiguration = require('../configurations/application')
 const fs = require('fs-extra')
+const _ = require('lodash')
 
 class ManifestConfiguration {
   static build (archivePath) {
@@ -37,7 +38,7 @@ class ManifestConfiguration {
     }
   }
 
-  __defaultManifest() {
+  __defaultManifest () {
     return {
       name: '',
       version: '',
@@ -46,7 +47,7 @@ class ManifestConfiguration {
     }
   }
 
-  get system() {
+  get system () {
     return this.__system
   }
 

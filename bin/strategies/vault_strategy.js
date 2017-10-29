@@ -14,8 +14,7 @@ const Discover = {
  * and evaluates which version to load in to the .vault/staging
  */
 class VaultStrategy {
-
-  static of({ specifier }) {
+  static of ({ specifier }) {
     const { uri } = specifier
 
     // NOTE order matters, ofFolder (currently) is the default case
@@ -25,7 +24,7 @@ class VaultStrategy {
       this.__ofNull(uri)
   }
 
-  static __ofGit(uri) {
+  static __ofGit (uri) {
     const isGitByExtension = uri.match(Discover.IS_GIT) !== null
     const isURLBySignature = uri.match(Discover.IS_URL) !== null
     const isGit = isGitByExtension && isURLBySignature
@@ -33,7 +32,7 @@ class VaultStrategy {
     return isGit ? GitVault : undefined
   }
 
-  static __ofHTTP(uri) {
+  static __ofHTTP (uri) {
     const isFileByExtension = uri.match(Discover.IS_EXTENSION) !== null
     const isURLBySignature = uri.match(Discover.IS_URL) !== null
     const isHTTP = isFileByExtension && isURLBySignature
@@ -41,14 +40,13 @@ class VaultStrategy {
     return isHTTP ? HTTPVault : undefined
   }
 
-  static __ofFolder(uri) {
+  static __ofFolder (uri) {
     return FolderVault
   }
 
-  static __ofNull(uri) {
+  static __ofNull (uri) {
     return NullVault
   }
-
 }
 
 module.exports = VaultStrategy
