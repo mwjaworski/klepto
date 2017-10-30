@@ -72,7 +72,7 @@ class FileSystem {
 
   static read (path, streamOptions = { encoding: `binary` }) {
     return new Promise((resolve, reject) => {
-      fs.readFile(this.readPath(path), `binary`, (err, data) => {
+      fs.readFile(this.readPath(path), streamOptions, (err, data) => {
         if (err) {
           return reject(new Error(err))
         }
