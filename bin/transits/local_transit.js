@@ -30,12 +30,12 @@ class LocalTransit {
     })
   }
 
-  static __originalLocation ({ uri, addendum }) {
-    return _.trimEnd(`${uri}${addendum || ''}`)
+  static __originalLocation ({ uri }) {
+    return _.trimEnd(`${uri}`)
   }
 
-  static __cachePath ({ uri, addendum }) {
-    const originalLocation = this.__originalLocation({ uri, addendum })
+  static __cachePath ({ uri }) {
+    const originalLocation = this.__originalLocation({ uri })
     const extension = path.extname(originalLocation)
     const zipFile = path.basename(originalLocation, extension)
 

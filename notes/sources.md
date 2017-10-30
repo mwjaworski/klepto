@@ -32,16 +32,16 @@ node bin/index.js cache --audit ../bower-alternative-source-resolver.zip 1.2.3
 
 // 1. zip
 
-local + zip       (DONE)
+local + zip       (DONE)    NO
 web + zip         (DONE)
 
 // 2. git folder (entire repo)
 
-git + folder      (DONE)
+git + folder      (DONE)    NO
 
 // 3. git folder of zips
 
-git + folder/zip  (----)
+git + folder/zip  (----)    NO
 
 // 4. tar
 
@@ -80,19 +80,19 @@ node bin/index.js cache --audit http://phoenix.eab.com/projects/core-ply-brand_3
 node bin/index.js cache http://phoenix.eab.com/projects/core-ply-brand_3.8.0.zip
 
 
-A. web + zip           http://a.b.c/file.zip 1.2.3
-B. git + folder/zip    http://a.b.c/file.git folder/file.zip 1.2.3
-C. git + folder        http://a.b.c/file.git 1.2.3
-D. local + folder/zip  a/b/c/ folder/file.zip 1.2.3
-E. local + zip         a/b/c/folder/file.zip 1.2.3
-F. local + folder      a/b/c/ 1.2.3
+A. web + zip           http://a.b.c/file.zip 1.2.3                    YES
+B. git + folder/zip    http://a.b.c/file.git folder/file.zip 1.2.3    NO
+C. git + folder        http://a.b.c/file.git 1.2.3                    NO
+D. local + folder/zip  a/b/c/ folder/file.zip 1.2.3                   NO
+E. local + zip         a/b/c/folder/file.zip 1.2.3                    YES
+F. local + folder      a/b/c/ 1.2.3                                   YES
 
-A. node bin/index.js cache  http://phoenix.eab.com/projects/core-ply-brand_3.8.0.zip#1.2.3
-B. node bin/index.js cache  https://repo.advisory.com/scm/~jaworskm/test-test.git#1.2.3 core-ply-brand_3.8.0.zip
-C. node bin/index.js cache  https://repo.advisory.com/scm/~jaworskm/test-test.git 1.2.3
-D. node bin/index.js cache  ../ bower-alternative-source-resolver.zip 1.2.3
-E. node bin/index.js cache  ../bower-alternative-source-resolver.zip 1.2.3
-F. node bin/index.js cache  ../test  1.2.3
+A. node bin/index.js download  http://phoenix.eab.com/projects/core-ply-brand_3.8.0.zip@1.2.3
+B. node bin/index.js download  https://repo.advisory.com/scm/~jaworskm/test-test.git#1.2.3 core-ply-brand_3.8.0.zip
+C. node bin/index.js download  https://repo.advisory.com/scm/~jaworskm/test-test.git 1.2.3
+D. node bin/index.js download  ../ bower-alternative-source-resolver.zip 1.2.3
+E. node bin/index.js download  ../bower-alternative-source-resolver.zip@1.2.3
+F. node bin/index.js download  ../test@S1.2.3
 
 A. cache (zip)          staging (folder)    component (folder-refined)    DONE
 B. cache (folder/zip)   staging (folder)    component (folder-refined)    ----

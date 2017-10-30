@@ -5,7 +5,7 @@ const AuditLog = require('../support/audit_log')
 module.exports = {
   registerVorpalCommand: (vorpal, applicationConfiguration) => {
     return vorpal
-      .command(`download <reference> [addendum]`)
+      .command(`download <reference>`)
       .option('-a, --audit', `Inspect the tools selected for a reference`)
       .description(`Download an archive.`)
       .validate(function (args) {

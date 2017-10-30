@@ -15,8 +15,8 @@ class PackageStrategy {
   /**
    * we only support zip currently
    */
-  static of ({ uri, addendum }) {
-    const fullURI = _.trim(`${uri || ''}${addendum || ''}`)
+  static of ({ uri }) {
+    const fullURI = _.trim(`${uri || ''}`)
     const isTar = !!fullURI.match(Discover.IS_TAR)
     const isZip = !!fullURI.match(Discover.IS_ZIP)
 

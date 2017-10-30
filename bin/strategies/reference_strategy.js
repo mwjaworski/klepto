@@ -19,11 +19,11 @@ const Discover = {
  * "@source/group/resource version" ==> "url resource version"
  *
  * resource-reference to specifier-reference
- * "uri#version addendum" ===> { url, addendum, version }
+ * "uri#version" ===> { url, version }
  */
 class ReferenceStrategy {
-  static referenceToSpecifier (reference, addendum) {
-    const scopeOrResource = this.normalizeReference(reference, addendum)
+  static referenceToSpecifier (reference) {
+    const scopeOrResource = this.normalizeReference(reference)
     const resource = this.scopeToResource(scopeOrResource)
     const specifier = this.resourceToSpecifier(resource)
 
@@ -36,14 +36,11 @@ class ReferenceStrategy {
    * folder#1.2.3      => folder#1.2.3
    * folder res        => folder#master res
    *
-   * @param { reference, addendum } reference
-   * @return "reference addendum"
+   * @param { reference } reference
+   * @return "reference"
    */
-  static normalizeReference (reference, addendum) {
-    addendum = _.trimStart(addendum || '', path.sep)
-    reference = reference || ''
-
-    return _.trimEnd(`${reference} ${addendum}`)
+  static normalizeReference (reference) {
+    return _.trimEnd(_.trimStart(reference || '', path.sep))
   }
 
   /**
@@ -89,24 +86,21 @@ class ReferenceStrategy {
 
   /**
    *
-   * @param {*} resource
+   * @param {*} reference
    */
-  static resourceToSpecifier (resource) {
+  static resourceToSpecifier (reference) {
     const versionMarker = applicationConfiguration.get(`rules.patternMarkers.version`)
     const stagingFolder = applicationConfiguration.get(`paths.staging`)
 
-    const [reference, addendum] = resource.split(` `)
     const [uri, version] = reference.split(versionMarker)
-    const fullURI = `${reference || ''}/${addendum || ''}`
-    const fullFolderURI = this.__findPathAspect(fullURI, Discover.FULL_COMPONENT_NAME)
-    const archive = this.__findPathAspect(fullURI, Discover.COMPONENT_NAME)
+    const folderURI = this.__findPathAspect(reference, Discover.FULL_COMPONENT_NAME)
+    const archive = this.__findPathAspect(reference, Discover.COMPONENT_NAME)
 
-    const stagingPath = `${stagingFolder}/${fullFolderURI}/`
+    const stagingPath = `${stagingFolder}/${folderURI}/`
 
     return {
       version: version || `master`,
       stagingPath,
-      addendum,
       archive,
       uri
     }
