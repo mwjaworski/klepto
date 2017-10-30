@@ -2,19 +2,13 @@
 class LocalVault {
   static getVersions (archiveName) {
     return new Promise((resolve, reject) => {
-      resolve([specifier.version])
+      resolve([componentRequest.version])
     })
   }
 
-  static matchAppropriateVersion (archiveName, versionRequest) {
+  static assignAppropriateVersion (componentRequest) {
     return new Promise((resolve, reject) => {
-      resolve([specifier.version])
-    })
-  }
-
-  static assignAppropriateVersion (specifier) {
-    return new Promise((resolve, reject) => {
-      resolve(specifier)
+      resolve(componentRequest)
     })
   }
 }

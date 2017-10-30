@@ -13,21 +13,21 @@ const Discover = {
 // DUPLICATE_SEPERATOR: new RegExp(`${path.sep}+`, `g`)
 
 /**
- * a _reference_ can have a shape of scope, resource, or specifier
+ * a _reference_ can have a shape of scope, resource, or componentRequest
  *
  * scope-reference to resource-reference
  * "@source/group/resource version" ==> "url resource version"
  *
- * resource-reference to specifier-reference
+ * resource-reference to componentRequest-reference
  * "uri#version" ===> { url, version }
  */
 class ReferenceStrategy {
-  static referenceToSpecifier (reference) {
+  static referenceToComponentRequest (reference) {
     const scopeOrResource = this.normalizeReference(reference)
     const resource = this.scopeToResource(scopeOrResource)
-    const specifier = this.resourceToSpecifier(resource)
+    const componentRequest = this.resourceToComponentRequest(resource)
 
-    return specifier
+    return componentRequest
   }
 
   /**
@@ -88,7 +88,7 @@ class ReferenceStrategy {
    *
    * @param {*} reference
    */
-  static resourceToSpecifier (reference) {
+  static resourceToComponentRequest (reference) {
     const versionMarker = applicationConfiguration.get(`rules.patternMarkers.version`)
     const stagingFolder = applicationConfiguration.get(`paths.staging`)
 
@@ -121,12 +121,12 @@ class ReferenceStrategy {
 
   /**
    *
-   * @param {*} specifier
+   * @param {*} componentRequest
    * @param {*} archiveManifest
    */
-  static buildArchivePath (specifier, archiveManifest) {
+  static buildArchivePath (componentRequest, archiveManifest) {
     const paths = applicationConfiguration.get(`paths`)
-    const archiveName = (archiveManifest.name) ? archiveManifest.name : specifier.archive
+    const archiveName = (archiveManifest.name) ? archiveManifest.name : componentRequest.archive
     const archiveFolder = archiveManifest.repositoryFolder || paths.archives
 
     return `${archiveFolder}/${archiveName}/`
@@ -134,10 +134,10 @@ class ReferenceStrategy {
 
   /**
    *
-   * @param {*} specifier
+   * @param {*} componentRequest
    */
-  static buildStagingPath (specifier) {
-    return specifier.stagingPath
+  static buildStagingPath (componentRequest) {
+    return componentRequest.stagingPath
   }
 }
 

@@ -5,11 +5,11 @@ const ReferenceStrategy = require('../strategies/reference_strategy')
 const FileSystem = require('../support/file_system')
 const _ = require('lodash')
 
-module.exports = ({ specifier }) => {
+module.exports = ({ componentRequest }) => {
   const paths = applicationConfiguration.get(`paths`)
-  const stagingPath = ReferenceStrategy.buildStagingPath(specifier)
+  const stagingPath = ReferenceStrategy.buildStagingPath(componentRequest)
   const manifestJson = ManifestConfiguration.build(stagingPath)
-  const archivePath = ReferenceStrategy.buildArchivePath(specifier, manifestJson)
+  const archivePath = ReferenceStrategy.buildArchivePath(componentRequest, manifestJson)
   const ignoreFolders = _.merge(
     [ `${_.get(manifestJson.paths, `archives`, '')}` ],
     applicationConfiguration.get(`rules.ignoreFiles`, []),

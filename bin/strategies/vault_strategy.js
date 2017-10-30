@@ -12,13 +12,11 @@ const Discover = {
  * and evaluates which version to load in to the .vault/staging
  */
 class VaultStrategy {
-  static of ({ specifier }) {
-    const { uri } = specifier
+  static of ({ componentRequest }) {
+    const { uri } = componentRequest
 
-    // NOTE order matters, ofFolder (currently) is the default case
-    return this.__ofWeb(uri) ||
-      this.__ofFolder(uri) ||
-      this.__ofNull(uri)
+    // supports only single version download (currently)
+    return this.__ofNull(uri)
   }
 
   static __ofHTTP (uri) {

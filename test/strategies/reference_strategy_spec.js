@@ -12,7 +12,7 @@ test.cb('strategy: reference (folder)', t => {
     version,
     archive,
     uri
-  } = ReferenceStrategy.referenceToSpecifier(`../folder/sub_folder/`)
+  } = ReferenceStrategy.referenceToComponentRequest(`../folder/sub_folder/`)
 
   t.is(version, `master`, `version defaults to master`)
   t.is(archive, `sub_folder`, `the archive is the last folder name`)

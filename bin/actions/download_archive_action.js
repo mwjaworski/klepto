@@ -6,21 +6,21 @@ const FileSystem = require('../support/file_system')
 const downloadArchiveAction = (args) => {
   return createArchiveRequestAction(args)
     .then((archiveRequest) => {
-      const { specifier, PackageTool, TransitTool } = archiveRequest
+      const { componentRequest, PackageTool, TransitTool } = archiveRequest
       const paths = applicationConfiguration.get(`paths`)
 
-      FileSystem.makeDirectory(`${specifier.stagingPath}/`)
+      FileSystem.makeDirectory(`${componentRequest.stagingPath}/`)
       FileSystem.makeDirectory(`${paths.cache}/`)
 
       return TransitTool
-        .sendToCache(specifier)
+        .sendToCache(componentRequest)
           .then(({ cachePath }) => {
             VaultStrategy
               .of(archiveRequest)
-              .assignAppropriateVersion(specifier)
+              .assignAppropriateVersion(componentRequest)
                 .then(() => {
                   return PackageTool
-                    .sendToStaging(specifier, cachePath)
+                    .sendToStaging(componentRequest, cachePath)
                 })
           })
           .then(() => archiveRequest)

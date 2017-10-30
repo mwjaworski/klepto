@@ -4,14 +4,14 @@ const TransitStrategy = require(`../strategies/transit_strategy`)
 
 module.exports = ({ reference }) => {
   return new Promise((resolve, reject) => {
-    const specifier = ReferenceStrategy.referenceToSpecifier(reference)
-    const PackageTool = PackageStrategy.of(specifier)
-    const TransitTool = TransitStrategy.of(specifier)
+    const componentRequest = ReferenceStrategy.referenceToComponentRequest(reference)
+    const PackageTool = PackageStrategy.of(componentRequest)
+    const TransitTool = TransitStrategy.of(componentRequest)
 
     resolve({
       PackageTool,
       TransitTool,
-      specifier
+      componentRequest
     })
   })
 }
