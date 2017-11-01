@@ -1,12 +1,12 @@
-const createArchiveRequestAction = require('./create_archive_request_action')
+const createArchiveRequestAction = require('./create_resource_request_action')
 const applicationConfiguration = require('../configurations/application')
 const VaultStrategy = require('../strategies/vault_strategy')
 const FileSystem = require('../support/file_system')
 
 const downloadArchiveAction = (args) => {
   return createArchiveRequestAction(args)
-    .then((archiveRequest) => {
-      const { archiveRequest, PackageTool, TransitTool } = archiveRequest
+    .then((resourceRequest) => {
+      const { archiveRequest, PackageTool, TransitTool } = resourceRequest
       const paths = applicationConfiguration.get(`paths`)
 
       FileSystem.makeDirectory(`${archiveRequest.stagingPath}/`)
@@ -23,7 +23,7 @@ const downloadArchiveAction = (args) => {
                     .sendToStaging(archiveRequest, cachePath)
                 })
           })
-          .then(() => archiveRequest)
+          .then(() => resourceRequest)
     })
 }
 

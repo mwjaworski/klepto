@@ -1,4 +1,4 @@
-const createArchiveRequestAction = require('../actions/create_archive_request_action')
+const createArchiveRequestAction = require('../actions/create_resource_request_action')
 const downloadArchiveAction = require('../actions/download_archive_action')
 const AuditLog = require('../support/audit_log')
 
