@@ -12,8 +12,8 @@ const Discover = {
  * and evaluates which version to load in to the .vault/staging
  */
 class VaultStrategy {
-  static of ({ componentRequest }) {
-    const { uri } = componentRequest
+  static of ({ archiveRequest }) {
+    const { uri } = archiveRequest
 
     // supports only single version download (currently)
     return this.__ofNull(uri)

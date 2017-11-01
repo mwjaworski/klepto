@@ -5,11 +5,11 @@ const ReferenceStrategy = require('../strategies/reference_strategy')
 const FileSystem = require('../support/file_system')
 const _ = require('lodash')
 
-module.exports = ({ componentRequest }) => {
+module.exports = ({ archiveRequest }) => {
   const paths = applicationConfiguration.get(`paths`)
-  const stagingPath = ReferenceStrategy.buildStagingPath(componentRequest)
+  const stagingPath = ReferenceStrategy.buildStagingPath(archiveRequest)
   const manifestJson = ManifestConfiguration.build(stagingPath)
-  const archivePath = ReferenceStrategy.buildArchivePath(componentRequest, manifestJson)
+  const archivePath = ReferenceStrategy.buildArchivePath(archiveRequest, manifestJson)
   const ignoreFolders = _.merge(
     [ `${_.get(manifestJson.paths, `archives`, '')}` ],
     applicationConfiguration.get(`rules.ignoreFiles`, []),
@@ -17,6 +17,7 @@ module.exports = ({ componentRequest }) => {
   )
 
   // TODO review the dependencies to load other components
+  // NOTE this makes no sense with bower/npm for now because if the version is a mismatch it fails
 
   return FileSystem
     .makeDirectory(`${paths.archives}/`)

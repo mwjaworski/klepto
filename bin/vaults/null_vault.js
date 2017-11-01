@@ -4,17 +4,17 @@
 class NullVault {
   static getVersions (archiveName) {
     return new Promise((resolve, reject) => {
-      resolve([componentRequest.version])
+      resolve([archiveRequest.version])
     })
   }
 
   /**
    *
-   * @param {*} componentRequest
+   * @param {*} archiveRequest
    */
-  static assignAppropriateVersion (componentRequest) {
+  static assignAppropriateVersion (archiveRequest) {
     return new Promise((resolve, reject) => {
-      resolve(componentRequest)
+      resolve(archiveRequest)
     })
   }
 }

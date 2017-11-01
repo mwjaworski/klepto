@@ -15,12 +15,12 @@ module.exports = {
       .action((args, done) => {
         if (args.options.audit) {
           createArchiveRequestAction(args)
-            .then(({ componentRequest, TransitTool, PackageTool }) => {
+            .then(({ archiveRequest, TransitTool, PackageTool }) => {
               vorpal.log(
                 AuditLog.variableValue({
-                  uri: componentRequest.uri,
-                  version: componentRequest.version,
-                  archive: componentRequest.archive,
+                  uri: archiveRequest.uri,
+                  version: archiveRequest.version,
+                  archive: archiveRequest.archive,
                   io: TransitTool.name,
                   package: PackageTool.name
                 })

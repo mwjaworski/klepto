@@ -13,21 +13,21 @@ const Discover = {
 // DUPLICATE_SEPERATOR: new RegExp(`${path.sep}+`, `g`)
 
 /**
- * a _reference_ can have a shape of scope, resource, or componentRequest
+ * a _reference_ can have a shape of scope, resource, or archiveRequest
  *
  * scope-reference to resource-reference
  * "@source/group/resource version" ==> "url resource version"
  *
- * resource-reference to componentRequest-reference
+ * resource-reference to archiveRequest-reference
  * "uri#version" ===> { url, version }
  */
 class ReferenceStrategy {
-  static referenceToComponentRequest (reference) {
+  static referenceToArchiveRequest (reference) {
     const scopeOrResource = this.normalizeReference(reference)
     const resource = this.scopeToResource(scopeOrResource)
-    const componentRequest = this.resourceToComponentRequest(resource)
+    const archiveRequest = this.resourceToArchiveRequest(resource)
 
-    return componentRequest
+    return archiveRequest
   }
 
   /**
@@ -88,7 +88,7 @@ class ReferenceStrategy {
    *
    * @param {*} reference
    */
-  static resourceToComponentRequest (reference) {
+  static resourceToArchiveRequest (reference) {
     const versionMarker = applicationConfiguration.get(`rules.patternMarkers.version`)
     const stagingFolder = applicationConfiguration.get(`paths.staging`)
 
@@ -121,12 +121,12 @@ class ReferenceStrategy {
 
   /**
    *
-   * @param {*} componentRequest
+   * @param {*} archiveRequest
    * @param {*} archiveManifest
    */
-  static buildArchivePath (componentRequest, archiveManifest) {
+  static buildArchivePath (archiveRequest, archiveManifest) {
     const paths = applicationConfiguration.get(`paths`)
-    const archiveName = (archiveManifest.name) ? archiveManifest.name : componentRequest.archive
+    const archiveName = (archiveManifest.name) ? archiveManifest.name : archiveRequest.archive
     const archiveFolder = archiveManifest.repositoryFolder || paths.archives
 
     return `${archiveFolder}/${archiveName}/`
@@ -134,10 +134,10 @@ class ReferenceStrategy {
 
   /**
    *
-   * @param {*} componentRequest
+   * @param {*} archiveRequest
    */
-  static buildStagingPath (componentRequest) {
-    return componentRequest.stagingPath
+  static buildStagingPath (archiveRequest) {
+    return archiveRequest.stagingPath
   }
 }
 
