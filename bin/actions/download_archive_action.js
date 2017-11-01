@@ -15,7 +15,7 @@ const downloadArchiveAction = (args) => {
       return TransitTool
         .sendToCache(archiveRequest)
           .then(({ cachePath }) => {
-            VaultStrategy
+            return VaultStrategy
               .of(archiveRequest)
               .assignAppropriateVersion(archiveRequest)
                 .then(() => {

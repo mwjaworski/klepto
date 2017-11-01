@@ -93,8 +93,8 @@ class ReferenceStrategy {
     const stagingFolder = applicationConfiguration.get(`paths.staging`)
 
     const [uri, version] = reference.split(versionMarker)
-    const folderURI = this.__findPathAspect(reference, Discover.FULL_COMPONENT_NAME)
-    const archive = this.__findPathAspect(reference, Discover.COMPONENT_NAME)
+    const folderURI = this.__findPathAspect(uri, Discover.FULL_COMPONENT_NAME)
+    const archive = this.__findPathAspect(uri, Discover.COMPONENT_NAME)
 
     const stagingPath = `${stagingFolder}/${folderURI}/`
 

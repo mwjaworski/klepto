@@ -7,6 +7,7 @@ const vorpal = require('vorpal')()
 //
 //
 require('./commands/bundle').registerVorpalCommand(vorpal, applicationConfiguration)
+require('./commands/clean').registerVorpalCommand(vorpal, applicationConfiguration)
 require('./commands/download').registerVorpalCommand(vorpal, applicationConfiguration)
 require('./commands/install').registerVorpalCommand(vorpal, applicationConfiguration)
 require('./commands/publish').registerVorpalCommand(vorpal, applicationConfiguration)
