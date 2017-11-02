@@ -9,7 +9,6 @@ module.exports = {
         return true
       })
       .action((args, done) => {
-
         StatusLog.initialize()
 
         setInterval(() => {
@@ -17,10 +16,9 @@ module.exports = {
         }, 500)
 
         setTimeout(() => {
-          StatusLog.complete()
+          StatusLog.completeSuccess()
           done()
         }, 4000)
-
       })
   }
 }

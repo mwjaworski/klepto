@@ -7,8 +7,7 @@ const _ = require('lodash')
 
 const promoteArchiveAction = (archiveRequest) => {
   const paths = applicationConfiguration.get(`paths`)
-  const stagingPath = ReferenceStrategy.buildStagingPath(archiveRequest)
-  const manifestJson = ManifestConfiguration.build(stagingPath)
+  const manifestJson = ManifestConfiguration.build(archiveRequest.stagingPath)
   const archivePath = ReferenceStrategy.buildArchivePath(archiveRequest, manifestJson)
   const ignoreFolders = _.merge(
     applicationConfiguration.get(`rules.ignoreFiles`, []),
@@ -17,7 +16,7 @@ const promoteArchiveAction = (archiveRequest) => {
 
   return FileSystem
     .createDirectory(`${paths.archives}/`)
-    .copyNonIgnoredFiles(stagingPath, archivePath, ignoreFolders)
+    .copyNonIgnoredFiles(archiveRequest.stagingPath, archivePath, ignoreFolders)
     .then(() => manifestJson)
 }
 

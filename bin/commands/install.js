@@ -45,15 +45,14 @@ module.exports = {
           .catch(err => {
             vorpal.log(err.toString())
           })
-          .then((repoManifest) => {
-
-            console.log(repoManifest)
+          .then((archiveManifest) => {
+            console.log(archiveManifest)
 
             // 1. get list of dependencies
             // 2. each dependency
               // a. call installArchiveAction
 
-            StatusLog.complete()
+            StatusLog.completeSuccess()
             return done()
           })
       })

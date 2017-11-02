@@ -1,9 +1,7 @@
 const status = require('node-status')
-const _ = require('lodash')
 
 class StatusLog {
-
-  static initialize() {
+  static initialize () {
     this.uninitialize()
 
     this.__action = ''
@@ -31,8 +29,12 @@ class StatusLog {
     }
   }
 
-  static complete() {
+  static completeSuccess () {
     this.__action = 'success'
+  }
+
+  static completeFailure (reason) {
+    this.__action = `failure ${reason}`
   }
 }
 

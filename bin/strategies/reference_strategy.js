@@ -23,8 +23,8 @@ const Discover = {
  */
 class ReferenceStrategy {
   static referenceToArchiveRequest (reference) {
-    const scopeOrResource = this.normalizeReference(reference)
-    const resource = this.scopeToResource(scopeOrResource)
+    const scopeOrReference = this.normalizeReference(reference)
+    const resource = this.scopeToResource(scopeOrReference)
     const archiveRequest = this.resourceToArchiveRequest(resource)
 
     return archiveRequest
@@ -45,26 +45,29 @@ class ReferenceStrategy {
 
   /**
    *
-   * @param {*} scopeOrResource
+   * @param {*} scopeOrReference
    */
-  static scopeToResource (scopeOrResource) {
+  static scopeToResource (scopeOrReference) {
     const patternMarkers = applicationConfiguration.get(`rules.patternMarkers`)
-    const [uri, version] = scopeOrResource.split(patternMarkers.version)
+    const [uri, version] = this.__splitVersion(scopeOrReference)
     const uriAspects = uri.split(patternMarkers.separator)
     const sourceConversionRule = this.__matchConversionRule(uriAspects)
 
-    console.log(`scopeToResource`, sourceConversionRule, uriAspects)
     if (!sourceConversionRule) {
-      return scopeOrResource
+      return scopeOrReference
     }
 
     const { pattern, template, constants } = sourceConversionRule
     const templateVariables = _.zipObject(pattern.split(patternMarkers.separator), uriAspects)
 
-    console.log(`templateVariables`, templateVariables, template)
-
-    console.log(`>>> `, _.template(template)(_.merge({}, templateVariables, constants, { version })))
     return _.template(template)(_.merge({}, templateVariables, constants, { version }))
+  }
+
+  static __splitVersion(reference) {
+    const patternMarkers = applicationConfiguration.get(`rules.patternMarkers`)
+    const versionMarker = _.find(patternMarkers.version, (versionMarker) => reference.indexOf(versionMarker) !== -1)
+
+    return reference.split(versionMarker || _.first(patternMarkers.version))
   }
 
   /**
@@ -75,9 +78,8 @@ class ReferenceStrategy {
   static __matchConversionRule (uriAspects) {
     const sources = applicationConfiguration.get(`sources`)
     const scope = uriAspects[0] = (_.first(uriAspects) || '')
-    console.log(sources)
+
     return _.find(sources, (_0, sourceKey) => {
-      console.log(sourceKey)
       return scope === sourceKey
     })
   }
@@ -87,10 +89,9 @@ class ReferenceStrategy {
    * @param {*} reference
    */
   static resourceToArchiveRequest (reference) {
-    const versionMarker = applicationConfiguration.get(`rules.patternMarkers.version`)
     const stagingFolder = applicationConfiguration.get(`paths.staging`)
 
-    const [uri, version] = reference.split(versionMarker)
+    const [uri, version] = this.__splitVersion(reference)
     const folderURI = this.__findPathAspect(uri, Discover.FULL_COMPONENT_NAME)
     const archive = this.__findPathAspect(uri, Discover.COMPONENT_NAME)
 

@@ -10,7 +10,7 @@
   "rules": {
     "patternMarkers": {
       "separator": "/",
-      "version": "@"
+      "version": ["@", "#"]
     },
     "ignoreFiles": [
       ".git",
@@ -26,8 +26,7 @@
       "archives",
       "package-lock.json"
     ],
-    "configurationSystem": [
-      {
+    "configurationSystem": [{
         "repositoryFolder": "bower_components",
         "toolConfiguration": ".bowerrc",
         "archiveManifest": "bower.json"
