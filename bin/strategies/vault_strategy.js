@@ -25,8 +25,8 @@ class VaultStrategy {
     return isHTTP ? HTTPVault : undefined
   }
 
-  static __ofFolder (uri) {
-    return FolderVault
+  static __ofLocal (uri) {
+    return LocalVault
   }
 
   static __ofNull (uri) {

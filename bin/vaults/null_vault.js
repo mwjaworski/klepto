@@ -2,7 +2,7 @@
  * does not resolve versions
  */
 class NullVault {
-  static getVersions (archiveName) {
+  static getVersions (archiveRequest) {
     return new Promise((resolve, reject) => {
       resolve([archiveRequest.version])
     })

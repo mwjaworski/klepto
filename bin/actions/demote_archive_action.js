@@ -1,6 +1,4 @@
-const createArchiveRequestAction = require('./create_resource_request_action')
 const applicationConfiguration = require('../configurations/application')
-const VaultStrategy = require('../strategies/vault_strategy')
 const FileSystem = require('../support/file_system')
 
 const demoteArchiveAction = (args) => {
@@ -9,7 +7,6 @@ const demoteArchiveAction = (args) => {
     const { archive } = args
 
     FileSystem.removeDirectory(`${archivePath}/${archive}`)
-
   })
 }
 

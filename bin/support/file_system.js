@@ -21,7 +21,8 @@ class FileSystem {
       }
     }
 
-    return fs.copy(from, to, copyOptions)
+    fs.copy(from, to, copyOptions)
+    return this
   }
 
   /**

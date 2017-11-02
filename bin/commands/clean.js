@@ -9,10 +9,9 @@ module.exports = {
         return true
       })
       .action((args, done) => {
-
         let action
 
-        switch(args.reference) {
+        switch (args.reference) {
           case 'cache':
             action = fs.remove(applicationConfiguration.get(`paths.cache`))
             break
@@ -23,10 +22,9 @@ module.exports = {
 
         action
           .catch((reason) => {
-            console.error(reason);
+            console.error(reason)
           })
           .then(done)
-
       })
   }
 }
