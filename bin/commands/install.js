@@ -40,6 +40,7 @@ module.exports = {
             vorpal.log(err.toString())
           })
           .then((repoManifest) => {
+            // TODO get list of dependencies and call installArchiveAction on each
             console.log(repoManifest)
             return done()
           })

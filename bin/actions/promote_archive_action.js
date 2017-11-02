@@ -16,13 +16,10 @@ const promoteArchiveAction = (archiveRequest) => {
     manifestJson.ignore
   )
 
-  // TODO review the dependencies to load other components
-  // NOTE this makes no sense with bower/npm for now because if the version is a mismatch it fails
-
   return FileSystem
     .createDirectory(`${paths.archives}/`)
     .copyNonIgnoredFiles(stagingPath, archivePath, ignoreFolders)
-    .then(() => manifestJson)
+    .then(() => manifestJson.manifest)
 }
 
 module.exports = promoteArchiveAction

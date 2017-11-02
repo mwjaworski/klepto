@@ -51,6 +51,10 @@ class ManifestConfiguration {
     return this.__system
   }
 
+  get manifest () {
+    return this.__manifest
+  }
+
   get name () {
     return this.__getSafeProp(`name`, ``)
   }
