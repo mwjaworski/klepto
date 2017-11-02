@@ -4,9 +4,8 @@ const _ = require('lodash')
 const applicationConfiguration = require('../configurations/application')
 
 const Discover = {
-  IS_VERSION: /^[~^>=<]?\d{1,2}\.\d{1,2}\.\d{1,2}$/i,
-  COMPONENT_NAME: /([a-z0-9-]*).*?\.(?:zip|tar|tgz|gz|tar\.gz|git)?$/i,
-  FULL_COMPONENT_NAME: /(.*?)\.(?:zip|tar|tgz|gz|tar\.gz|git)?$/i
+  COMPONENT_ASPECT: /.*?\/([a-z0-9-_\.]*?)[\.\/]?(zip|tar|tgz|gz|tar\.gz|git)?$/i,
+  IS_VERSION: /^[~^>=<]?\d{1,2}\.\d{1,2}\.\d{1,2}$/i
 }
 
 /**
@@ -19,7 +18,7 @@ const Discover = {
  * "uri#version" ===> { url, version }
  */
 class ReferenceParser {
-  static referenceToArchiveRequest (reference) {
+  static referenceToArchiveRequest(reference) {
     const scopeOrReference = this.normalizeReference(reference)
     const resource = this.scopeToResource(scopeOrReference)
     const archiveRequest = this.resourceToArchiveRequest(resource)
@@ -36,7 +35,7 @@ class ReferenceParser {
    * @param { reference } reference
    * @return "reference"
    */
-  static normalizeReference (reference) {
+  static normalizeReference(reference) {
     return _.trimEnd(_.trimStart(reference || '', path.sep))
   }
 
@@ -44,9 +43,9 @@ class ReferenceParser {
    *
    * @param {*} scopeOrReference
    */
-  static scopeToResource (scopeOrReference) {
+  static scopeToResource(scopeOrReference) {
     const patternMarkers = applicationConfiguration.get(`rules.patternMarkers`)
-    const [uri, version] = this.__splitVersion(scopeOrReference)
+    const [uri, version = ``] = this.__splitVersion(scopeOrReference)
     const uriAspects = uri.split(patternMarkers.separator)
     const sourceConversionRule = this.__matchConversionRule(uriAspects)
 
@@ -54,10 +53,69 @@ class ReferenceParser {
       return scopeOrReference
     }
 
-    const { pattern, template, constants } = sourceConversionRule
+    const {
+      pattern,
+      template,
+      constants
+    } = sourceConversionRule
     const templateVariables = _.zipObject(pattern.split(patternMarkers.separator), uriAspects)
 
-    return _.template(template)(_.merge({}, templateVariables, constants, { version }))
+    return _.template(template)(_.merge({}, templateVariables, constants, {
+      version
+    }))
+  }
+
+  /**
+   *
+   * @param {*} reference
+   */
+  static resourceToArchiveRequest(reference) {
+    const { staging, cache } = applicationConfiguration.get(`paths`)
+
+    const [uri, version = `master`] = this.__splitVersion(reference)
+    const [_0, archive, extension] = Discover.COMPONENT_ASPECT.exec(uri)
+
+    const safeExtension = (!!extension) ? `.${extension}` : `/`
+    const cachePath = `${cache}/${archive}__${version}${safeExtension}`
+    const stagingPath = `${staging}/${archive}/${version}/`
+    const uuid = `${archive}--${version}`
+
+    return {
+      stagingPath,
+      cachePath,
+      archive,
+      version,
+      uuid,
+      uri
+    }
+  }
+
+  /**
+   *
+   * @param {*} archiveRequest
+   * @param {*} archiveManifest
+   */
+  static buildArchivePath(archiveRequest, archiveManifest) {
+    const paths = applicationConfiguration.get(`paths`)
+    const archiveName = (archiveManifest.name) ? archiveManifest.name : archiveRequest.archive
+    const archiveFolder = archiveManifest.repositoryFolder || paths.archives
+
+    return `${archiveFolder}/${archiveName}/`
+  }
+
+
+  /**
+   *
+   * @param {*} uri
+   * @param {*} uriAspects
+   */
+  static __matchConversionRule(uriAspects) {
+    const sources = applicationConfiguration.get(`sources`)
+    const scope = uriAspects[0] = (_.first(uriAspects) || '')
+
+    return _.find(sources, (_0, sourceKey) => {
+      return scope === sourceKey
+    })
   }
 
   static __splitVersion(reference) {
@@ -67,74 +125,6 @@ class ReferenceParser {
     return reference.split(versionMarker || _.first(patternMarkers.version))
   }
 
-  /**
-   *
-   * @param {*} uri
-   * @param {*} uriAspects
-   */
-  static __matchConversionRule (uriAspects) {
-    const sources = applicationConfiguration.get(`sources`)
-    const scope = uriAspects[0] = (_.first(uriAspects) || '')
-
-    return _.find(sources, (_0, sourceKey) => {
-      return scope === sourceKey
-    })
-  }
-
-  /**
-   *
-   * @param {*} reference
-   */
-  static resourceToArchiveRequest (reference) {
-    const stagingFolder = applicationConfiguration.get(`paths.staging`)
-
-    const [uri, version] = this.__splitVersion(reference)
-    const folderURI = this.__findPathAspect(uri, Discover.FULL_COMPONENT_NAME)
-    const archive = this.__findPathAspect(uri, Discover.COMPONENT_NAME)
-
-    const stagingPath = `${stagingFolder}/${folderURI}/`
-
-    return {
-      version: version || `master`,
-      stagingPath,
-      archive,
-      uri
-    }
-  }
-
-  /**
-   *
-   * @param {*} fullURI
-   * @param {*} regexFind
-   */
-  static __findPathAspect (fullURI, regexFind) {
-    const lastAspect = _.last(_.compact(fullURI.split(path.sep || `/`)))
-    const extractZipName = regexFind.exec(lastAspect)
-    const pathAspect = (extractZipName) ? _.last(extractZipName) : lastAspect
-
-    return pathAspect
-  }
-
-  /**
-   *
-   * @param {*} archiveRequest
-   * @param {*} archiveManifest
-   */
-  static buildArchivePath (archiveRequest, archiveManifest) {
-    const paths = applicationConfiguration.get(`paths`)
-    const archiveName = (archiveManifest.name) ? archiveManifest.name : archiveRequest.archive
-    const archiveFolder = archiveManifest.repositoryFolder || paths.archives
-
-    return `${archiveFolder}/${archiveName}/`
-  }
-
-  /**
-   *
-   * @param {*} archiveRequest
-   */
-  static buildStagingPath (archiveRequest) {
-    return archiveRequest.stagingPath
-  }
 }
 
 module.exports = ReferenceParser

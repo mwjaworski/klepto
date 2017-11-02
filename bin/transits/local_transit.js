@@ -13,9 +13,8 @@ class LocalTransit {
   }
 
   // TODO if we provide a file:// prefix then we have to tear it off
-  static sendToCache (archiveRequest) {
-    const originalLocation = this.__originalLocation(archiveRequest)
-    const cachePath = this.__cachePath(archiveRequest)
+  static sendToCache ({ uri, cachePath }) {
+    const originalLocation = _.trimEnd(`${uri}`)
 
     return new Promise((resolve, reject) => {
       fs.copy(originalLocation, cachePath, err => {
@@ -28,21 +27,6 @@ class LocalTransit {
         }
       })
     })
-  }
-
-  static __originalLocation ({ uri }) {
-    return _.trimEnd(`${uri}`)
-  }
-
-  static __cachePath ({ uri }) {
-    const originalLocation = this.__originalLocation({ uri })
-    const extension = path.extname(originalLocation)
-    const zipFile = path.basename(originalLocation, extension)
-
-    const cachePathZip = `${paths.cache}/${zipFile}${extension}`
-    const cachePathFolder = `${paths.cache}/${path.basename(uri)}`
-
-    return (_.size(extension) > 0) ? cachePathZip : cachePathFolder
   }
 }
 

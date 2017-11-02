@@ -2,7 +2,6 @@ const downloadArchivesAction = require('../actions/download_archives_action')
 const installArchiveAction = require('../actions/install_archive_action')
 
 const StatusLog = require('../support/status_log')
-const AuditLog = require('../support/audit_log')
 
 module.exports = {
   registerVorpalCommand: (vorpal, applicationConfiguration) => {
@@ -19,7 +18,7 @@ module.exports = {
           [args.options.rename || '']: args.reference
         }
 
-        const vaultDependencies = ManifestConfiguration.build(`./`).dependencies() || {}
+        const vaultDependencies = ManifestConfiguration.build(`./`).dependencies()
         const archiveDependencies = (!args.reference) ? vaultDependencies : singleDependency
 
         StatusLog.initialize()
@@ -31,6 +30,8 @@ module.exports = {
             done()
           })
           .then(() => {
+
+            //
 
             // TODO install call components
               // 1. figure out version

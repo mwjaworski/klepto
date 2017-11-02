@@ -4,19 +4,19 @@ const StatusLog = require('../support/status_log')
 
 const installArchiveAction = (archiveRequest) => {
 
-  StatusLog.notify(`install ${archiveRequest.uri}`, archiveRequest.uri)
+  StatusLog.notify(`install ${archiveRequest.uri}`, archiveRequest.uuid)
   return promoteArchiveAction(archiveRequest)
 
   // return downloadArchiveAction(reference)
   //   .then(({ archiveRequest }) => {
-  //     StatusLog.notify(`install ${archiveRequest.uri}`, archiveRequest.uri)
+  //     StatusLog.notify(`install ${archiveRequest.uri}`, archiveRequest.uuid)
   //     return promoteArchiveAction(archiveRequest)
   //   })
 }
 
 module.exports = installArchiveAction
 
-// StatusLog.notify(`version ${archiveRequest.uri}`, archiveRequest.uri)
+// StatusLog.notify(`version ${archiveRequest.uri}`, archiveRequest.uuid)
 // return VaultFacade
 //   .of(archiveRequest)
 //   .assignAppropriateVersion(archiveRequest)

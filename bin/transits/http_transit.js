@@ -7,9 +7,7 @@ const applicationConfiguration = require('../configurations/application')
 const paths = applicationConfiguration.get(`paths`)
 
 class HTTPTransit {
-  static sendToCache ({ uri }) {
-    const cachePath = this.__cachePath({ uri })
-
+  static sendToCache ({ uri, cachePath }) {
     return axios({
       responseType: `arraybuffer`,
       maxContentLength: 2000000,
@@ -27,13 +25,6 @@ class HTTPTransit {
         }
       })
     })
-  }
-
-  static __cachePath ({ uri }) {
-    const extension = path.extname(uri)
-    const file = path.basename(uri, extension)
-
-    return `${paths.cache}/${file}${extension}`
   }
 }
 

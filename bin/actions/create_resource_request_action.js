@@ -2,6 +2,7 @@ const ReferenceParser = require(`../parsers/reference_parser`)
 const PackageFacade = require(`../facades/package_facade`)
 const TransitFacade = require(`../facades/transit_facade`)
 const DependencyLog = require('../support/dependency_log')
+const _ = require('lodash')
 
 module.exports = (reference) => {
   return new Promise((resolve, reject) => {
@@ -12,13 +13,10 @@ module.exports = (reference) => {
 
     DependencyLog.request(archiveRequest)
 
-    // AuditLog.variableValue({
-    //   version: archiveRequest.version,
-    //   archive: archiveRequest.archive,
+    // console.dir(_.merge(archiveRequest, {
     //   package: PackageTool.name,
-    //   uri: archiveRequest.uri,
     //   io: TransitTool.name
-    // })
+    // }))
 
     resolve({
       archiveRequest,

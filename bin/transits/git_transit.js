@@ -5,30 +5,23 @@ const applicationConfiguration = require('../configurations/application')
 const OperatingSystem = require('../support/operating_system')
 
 class GitTransit {
-  static sendToCache ({ uri }) {
+  static sendToCache ({ uri, version, cachePath }) {
     return new Promise((resolve, reject) => {
-      const cachePath = this.__cachePath(uri)
+
+      // NOTE this is not necessary because we clone separate folders per version
+      // `cd ${cachePath}`,
+      // `git fetch --all`,
+      // `git pull`,
+      // `cd ${process.cwd()}`
 
       OperatingSystem.execute([
-        `git clone --depth 1 --branch master ${uri} ${cachePath}`,
-        `cd ${cachePath}`,
-        `git fetch --all`,
-        `git pull`,
-        `cd ${process.cwd()}`
+        `git clone --depth 1 --branch ${version} ${uri} ${cachePath}`
       ]).then(() => {
         resolve({
           cachePath
         })
       })
     })
-  }
-
-  static __cachePath (uri) {
-    const paths = applicationConfiguration.get(`paths`)
-    const extension = path.extname(uri)
-    const file = path.basename(uri, extension)
-
-    return `${paths.cache}/${file}`
   }
 }
 

@@ -12,8 +12,8 @@ class DependencyLog {
     return this
   }
 
-  static request({ archive }, requestedBy) {
-    const request = this.__deps[archive] = this.__deps[archive] || {
+  static request({ uuid }, requestedBy) {
+    const request = this.__deps[uuid] = this.__deps[uuid] || {
       requesters: {}
     }
 
@@ -24,8 +24,8 @@ class DependencyLog {
     return this
   }
 
-  static hasRequest({ archive }) {
-    return !!this.__deps[archive]
+  static hasRequest({ uuid }) {
+    return !!this.__deps[uuid]
   }
 
 }

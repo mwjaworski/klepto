@@ -12,7 +12,7 @@ const downloadArchiveAction = (reference) => {
       const { isRedundant, archiveRequest, PackageTool, TransitTool } = resourceRequest
 
       if (isRedundant) {
-        StatusLog.notify(`pre-cached ${archiveRequest.uri}`, archiveRequest.uri)
+        StatusLog.notify(`pre-cached ${archiveRequest.uri}`, archiveRequest.uuid)
         return new Promise((resolve) => {
           resolve(resourceRequest)
         })
@@ -21,17 +21,17 @@ const downloadArchiveAction = (reference) => {
       FileSystem.createDirectory(`${archiveRequest.stagingPath}/`)
       FileSystem.createDirectory(`${paths.cache}/`)
 
-      StatusLog.notify(`cache ${archiveRequest.uri}`, archiveRequest.uri)
+      StatusLog.notify(`cache ${archiveRequest.uri}`, archiveRequest.uuid)
       return TransitTool
         .sendToCache(archiveRequest)
-          .then(({ cachePath }) => {
+          .then(() => {
 
             FileSystem.removeDirectory(`${archiveRequest.stagingPath}`)
             console.log(archiveRequest.stagingPath)
 
-            StatusLog.notify(`stage ${archiveRequest.uri}`, archiveRequest.uri)
+            StatusLog.notify(`stage ${archiveRequest.uri}`, archiveRequest.uuid)
             return PackageTool
-              .sendToStaging(archiveRequest, cachePath)
+              .sendToStaging(archiveRequest)
           })
           .then(() => resourceRequest)
     })
