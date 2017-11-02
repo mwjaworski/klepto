@@ -12,12 +12,12 @@ const Discover = {
 /**
  *
  */
-class TransitStrategy {
+class TransitFacade {
   /**
    * @param {String} uri uri for resource
    * @return {Transit} the Transit if the uri passes, if the uri does not match then NullTransit is returned
    */
-  static of ({ uri }) {
+  static of ({ uri, archive }) {
     // NOTE order matters, ofNull is the default case
     return this.__ofWeb(uri) ||
       this.__ofLocal(uri) ||
@@ -69,4 +69,4 @@ class TransitStrategy {
   }
 }
 
-module.exports = TransitStrategy
+module.exports = TransitFacade

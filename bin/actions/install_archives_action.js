@@ -2,11 +2,7 @@ const downloadArchiveAction = require('./download_archive_action')
 const promoteArchiveAction = require('./promote_archive_action')
 const StatusLog = require('../support/status_log')
 
-const installArchiveAction = (archiveRequest) => {
-
-  StatusLog.notify(`install ${archiveRequest.uri}`, archiveRequest.uri)
-  return promoteArchiveAction(archiveRequest)
-
+const installArchivesAction = (reference) => {
   // return downloadArchiveAction(reference)
   //   .then(({ archiveRequest }) => {
   //     StatusLog.notify(`install ${archiveRequest.uri}`, archiveRequest.uri)
@@ -14,7 +10,7 @@ const installArchiveAction = (archiveRequest) => {
   //   })
 }
 
-module.exports = installArchiveAction
+module.exports = installArchivesAction
 
 // StatusLog.notify(`version ${archiveRequest.uri}`, archiveRequest.uri)
 // return VaultStrategy

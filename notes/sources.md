@@ -145,3 +145,14 @@ https://github.com/advisory/phoenix/ ui-ply-input_3.8.0.zip
 bauble cache https://github.com/advisory/phoenix.git ui-ply-input_3.8.0.zip
 bauble install https://github.com/advisory/phoenix.git ui-ply-input_3.8.0.zip
 ```
+
+
+```
+{
+  "core-sass-brand-v3": "core-sass-brand#3.0.0"
+}
+
+or
+
+bauble install core-sass-brand#3.0.0 --rename core-sass-brand-v3
+```

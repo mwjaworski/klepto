@@ -37,7 +37,7 @@ class StatusLog {
   }
 
   static completeFailure (reason) {
-    this.__action = `failure ${reason}`
+    this.__action = `${reason}`
   }
 }
 

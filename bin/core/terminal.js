@@ -12,10 +12,13 @@ module.exports = {
       .history(applicationHandle)
       .localStorage(applicationHandle)
 
-    if (isInteractive) {
-      vorpal.show()
-    } else {
-      vorpal.parse(process.argv)
-    }
+    vorpal.parse(process.argv)
+
+    // TODO the console log does not work in vorpal interactive
+    // if (isInteractive) {
+    //   vorpal.show()
+    // } else {
+
+    // }
   }
 }

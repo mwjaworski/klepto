@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "ui-sass-sizing": "eabui/ui-sass-sizing#1.2.3",
+    "ui-sass-spacing": "eabui/ui-sass-spacing#1.2.3",
+    "ui-sass-border": "eabui/ui-sass-border#1.2.3"
+  }
+}

@@ -18,35 +18,10 @@ module.exports = {
       .action((args, done) => {
 
         const archiveDependencies = (!args.reference)
-          ? [] // get them from vault.json
-          : [args.reference]
-
-        // TODO download works on one archive at a time, try `all` for every package? or *
-        // TODO evaluate how useful audit is and how it works with a full install
-
-        if (args.options.audit) {
-          return createArchiveRequestAction(archiveDependencies[0])
-            .then(({
-              archiveRequest,
-              TransitTool,
-              PackageTool
-            }) => {
-              vorpal.log(
-                AuditLog.variableValue({
-                  version: archiveRequest.version,
-                  archive: archiveRequest.archive,
-                  package: PackageTool.name,
-                  uri: archiveRequest.uri,
-                  io: TransitTool.name
-                })
-              )
-            })
-            .then(() => done())
-        }
+          ? ManifestConfiguration.build(`./`).dependencies() || {}
+          : { '': args.reference }
 
         StatusLog.initialize()
-
-        // TODO (next) we need to specify a different folder name for the component from the key in dependencies (so we pull the resource and the name or dep-key is used to install as a folder - same for staging though!...? not for staging?!.... not for staging.... !only at , well if you do not then you cannot stage core-sass-brand and core-sass-brand-v3 - because they differ on version only)
 
         downloadArchivesAction(archiveDependencies, vorpal)
           .catch(err => {
