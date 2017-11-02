@@ -13,11 +13,11 @@ const downloadArchiveAction = (reference) => {
       FileSystem.createDirectory(`${archiveRequest.stagingPath}/`)
       FileSystem.createDirectory(`${paths.cache}/`)
 
-      StatusLog.notify(`cache ${archiveRequest.uri}`)
+      StatusLog.notify(`cache ${archiveRequest.uri}`, archiveRequest.uri)
       return TransitTool
         .sendToCache(archiveRequest)
           .then(({ cachePath }) => {
-            StatusLog.notify(`stage ${archiveRequest.uri}`)
+            StatusLog.notify(`stage ${archiveRequest.uri}`, archiveRequest.uri)
             return PackageTool
               .sendToStaging(archiveRequest, cachePath)
           })

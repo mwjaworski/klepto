@@ -5,14 +5,14 @@ const StatusLog = require('../support/status_log')
 const installArchiveAction = (reference) => {
   return downloadArchiveAction(reference)
     .then(({ archiveRequest }) => {
-      StatusLog.notify(`install ${archiveRequest.uri}`)
+      StatusLog.notify(`install ${archiveRequest.uri}`, archiveRequest.uri)
       return promoteArchiveAction(archiveRequest)
     })
 }
 
 module.exports = installArchiveAction
 
-// StatusLog.notify(`version ${archiveRequest.uri}`)
+// StatusLog.notify(`version ${archiveRequest.uri}`, archiveRequest.uri)
 // return VaultStrategy
 //   .of(archiveRequest)
 //   .assignAppropriateVersion(archiveRequest)

@@ -1,32 +1,35 @@
 const status = require('node-status')
+const _ = require('lodash')
 
 class StatusLog {
   static initialize () {
     this.uninitialize()
 
-    this.__action = ''
     this.__process = status.addItem('process', {
       custom: () => {
-        return this.__action || ''
+        return `[${_.size(this.__resources)}] (${this.__action || ''})`
       }
     })
 
     status.start({
-      pattern: `{spinner.hamburger.yellow} {uptime.gray} ({process.white.custom})`
+      pattern: `{spinner.hamburger.yellow} {uptime.gray} {process.white.custom}`
     })
   }
 
   static uninitialize () {
     this.__process = undefined
+    this.__resources = {}
     this.__action = ''
     status.removeAll()
   }
 
-  static notify (action, val = 1) {
-    this.__action = action
-    if (this.__process) {
-      this.__process.inc(val)
+  static notify (action, resource) {
+    if (!this.__resources[resource]) {
+      this.__process.inc(1)
     }
+
+    this.__resources[resource] = resource
+    this.__action = action
   }
 
   static completeSuccess () {
