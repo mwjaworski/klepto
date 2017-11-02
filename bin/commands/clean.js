@@ -21,8 +21,8 @@ module.exports = {
         }
 
         action
-          .catch((reason) => {
-            console.error(reason)
+          .catch((err) => {
+            vorpal.log(err.toString())
           })
           .then(done)
       })

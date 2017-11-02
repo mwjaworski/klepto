@@ -13,9 +13,15 @@ module.exports = {
         return true
       })
       .action((args, done) => {
+        const { reference } = args
+
         if (args.options.audit) {
-          createArchiveRequestAction(args)
-            .then(({ archiveRequest, TransitTool, PackageTool }) => {
+          return createArchiveRequestAction(args)
+            .then(({
+              archiveRequest,
+              TransitTool,
+              PackageTool
+            }) => {
               vorpal.log(
                 AuditLog.variableValue({
                   uri: archiveRequest.uri,
@@ -29,15 +35,13 @@ module.exports = {
             .then(() => done())
         }
 
-        if (!args.options.audit) {
-          installArchiveAction(args, vorpal)
-            .catch(err => {
-              vorpal.log(err.toString())
-            })
-            .then(() => {
-              return done()
-            })
-        }
+        installArchiveAction(reference, vorpal)
+          .catch(err => {
+            vorpal.log(err.toString())
+          })
+          .then(() => {
+            return done()
+          })
       })
   }
 }

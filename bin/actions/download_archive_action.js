@@ -1,10 +1,10 @@
-const createArchiveRequestAction = require('./create_resource_request_action')
+const createResourceRequestAction = require('./create_resource_request_action')
 const applicationConfiguration = require('../configurations/application')
 const VaultStrategy = require('../strategies/vault_strategy')
 const FileSystem = require('../support/file_system')
 
-const downloadArchiveAction = (args) => {
-  return createArchiveRequestAction(args)
+const downloadArchiveAction = (reference) => {
+  return createResourceRequestAction(reference)
     .then((resourceRequest) => {
       const paths = applicationConfiguration.get(`paths`)
       const { archiveRequest, PackageTool, TransitTool } = resourceRequest

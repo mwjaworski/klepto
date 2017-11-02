@@ -12,6 +12,8 @@ module.exports = {
         return true
       })
       .action((args, done) => {
+
+        const { reference } = args
         // TODO download works on one archive at a time, try `all` for every package? or *
         // TODO evaluate how useful audit is and how it works with a full install
 
@@ -35,7 +37,7 @@ module.exports = {
             .then(() => done())
         }
 
-        downloadArchiveAction(args, vorpal)
+        downloadArchiveAction(reference, vorpal)
           .catch(err => {
             vorpal.log(err.toString())
           })

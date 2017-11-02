@@ -10,7 +10,9 @@ module.exports = {
         return true
       })
       .action((args, done) => {
-        demoteArchiveAction(args, vorpal)
+        const { archive } = args
+
+        demoteArchiveAction(archive, vorpal)
           .catch(err => {
             vorpal.log(err.toString())
           })
