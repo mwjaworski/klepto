@@ -34,14 +34,9 @@
         "archiveManifest": "bower.json"
       },
       {
-        "repositoryFolder": "node_modules",
-        "toolConfiguration": ".npmrc",
-        "archiveManifest": "package.json"
-      },
-      {
         "repositoryFolder": "vault",
-        "toolConfiguration": ".baublerc",
-        "archiveManifest": "bauble.json"
+        "toolConfiguration": ".vaultrc",
+        "archiveManifest": "vault.json"
       }
     ]
   }

@@ -7,18 +7,10 @@ const applicationConfiguration = require('../configurations/application')
 const paths = applicationConfiguration.get(`paths`)
 
 class GitTransit {
-
-  static getTagList(specifier) {
+  static sendToCache ({ uri }) {
     return new Promise((resolve, reject) => {
-      resolve([])
-    })
-  }
-
-  static sendToCache (specifier) {
-    return new Promise((resolve, reject) => {
-      const cacheTo = this.__cacheTo(specifier)
-      const cachePath = this.__cachePath(specifier)
-      const { uri } = specifier
+      const cacheTo = this.__cacheTo(uri)
+      const cachePath = this.__cachePath(uri)
 
       OperatingSystem.execute([
         `git clone --depth 1 --branch master ${uri} ${cacheTo}`,
@@ -34,11 +26,11 @@ class GitTransit {
     })
   }
 
-  static __cachePath ({ uri, addendum }) {
-    return `${this.__cacheTo({ uri })}/${addendum || ''}`
+  static __cachePath (uri) {
+    return `${this.__cacheTo(uri)}`
   }
 
-  static __cacheTo ({ uri }) {
+  static __cacheTo (uri) {
     const extension = path.extname(uri)
     const file = path.basename(uri, extension)
 

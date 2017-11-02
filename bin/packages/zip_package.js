@@ -3,11 +3,11 @@ const JSZip = require('jszip')
 const fs = require('fs-extra')
 
 class ZipPackage {
-  static sendToStaging (specifier, cachePath) {
+  static sendToStaging (archiveRequest, cachePath) {
     return FileSystem
       .read(cachePath)
       .then((binaryData) => {
-        return this.__extractZip(binaryData, specifier)
+        return this.__extractZip(binaryData, archiveRequest)
       })
   }
 
@@ -28,7 +28,7 @@ class ZipPackage {
           const stagingFilePath = `${stagingPath}/${relativePath}`
 
           if (isFolder) {
-            FileSystem.makeDirectory(stagingFilePath)
+            FileSystem.createDirectory(stagingFilePath)
           } else {
             filesWritten.push(
               new Promise(resolve => {

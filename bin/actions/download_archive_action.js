@@ -1,19 +1,29 @@
-const createArchiveRequestAction = require('./create_archive_request_action')
+const createResourceRequestAction = require('./create_resource_request_action')
+const applicationConfiguration = require('../configurations/application')
 const VaultStrategy = require('../strategies/vault_strategy')
-const stageArchiveAction = require('./stage_archive_action')
+const FileSystem = require('../support/file_system')
 
-const downloadArchiveAction = (args) => {
-  return createArchiveRequestAction(args)
-    .then((archiveRequest) => {
-      const { specifier } = archiveRequest
+const downloadArchiveAction = (reference) => {
+  return createResourceRequestAction(reference)
+    .then((resourceRequest) => {
+      const paths = applicationConfiguration.get(`paths`)
+      const { archiveRequest, PackageTool, TransitTool } = resourceRequest
 
-      return VaultStrategy
-        .of(archiveRequest)
-        .assignAppropriateVersion(specifier)
-          .then(() => {
-            return stageArchiveAction(archiveRequest)
+      FileSystem.createDirectory(`${archiveRequest.stagingPath}/`)
+      FileSystem.createDirectory(`${paths.cache}/`)
+
+      return TransitTool
+        .sendToCache(archiveRequest)
+          .then(({ cachePath }) => {
+            return VaultStrategy
+              .of(archiveRequest)
+              .assignAppropriateVersion(archiveRequest)
+                .then(() => {
+                  return PackageTool
+                    .sendToStaging(archiveRequest, cachePath)
+                })
           })
-
+          .then(() => resourceRequest)
     })
 }
 

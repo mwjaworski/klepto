@@ -9,6 +9,7 @@
 .vscode/
 .nyc_output/
 .vault/
+.history/
 
 /vendor/
 /node_modules/

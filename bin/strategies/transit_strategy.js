@@ -1,10 +1,10 @@
 const LocalTransit = require('../transits/local_transit')
 const NullTransit = require('../transits/null_transit')
-const GitTransit = require('../transits/git_transit')
 const HTTPTransit = require('../transits/http_transit')
+const GitTransit = require('../transits/git_transit')
 
 const Discover = {
-  IS_EXTENSTransitN: /\.(?:zip|tar|tgz|gz|tar\.gz)$/i,
+  IS_EXTENSION: /\.(?:zip|tar|tgz|gz|tar\.gz)$/i,
   IS_URL: /^https?:\/\//i,
   IS_GIT: /\.(?:git)$/i
 }
@@ -19,8 +19,8 @@ class TransitStrategy {
    */
   static of ({ uri }) {
     // NOTE order matters, ofNull is the default case
-    return this.__ofLocal(uri) ||
-      this.__ofWeb(uri) ||
+    return this.__ofWeb(uri) ||
+      this.__ofLocal(uri) ||
       this.__ofGit(uri) ||
       this.__ofNull(uri)
   }
@@ -31,8 +31,7 @@ class TransitStrategy {
    */
   static __ofLocal (uri) {
     const isNotURLBySignature = uri.match(Discover.IS_URL) === null
-    const isNotGitByExtension = uri.match(Discover.IS_GIT) === null
-    const isLocal = isNotURLBySignature && isNotGitByExtension
+    const isLocal = isNotURLBySignature
 
     return isLocal ? LocalTransit : undefined
   }
@@ -42,11 +41,11 @@ class TransitStrategy {
    * @return {HTTPTransit | undefined} the HTTPTransit if the uri passes
    */
   static __ofWeb (uri) {
-    const isFileByExtension = uri.match(Discover.IS_EXTENSTransitN) !== null
+    const isFileByExtension = uri.match(Discover.IS_EXTENSION) !== null
     const isURLBySignature = uri.match(Discover.IS_URL) !== null
-    const isWeb = isFileByExtension && isURLBySignature
+    const isHTTP = isFileByExtension && isURLBySignature
 
-    return isWeb ? HTTPTransit : undefined
+    return isHTTP ? HTTPTransit : undefined
   }
 
   /**

@@ -1,21 +1,20 @@
-
-
+/**
+ * does not resolve versions
+ */
 class NullVault {
-  static getVersions(archiveName) {
+  static getVersions (archiveRequest) {
     return new Promise((resolve, reject) => {
-      resolve([specifier.version])
+      resolve([archiveRequest.version])
     })
   }
 
-  static matchAppropriateVersion(archiveName, versionRequest) {
+  /**
+   *
+   * @param {*} archiveRequest
+   */
+  static assignAppropriateVersion (archiveRequest) {
     return new Promise((resolve, reject) => {
-      resolve([specifier.version])
-    })
-  }
-
-  static assignAppropriateVersion(specifier) {
-    return new Promise((resolve, reject) => {
-      resolve(specifier)
+      resolve(archiveRequest)
     })
   }
 }

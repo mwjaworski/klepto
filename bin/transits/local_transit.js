@@ -6,17 +6,16 @@ const applicationConfiguration = require('../configurations/application')
 const paths = applicationConfiguration.get(`paths`)
 
 class LocalTransit {
-
-  static getTagList(specifier) {
+  static getTagList (archiveRequest) {
     return new Promise((resolve, reject) => {
       resolve([])
     })
   }
 
   // TODO if we provide a file:// prefix then we have to tear it off
-  static sendToCache (specifier) {
-    const originalLocation = this.__originalLocation(specifier)
-    const cachePath = this.__cachePath(specifier)
+  static sendToCache (archiveRequest) {
+    const originalLocation = this.__originalLocation(archiveRequest)
+    const cachePath = this.__cachePath(archiveRequest)
 
     return new Promise((resolve, reject) => {
       fs.copy(originalLocation, cachePath, err => {
@@ -31,12 +30,12 @@ class LocalTransit {
     })
   }
 
-  static __originalLocation ({ uri, addendum }) {
-    return _.trimEnd(`${uri}${addendum || ''}`)
+  static __originalLocation ({ uri }) {
+    return _.trimEnd(`${uri}`)
   }
 
-  static __cachePath ({ uri, addendum }) {
-    const originalLocation = this.__originalLocation({ uri, addendum })
+  static __cachePath ({ uri }) {
+    const originalLocation = this.__originalLocation({ uri })
     const extension = path.extname(originalLocation)
     const zipFile = path.basename(originalLocation, extension)
 

@@ -5,29 +5,29 @@ const applicationConfiguration = require('../configurations/application')
 
 const Discover = {
   IS_SCOPE: /^@/i,
-  IS_VERSION: /^[~^]?\d{1,2}\.\d{1,2}\.\d{1,2}$/i,
-  COMPONENT_NAME: /([a-z0-9-]*).*?\.(?:zip|tar|tgz|gz|tar\.gz)?$/i,
-  FULL_COMPONENT_NAME: /(.*?)\.(?:zip|tar|tgz|gz|tar\.gz)?$/i
+  IS_VERSION: /^[~^>=<]?\d{1,2}\.\d{1,2}\.\d{1,2}$/i,
+  COMPONENT_NAME: /([a-z0-9-]*).*?\.(?:zip|tar|tgz|gz|tar\.gz|git)?$/i,
+  FULL_COMPONENT_NAME: /(.*?)\.(?:zip|tar|tgz|gz|tar\.gz|git)?$/i
 }
 
 // DUPLICATE_SEPERATOR: new RegExp(`${path.sep}+`, `g`)
 
 /**
- * a _reference_ can have a shape of scope, resource, or specifier
+ * a _reference_ can have a shape of scope, resource, or archiveRequest
  *
  * scope-reference to resource-reference
  * "@source/group/resource version" ==> "url resource version"
  *
- * resource-reference to specifier-reference
- * "uri#version addendum" ===> { url, addendum, version }
+ * resource-reference to archiveRequest-reference
+ * "uri#version" ===> { url, version }
  */
 class ReferenceStrategy {
-  static referenceToSpecifier (reference, addendum) {
-    const scopeOrResource = this.normalizeReference(reference, addendum)
+  static referenceToArchiveRequest (reference) {
+    const scopeOrResource = this.normalizeReference(reference)
     const resource = this.scopeToResource(scopeOrResource)
-    const specifier = this.resourceToSpecifier(resource)
+    const archiveRequest = this.resourceToArchiveRequest(resource)
 
-    return specifier
+    return archiveRequest
   }
 
   /**
@@ -36,14 +36,11 @@ class ReferenceStrategy {
    * folder#1.2.3      => folder#1.2.3
    * folder res        => folder#master res
    *
-   * @param { reference, addendum } reference
-   * @return "reference addendum"
+   * @param { reference } reference
+   * @return "reference"
    */
-  static normalizeReference (reference, addendum) {
-    addendum = _.trimStart(addendum || '', path.sep)
-    reference = reference || ''
-
-    return _.trimEnd(`${reference} ${addendum}`)
+  static normalizeReference (reference) {
+    return _.trimEnd(_.trimStart(reference || '', path.sep))
   }
 
   /**
@@ -89,24 +86,21 @@ class ReferenceStrategy {
 
   /**
    *
-   * @param {*} resource
+   * @param {*} reference
    */
-  static resourceToSpecifier (resource) {
+  static resourceToArchiveRequest (reference) {
     const versionMarker = applicationConfiguration.get(`rules.patternMarkers.version`)
     const stagingFolder = applicationConfiguration.get(`paths.staging`)
 
-    const [reference, addendum] = resource.split(` `)
     const [uri, version] = reference.split(versionMarker)
-    const fullURI = `${reference || ''}/${addendum || ''}`
-    const fullFolderURI = this.__findPathAspect(fullURI, Discover.FULL_COMPONENT_NAME)
-    const archive = this.__findPathAspect(fullURI, Discover.COMPONENT_NAME)
+    const folderURI = this.__findPathAspect(uri, Discover.FULL_COMPONENT_NAME)
+    const archive = this.__findPathAspect(uri, Discover.COMPONENT_NAME)
 
-    const stagingPath = `${stagingFolder}/${fullFolderURI}/`
+    const stagingPath = `${stagingFolder}/${folderURI}/`
 
     return {
       version: version || `master`,
       stagingPath,
-      addendum,
       archive,
       uri
     }
@@ -127,12 +121,12 @@ class ReferenceStrategy {
 
   /**
    *
-   * @param {*} specifier
+   * @param {*} archiveRequest
    * @param {*} archiveManifest
    */
-  static buildArchivePath (specifier, archiveManifest) {
+  static buildArchivePath (archiveRequest, archiveManifest) {
     const paths = applicationConfiguration.get(`paths`)
-    const archiveName = (archiveManifest.name) ? archiveManifest.name : specifier.archive
+    const archiveName = (archiveManifest.name) ? archiveManifest.name : archiveRequest.archive
     const archiveFolder = archiveManifest.repositoryFolder || paths.archives
 
     return `${archiveFolder}/${archiveName}/`
@@ -140,10 +134,10 @@ class ReferenceStrategy {
 
   /**
    *
-   * @param {*} specifier
+   * @param {*} archiveRequest
    */
-  static buildStagingPath (specifier) {
-    return specifier.stagingPath
+  static buildStagingPath (archiveRequest) {
+    return archiveRequest.stagingPath
   }
 }
 

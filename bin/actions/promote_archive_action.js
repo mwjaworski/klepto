@@ -5,20 +5,21 @@ const ReferenceStrategy = require('../strategies/reference_strategy')
 const FileSystem = require('../support/file_system')
 const _ = require('lodash')
 
-module.exports = ({ specifier }) => {
+const promoteArchiveAction = (archiveRequest) => {
   const paths = applicationConfiguration.get(`paths`)
-  const stagingPath = ReferenceStrategy.buildStagingPath(specifier)
+  const stagingPath = ReferenceStrategy.buildStagingPath(archiveRequest)
   const manifestJson = ManifestConfiguration.build(stagingPath)
-  const archivePath = ReferenceStrategy.buildArchivePath(specifier, manifestJson)
+  const archivePath = ReferenceStrategy.buildArchivePath(archiveRequest, manifestJson)
   const ignoreFolders = _.merge(
     [ `${_.get(manifestJson.paths, `archives`, '')}` ],
     applicationConfiguration.get(`rules.ignoreFiles`, []),
     manifestJson.ignore
   )
 
-  // TODO review the dependencies to load other components
-
   return FileSystem
-    .makeDirectory(`${paths.archives}/`)
+    .createDirectory(`${paths.archives}/`)
     .copyNonIgnoredFiles(stagingPath, archivePath, ignoreFolders)
+    .then(() => manifestJson.manifest)
 }
+
+module.exports = promoteArchiveAction
