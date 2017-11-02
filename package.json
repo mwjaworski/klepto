@@ -54,6 +54,7 @@
     "jszip": "^3.1.4",
     "lodash": "4.17.4",
     "micromatch": "^3.1.4",
+    "node-status": "^1.0.0",
     "semver": "^5.4.1",
     "tar": "^4.0.2",
     "vorpal": "^1.12.0"
