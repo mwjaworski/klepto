@@ -1,3 +1,5 @@
+const StatusLog = require('../support/status_log')
+
 module.exports = {
   registerVorpalCommand: (vorpal, applicationConfiguration) => {
     return vorpal
@@ -7,8 +9,18 @@ module.exports = {
         return true
       })
       .action((args, done) => {
-        vorpal.log(`pending...`)
-        done()
+
+        StatusLog.initialize()
+
+        setInterval(() => {
+          StatusLog.notify('ss')
+        }, 500)
+
+        setTimeout(() => {
+          StatusLog.complete()
+          done()
+        }, 4000)
+
       })
   }
 }

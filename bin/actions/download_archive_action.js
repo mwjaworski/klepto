@@ -2,6 +2,7 @@ const createResourceRequestAction = require('./create_resource_request_action')
 const applicationConfiguration = require('../configurations/application')
 const VaultStrategy = require('../strategies/vault_strategy')
 const FileSystem = require('../support/file_system')
+const StatusLog = require('../support/status_log')
 
 const downloadArchiveAction = (reference) => {
   return createResourceRequestAction(reference)
@@ -12,13 +13,16 @@ const downloadArchiveAction = (reference) => {
       FileSystem.createDirectory(`${archiveRequest.stagingPath}/`)
       FileSystem.createDirectory(`${paths.cache}/`)
 
+      StatusLog.notify(`cache ${archiveRequest.uri}`)
       return TransitTool
         .sendToCache(archiveRequest)
           .then(({ cachePath }) => {
+            StatusLog.notify(`version ${archiveRequest.uri}`)
             return VaultStrategy
               .of(archiveRequest)
               .assignAppropriateVersion(archiveRequest)
                 .then(() => {
+                  StatusLog.notify(`stage ${archiveRequest.uri}`)
                   return PackageTool
                     .sendToStaging(archiveRequest, cachePath)
                 })

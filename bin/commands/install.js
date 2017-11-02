@@ -1,6 +1,7 @@
 const createArchiveRequestAction = require('../actions/create_resource_request_action')
 const installArchiveAction = require('../actions/install_archive_action')
 
+const StatusLog = require('../support/status_log')
 const AuditLog = require('../support/audit_log')
 
 module.exports = {
@@ -35,6 +36,8 @@ module.exports = {
             .then(() => done())
         }
 
+        StatusLog.initialize()
+
         installArchiveAction(reference, vorpal)
           .catch(err => {
             vorpal.log(err.toString())
@@ -42,6 +45,7 @@ module.exports = {
           .then((repoManifest) => {
             // TODO get list of dependencies and call installArchiveAction on each
             console.log(repoManifest)
+            StatusLog.complete()
             return done()
           })
       })
