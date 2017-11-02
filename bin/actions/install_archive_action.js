@@ -3,7 +3,6 @@ const promoteArchiveAction = require('./promote_archive_action')
 const StatusLog = require('../support/status_log')
 
 const installArchiveAction = (archiveRequest) => {
-
   StatusLog.notify(`install ${archiveRequest.uri}`, archiveRequest.uuid)
   return promoteArchiveAction(archiveRequest)
 

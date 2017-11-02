@@ -1,7 +1,6 @@
 const _ = require('lodash')
 
 class DependencyLog {
-
   static initialize () {
     this.__deps = {}
     return this
@@ -12,7 +11,7 @@ class DependencyLog {
     return this
   }
 
-  static request({ uuid }, requestedBy) {
+  static request ({ uuid }, requestedBy) {
     const request = this.__deps[uuid] = this.__deps[uuid] || {
       requesters: {}
     }
@@ -24,10 +23,9 @@ class DependencyLog {
     return this
   }
 
-  static hasRequest({ uuid }) {
+  static hasRequest ({ uuid }) {
     return !!this.__deps[uuid]
   }
-
 }
 
 module.exports = DependencyLog.initialize()

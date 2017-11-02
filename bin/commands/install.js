@@ -30,7 +30,6 @@ module.exports = {
             done()
           })
           .then(() => {
-
             //
 
             // TODO install call components
@@ -40,7 +39,6 @@ module.exports = {
 
             return done()
           })
-
       })
   }
 }

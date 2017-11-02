@@ -3,7 +3,6 @@ const downloadArchiveAction = require('./download_archive_action')
 const _ = require('lodash')
 
 const downloadArchivesAction = function (requests) {
-
   if (!requests && _.size(requests) <= 0) {
     return new Promise((resolve, reject) => {
       resolve()

@@ -21,9 +21,7 @@ class LocalTransit {
         if (err) {
           reject(new Error(err))
         } else {
-          resolve({
-            cachePath
-          })
+          resolve({})
         }
       })
     })

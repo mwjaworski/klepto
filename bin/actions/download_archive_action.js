@@ -25,7 +25,6 @@ const downloadArchiveAction = (reference) => {
       return TransitTool
         .sendToCache(archiveRequest)
           .then(() => {
-
             FileSystem.removeDirectory(`${archiveRequest.stagingPath}`)
             console.log(archiveRequest.stagingPath)
 

@@ -7,19 +7,12 @@ const OperatingSystem = require('../support/operating_system')
 class GitTransit {
   static sendToCache ({ uri, version, cachePath }) {
     return new Promise((resolve, reject) => {
-
-      // NOTE this is not necessary because we clone separate folders per version
-      // `cd ${cachePath}`,
-      // `git fetch --all`,
-      // `git pull`,
-      // `cd ${process.cwd()}`
-
       OperatingSystem.execute([
-        `git clone --depth 1 --branch ${version} ${uri} ${cachePath}`
-      ]).then(() => {
-        resolve({
-          cachePath
-        })
+        `git clone --single-branch --branch '${version}' ${uri} ${cachePath}`
+      ])
+      .then(resolve)
+      .catch((err) => {
+        reject(new Error(err))
       })
     })
   }

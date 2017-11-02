@@ -18,7 +18,7 @@ const Discover = {
  * "uri#version" ===> { url, version }
  */
 class ReferenceParser {
-  static referenceToArchiveRequest(reference) {
+  static referenceToArchiveRequest (reference) {
     const scopeOrReference = this.normalizeReference(reference)
     const resource = this.scopeToResource(scopeOrReference)
     const archiveRequest = this.resourceToArchiveRequest(resource)
@@ -35,7 +35,7 @@ class ReferenceParser {
    * @param { reference } reference
    * @return "reference"
    */
-  static normalizeReference(reference) {
+  static normalizeReference (reference) {
     return _.trimEnd(_.trimStart(reference || '', path.sep))
   }
 
@@ -43,7 +43,7 @@ class ReferenceParser {
    *
    * @param {*} scopeOrReference
    */
-  static scopeToResource(scopeOrReference) {
+  static scopeToResource (scopeOrReference) {
     const patternMarkers = applicationConfiguration.get(`rules.patternMarkers`)
     const [uri, version = ``] = this.__splitVersion(scopeOrReference)
     const uriAspects = uri.split(patternMarkers.separator)
@@ -69,13 +69,13 @@ class ReferenceParser {
    *
    * @param {*} reference
    */
-  static resourceToArchiveRequest(reference) {
+  static resourceToArchiveRequest (reference) {
     const { staging, cache } = applicationConfiguration.get(`paths`)
 
     const [uri, version = `master`] = this.__splitVersion(reference)
     const [_0, archive, extension] = Discover.COMPONENT_ASPECT.exec(uri)
 
-    const safeExtension = (!!extension) ? `.${extension}` : `/`
+    const safeExtension = (extension) ? `.${extension}` : `/`
     const cachePath = `${cache}/${archive}__${version}${safeExtension}`
     const stagingPath = `${staging}/${archive}/${version}/`
     const uuid = `${archive}--${version}`
@@ -95,7 +95,7 @@ class ReferenceParser {
    * @param {*} archiveRequest
    * @param {*} archiveManifest
    */
-  static buildArchivePath(archiveRequest, archiveManifest) {
+  static buildArchivePath (archiveRequest, archiveManifest) {
     const paths = applicationConfiguration.get(`paths`)
     const archiveName = (archiveManifest.name) ? archiveManifest.name : archiveRequest.archive
     const archiveFolder = archiveManifest.repositoryFolder || paths.archives
@@ -103,13 +103,12 @@ class ReferenceParser {
     return `${archiveFolder}/${archiveName}/`
   }
 
-
   /**
    *
    * @param {*} uri
    * @param {*} uriAspects
    */
-  static __matchConversionRule(uriAspects) {
+  static __matchConversionRule (uriAspects) {
     const sources = applicationConfiguration.get(`sources`)
     const scope = uriAspects[0] = (_.first(uriAspects) || '')
 
@@ -118,13 +117,12 @@ class ReferenceParser {
     })
   }
 
-  static __splitVersion(reference) {
+  static __splitVersion (reference) {
     const patternMarkers = applicationConfiguration.get(`rules.patternMarkers`)
     const versionMarker = _.find(patternMarkers.version, (versionMarker) => reference.indexOf(versionMarker) !== -1)
 
     return reference.split(versionMarker || _.first(patternMarkers.version))
   }
-
 }
 
 module.exports = ReferenceParser
