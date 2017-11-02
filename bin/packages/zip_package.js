@@ -28,7 +28,7 @@ class ZipPackage {
           const stagingFilePath = `${stagingPath}/${relativePath}`
 
           if (isFolder) {
-            FileSystem.makeDirectory(stagingFilePath)
+            FileSystem.createDirectory(stagingFilePath)
           } else {
             filesWritten.push(
               new Promise(resolve => {

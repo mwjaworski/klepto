@@ -87,6 +87,12 @@ D. local + folder/zip  a/b/c/ folder/file.zip 1.2.3                   NO
 E. local + zip         a/b/c/folder/file.zip 1.2.3                    YES
 F. local + folder      a/b/c/ 1.2.3                                   YES
 
+node bin/index.js download ../link-talk@1.2.3
+node bin/index.js install ../link-talk@1.2.3
+
+node bin/index.js install ../bower-alternative-source-resolver.zip
+node bin/index.js install ../my-tarball.tgz
+
 A. node bin/index.js download  http://phoenix.eab.com/projects/core-ply-brand_3.8.0.zip@1.2.3
 B. node bin/index.js download  https://repo.advisory.com/scm/~jaworskm/test-test.git#1.2.3 core-ply-brand_3.8.0.zip
 C. node bin/index.js download  https://repo.advisory.com/scm/~jaworskm/test-test.git 1.2.3

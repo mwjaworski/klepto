@@ -4,15 +4,15 @@ const tar = require('tar')
 class TarPackage {
   static sendToStaging ({ stagingPath }, cachePath) {
     return new Promise((resolve, reject) => {
-      return tar.extract({
+      tar.extract({
         cwd: stagingPath,
         file: FileSystem.readPath(cachePath),
         preserveOwner: false,
         unlink: true,
         strip: 1
-      }).then(() => {
-        return {}
       })
+      .then(() => resolve({}))
+      .catch((reason) => reject(reason))
     })
   }
 }

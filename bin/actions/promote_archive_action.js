@@ -5,7 +5,7 @@ const ReferenceStrategy = require('../strategies/reference_strategy')
 const FileSystem = require('../support/file_system')
 const _ = require('lodash')
 
-module.exports = ({ archiveRequest }) => {
+const promoteArchiveAction = ({ archiveRequest }) => {
   const paths = applicationConfiguration.get(`paths`)
   const stagingPath = ReferenceStrategy.buildStagingPath(archiveRequest)
   const manifestJson = ManifestConfiguration.build(stagingPath)
@@ -20,6 +20,8 @@ module.exports = ({ archiveRequest }) => {
   // NOTE this makes no sense with bower/npm for now because if the version is a mismatch it fails
 
   return FileSystem
-    .makeDirectory(`${paths.archives}/`)
+    .createDirectory(`${paths.archives}/`)
     .copyNonIgnoredFiles(stagingPath, archivePath, ignoreFolders)
 }
+
+module.exports = promoteArchiveAction

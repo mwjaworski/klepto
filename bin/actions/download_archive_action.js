@@ -6,11 +6,11 @@ const FileSystem = require('../support/file_system')
 const downloadArchiveAction = (args) => {
   return createArchiveRequestAction(args)
     .then((resourceRequest) => {
-      const { archiveRequest, PackageTool, TransitTool } = resourceRequest
       const paths = applicationConfiguration.get(`paths`)
+      const { archiveRequest, PackageTool, TransitTool } = resourceRequest
 
-      FileSystem.makeDirectory(`${archiveRequest.stagingPath}/`)
-      FileSystem.makeDirectory(`${paths.cache}/`)
+      FileSystem.createDirectory(`${archiveRequest.stagingPath}/`)
+      FileSystem.createDirectory(`${paths.cache}/`)
 
       return TransitTool
         .sendToCache(archiveRequest)

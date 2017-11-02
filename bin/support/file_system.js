@@ -36,15 +36,25 @@ class FileSystem {
     }
   }
 
-  static makeDirectory (directoryName) {
+  static createDirectory (directoryName) {
     directoryName = path.normalize(directoryName).split(path.sep)
     directoryName.forEach((sdir, index) => {
       const pathInQuestion = directoryName.slice(0, index + 1).join(path.sep)
 
-      if (!this.isDirectory(pathInQuestion) && pathInQuestion) {
+      if (pathInQuestion && !this.isDirectory(pathInQuestion)) {
         fs.mkdirSync(pathInQuestion)
       }
     })
+
+    return this
+  }
+
+  static removeDirectory (directoryName) {
+    directoryName = path.normalize(directoryName)
+
+    if (directoryName && this.isDirectory(directoryName)) {
+      fs.removeSync(directoryName)
+    }
 
     return this
   }
@@ -53,7 +63,7 @@ class FileSystem {
     return new Promise((resolve, reject) => {
       const { folder } = this.explodePath(path)
 
-      this.makeDirectory(folder)
+      this.createDirectory(folder)
 
       const writer = fs.createWriteStream(this.readPath(path), streamOptions)
 

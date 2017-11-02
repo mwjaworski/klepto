@@ -16,8 +16,12 @@ module.exports = {
         // TODO evaluate how useful audit is and how it works with a full install
 
         if (args.options.audit) {
-          createArchiveRequestAction(args)
-            .then(({ archiveRequest, TransitTool, PackageTool }) => {
+          return createArchiveRequestAction(args)
+            .then(({
+              archiveRequest,
+              TransitTool,
+              PackageTool
+            }) => {
               vorpal.log(
                 AuditLog.variableValue({
                   uri: archiveRequest.uri,
@@ -31,15 +35,13 @@ module.exports = {
             .then(() => done())
         }
 
-        if (!args.options.audit) {
-          downloadArchiveAction(args, vorpal)
-            .catch(err => {
-              vorpal.log(err.toString())
-            })
-            .then(() => {
-              return done()
-            })
-        }
+        downloadArchiveAction(args, vorpal)
+          .catch(err => {
+            vorpal.log(err.toString())
+          })
+          .then(() => {
+            return done()
+          })
       })
   }
 }
