@@ -1,10 +1,5 @@
-const axios = require('axios')
-const path = require('path')
-
 const fileSystem = require('../support/file_system')
-
-const applicationConfiguration = require('../configurations/application')
-const paths = applicationConfiguration.get(`paths`)
+const axios = require('axios')
 
 class HTTPTransit {
   static sendToCache ({ uri, cachePath }) {

@@ -1,9 +1,5 @@
 const fs = require('fs-extra')
-const path = require('path')
 const _ = require('lodash')
-
-const applicationConfiguration = require('../configurations/application')
-const paths = applicationConfiguration.get(`paths`)
 
 class LocalTransit {
   static getTagList (archiveRequest) {

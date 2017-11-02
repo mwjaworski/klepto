@@ -4,7 +4,7 @@ const _ = require('lodash')
 const applicationConfiguration = require('../configurations/application')
 
 const Discover = {
-  COMPONENT_ASPECT: /.*?\/([a-z0-9-_\.]*?)[\.\/]?(zip|tar|tgz|gz|tar\.gz|git)?$/i,
+  COMPONENT_ASPECT: /.*?\/([a-z0-9-_\.]*?)[\.\/]?(zip|tar|tgz|gz|tar\.gz|git)?$/i, // eslint-disable-line
   IS_VERSION: /^[~^>=<]?\d{1,2}\.\d{1,2}\.\d{1,2}$/i
 }
 
@@ -73,7 +73,7 @@ class ReferenceParser {
     const { staging, cache } = applicationConfiguration.get(`paths`)
 
     const [uri, version = `master`] = this.__splitVersion(reference)
-    const [_0, archive, extension] = Discover.COMPONENT_ASPECT.exec(uri)
+    const [_0, archive, extension] = Discover.COMPONENT_ASPECT.exec(uri) // eslint-disable-line
 
     const safeExtension = (extension) ? `.${extension}` : `/`
     const cachePath = `${cache}/${archive}__${version}${safeExtension}`

@@ -1,6 +1,7 @@
 const downloadArchivesAction = require('../actions/download_archives_action')
-const installArchiveAction = require('../actions/install_archive_action')
+// const installArchiveAction = require('../actions/install_archive_action')
 
+const ManifestConfiguration = require('../configurations/manifest')
 const StatusLog = require('../support/status_log')
 
 module.exports = {

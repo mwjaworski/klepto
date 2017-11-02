@@ -1,7 +1,3 @@
-const process = require('process')
-const path = require('path')
-
-const applicationConfiguration = require('../configurations/application')
 const OperatingSystem = require('../support/operating_system')
 
 class GitTransit {
