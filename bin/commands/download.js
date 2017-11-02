@@ -18,7 +18,7 @@ module.exports = {
         // TODO evaluate how useful audit is and how it works with a full install
 
         if (args.options.audit) {
-          return createArchiveRequestAction(args)
+          return createArchiveRequestAction(reference)
             .then(({
               archiveRequest,
               TransitTool,

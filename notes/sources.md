@@ -93,6 +93,12 @@ node bin/index.js install ../link-talk@1.2.3
 node bin/index.js install ../bower-alternative-source-resolver.zip
 node bin/index.js install ../my-tarball.tgz
 
+node bin/index.js install  http://phoenix.eab.com/projects/core-ply-brand_3.8.0.zip@1.2.3
+
+node bin/index.js download https://JaworskM@repo.advisory.com/scm/eabui/capability-ng-favorites.git --audit
+
+node bin/index.js install https://repo.advisory.com/scm/eabui/capability-ng-favorites.git@1.2.3
+
 A. node bin/index.js download  http://phoenix.eab.com/projects/core-ply-brand_3.8.0.zip@1.2.3
 B. node bin/index.js download  https://repo.advisory.com/scm/~jaworskm/test-test.git#1.2.3 core-ply-brand_3.8.0.zip
 C. node bin/index.js download  https://repo.advisory.com/scm/~jaworskm/test-test.git 1.2.3

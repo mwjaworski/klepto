@@ -21,8 +21,9 @@ class FileSystem {
       }
     }
 
-    fs.copy(from, to, copyOptions)
-    return this
+    return new Promise((resolve) => {
+      resolve(fs.copy(from, to, copyOptions))
+    })
   }
 
   /**

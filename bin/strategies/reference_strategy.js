@@ -6,8 +6,8 @@ const applicationConfiguration = require('../configurations/application')
 const Discover = {
   IS_SCOPE: /^@/i,
   IS_VERSION: /^[~^>=<]?\d{1,2}\.\d{1,2}\.\d{1,2}$/i,
-  COMPONENT_NAME: /([a-z0-9-]*).*?\.(?:zip|tar|tgz|gz|tar\.gz)?$/i,
-  FULL_COMPONENT_NAME: /(.*?)\.(?:zip|tar|tgz|gz|tar\.gz)?$/i
+  COMPONENT_NAME: /([a-z0-9-]*).*?\.(?:zip|tar|tgz|gz|tar\.gz|git)?$/i,
+  FULL_COMPONENT_NAME: /(.*?)\.(?:zip|tar|tgz|gz|tar\.gz|git)?$/i
 }
 
 // DUPLICATE_SEPERATOR: new RegExp(`${path.sep}+`, `g`)

@@ -16,7 +16,7 @@ module.exports = {
         const { reference } = args
 
         if (args.options.audit) {
-          return createArchiveRequestAction(args)
+          return createArchiveRequestAction(reference)
             .then(({
               archiveRequest,
               TransitTool,
@@ -39,7 +39,8 @@ module.exports = {
           .catch(err => {
             vorpal.log(err.toString())
           })
-          .then(() => {
+          .then((repoManifest) => {
+            console.log(repoManifest)
             return done()
           })
       })
