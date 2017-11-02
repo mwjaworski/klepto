@@ -17,15 +17,9 @@ const downloadArchiveAction = (reference) => {
       return TransitTool
         .sendToCache(archiveRequest)
           .then(({ cachePath }) => {
-            StatusLog.notify(`version ${archiveRequest.uri}`)
-            return VaultStrategy
-              .of(archiveRequest)
-              .assignAppropriateVersion(archiveRequest)
-                .then(() => {
-                  StatusLog.notify(`stage ${archiveRequest.uri}`)
-                  return PackageTool
-                    .sendToStaging(archiveRequest, cachePath)
-                })
+            StatusLog.notify(`stage ${archiveRequest.uri}`)
+            return PackageTool
+              .sendToStaging(archiveRequest, cachePath)
           })
           .then(() => resourceRequest)
     })

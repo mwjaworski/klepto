@@ -1,0 +1,11 @@
+{
+  "sources": {
+    "eabui": {
+      "pattern": "source/component",
+      "template": "https://repo.advisory.com/scm/eabui/${component}.git",
+      "constants": {
+
+      }
+    }
+  }
+}

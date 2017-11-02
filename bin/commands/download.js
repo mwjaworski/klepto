@@ -1,5 +1,7 @@
 const createArchiveRequestAction = require('../actions/create_resource_request_action')
 const downloadArchiveAction = require('../actions/download_archive_action')
+
+const StatusLog = require('../support/status_log')
 const AuditLog = require('../support/audit_log')
 
 module.exports = {
@@ -37,11 +39,17 @@ module.exports = {
             .then(() => done())
         }
 
+        StatusLog.initialize()
+
+        // keep downloading all requirements
+
         downloadArchiveAction(reference, vorpal)
           .catch(err => {
             vorpal.log(err.toString())
           })
-          .then(() => {
+          .then((archiveManifest) => {
+            console.log(archiveManifest)
+            StatusLog.complete()
             return done()
           })
       })

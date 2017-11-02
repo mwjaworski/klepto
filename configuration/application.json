@@ -10,8 +10,7 @@
   "rules": {
     "patternMarkers": {
       "separator": "/",
-      "version": "@",
-      "source": "$"
+      "version": "@"
     },
     "ignoreFiles": [
       ".git",

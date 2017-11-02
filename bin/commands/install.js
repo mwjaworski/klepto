@@ -38,13 +38,21 @@ module.exports = {
 
         StatusLog.initialize()
 
+        // first cache all - then you can resolve versions...
+        // then you can install the correct version...
+
         installArchiveAction(reference, vorpal)
           .catch(err => {
             vorpal.log(err.toString())
           })
           .then((repoManifest) => {
-            // TODO get list of dependencies and call installArchiveAction on each
+
             console.log(repoManifest)
+
+            // 1. get list of dependencies
+            // 2. each dependency
+              // a. call installArchiveAction
+
             StatusLog.complete()
             return done()
           })

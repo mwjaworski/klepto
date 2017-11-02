@@ -11,3 +11,18 @@ const installArchiveAction = (reference) => {
 }
 
 module.exports = installArchiveAction
+
+// StatusLog.notify(`version ${archiveRequest.uri}`)
+// return VaultStrategy
+//   .of(archiveRequest)
+//   .assignAppropriateVersion(archiveRequest)
+//     .then(() => {
+
+//     })
+
+
+// download - keep downloading
+// as you download for each dep request - add requirement to requirement tables
+// when done downloading, review conflicts
+// resolve conflicts
+// install each at one version -

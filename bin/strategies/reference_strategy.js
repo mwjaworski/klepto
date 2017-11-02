@@ -49,17 +49,11 @@ class ReferenceStrategy {
    */
   static scopeToResource (scopeOrResource) {
     const patternMarkers = applicationConfiguration.get(`rules.patternMarkers`)
-
-    const isNotScope = _.first(scopeOrResource) !== patternMarkers.source
-    if (isNotScope) {
-      return scopeOrResource
-    }
-
-    const reference = _.head(scopeOrResource.split(` `))
-    const [uri, version] = reference.split(patternMarkers.version)
+    const [uri, version] = scopeOrResource.split(patternMarkers.version)
     const uriAspects = uri.split(patternMarkers.separator)
-    const sourceConversionRule = this.__matchConversionRule(uri, uriAspects)
+    const sourceConversionRule = this.__matchConversionRule(uriAspects)
 
+    console.log(`scopeToResource`, sourceConversionRule, uriAspects)
     if (!sourceConversionRule) {
       return scopeOrResource
     }
@@ -67,6 +61,9 @@ class ReferenceStrategy {
     const { pattern, template, constants } = sourceConversionRule
     const templateVariables = _.zipObject(pattern.split(patternMarkers.separator), uriAspects)
 
+    console.log(`templateVariables`, templateVariables, template)
+
+    console.log(`>>> `, _.template(template)(_.merge({}, templateVariables, constants, { version })))
     return _.template(template)(_.merge({}, templateVariables, constants, { version }))
   }
 
@@ -75,11 +72,12 @@ class ReferenceStrategy {
    * @param {*} uri
    * @param {*} uriAspects
    */
-  static __matchConversionRule (uri, uriAspects) {
+  static __matchConversionRule (uriAspects) {
     const sources = applicationConfiguration.get(`sources`)
-    const scope = uriAspects[0] = (_.first(uriAspects) || '').substring(1)
-
-    return _.find(sources, ({ pattern, reference }, sourceKey) => {
+    const scope = uriAspects[0] = (_.first(uriAspects) || '')
+    console.log(sources)
+    return _.find(sources, (_0, sourceKey) => {
+      console.log(sourceKey)
       return scope === sourceKey
     })
   }

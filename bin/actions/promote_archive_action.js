@@ -11,7 +11,6 @@ const promoteArchiveAction = (archiveRequest) => {
   const manifestJson = ManifestConfiguration.build(stagingPath)
   const archivePath = ReferenceStrategy.buildArchivePath(archiveRequest, manifestJson)
   const ignoreFolders = _.merge(
-    [ `${_.get(manifestJson.paths, `archives`, '')}` ],
     applicationConfiguration.get(`rules.ignoreFiles`, []),
     manifestJson.ignore
   )
@@ -19,7 +18,7 @@ const promoteArchiveAction = (archiveRequest) => {
   return FileSystem
     .createDirectory(`${paths.archives}/`)
     .copyNonIgnoredFiles(stagingPath, archivePath, ignoreFolders)
-    .then(() => manifestJson.manifest)
+    .then(() => manifestJson)
 }
 
 module.exports = promoteArchiveAction
