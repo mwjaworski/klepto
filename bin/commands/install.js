@@ -1,4 +1,4 @@
-const createArchiveRequestAction = require('../actions/create_resource_request_action')
+const downloadArchivesAction = require('../actions/download_archives_action')
 const installArchiveAction = require('../actions/install_archive_action')
 
 const StatusLog = require('../support/status_log')
@@ -9,30 +9,37 @@ module.exports = {
     return vorpal
       .command(`install [reference]`)
       .option('-a, --audit', `Inspect the tools selected for a reference`)
+      .option('-r, --rename <archive>', `Rename the reference`)
       .description(`Install an archive.`)
       .validate(function (args) {
         return true
       })
       .action((args, done) => {
+        const singleDependency = {
+          [args.options.rename || '']: args.reference
+        }
 
-        const archiveDependencies = (!args.reference)
-          ? {} // get them from vault.json
-          : { '': args.reference }
+        const vaultDependencies = ManifestConfiguration.build(`./`).dependencies() || {}
+        const archiveDependencies = (!args.reference) ? vaultDependencies : singleDependency
 
         StatusLog.initialize()
 
-        // first cache all - then you can resolve versions...
-        // then you can install the correct version...
-
-        installArchiveAction(archiveDependencies, vorpal)
+        downloadArchivesAction(archiveDependencies, vorpal)
           .catch(err => {
+            vorpal.log(err.toString())
             StatusLog.completeFailure(err.toString())
             done()
           })
           .then(() => {
-            StatusLog.completeSuccess()
+
+            // TODO install call components
+              // 1. figure out version
+              // 2. figure out name
+            // installArchiveAction(archiveDependencies, vorpal)
+
             return done()
           })
+
       })
   }
 }
