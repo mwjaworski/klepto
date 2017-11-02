@@ -9,8 +9,6 @@ const Discover = {
   FULL_COMPONENT_NAME: /(.*?)\.(?:zip|tar|tgz|gz|tar\.gz|git)?$/i
 }
 
-// DUPLICATE_SEPERATOR: new RegExp(`${path.sep}+`, `g`)
-
 /**
  * a _reference_ can have a shape of scope, resource, or archiveRequest
  *
