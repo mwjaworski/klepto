@@ -13,7 +13,7 @@ const installArchivesAction = (reference) => {
 module.exports = installArchivesAction
 
 // StatusLog.notify(`version ${archiveRequest.uri}`, archiveRequest.uri)
-// return VaultStrategy
+// return VaultFacade
 //   .of(archiveRequest)
 //   .assignAppropriateVersion(archiveRequest)
 //     .then(() => {

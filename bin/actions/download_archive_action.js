@@ -1,6 +1,6 @@
 const createResourceRequestAction = require('./create_resource_request_action')
 const applicationConfiguration = require('../configurations/application')
-const VaultStrategy = require('../strategies/vault_strategy')
+const VaultFacade = require('../facades/vault_facade')
 const FileSystem = require('../support/file_system')
 const StatusLog = require('../support/status_log')
 

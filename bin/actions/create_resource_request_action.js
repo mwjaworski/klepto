@@ -1,13 +1,13 @@
-const ReferenceStrategy = require(`../strategies/reference_strategy`)
-const PackageStrategy = require(`../strategies/package_strategy`)
-const TransitFacade = require(`../strategies/transit_facade`)
+const ReferenceParser = require(`../parsers/reference_parser`)
+const PackageFacade = require(`../facades/package_facade`)
+const TransitFacade = require(`../facades/transit_facade`)
 const DependencyLog = require('../support/dependency_log')
 
 module.exports = (reference) => {
   return new Promise((resolve, reject) => {
-    const archiveRequest = ReferenceStrategy.referenceToArchiveRequest(reference)
+    const archiveRequest = ReferenceParser.referenceToArchiveRequest(reference)
     const isRedundant = DependencyLog.hasRequest(archiveRequest)
-    const PackageTool = PackageStrategy.of(archiveRequest)
+    const PackageTool = PackageFacade.of(archiveRequest)
     const TransitTool = TransitFacade.of(archiveRequest)
 
     DependencyLog.request(archiveRequest)

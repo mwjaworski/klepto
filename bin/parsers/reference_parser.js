@@ -18,7 +18,7 @@ const Discover = {
  * resource-reference to archiveRequest-reference
  * "uri#version" ===> { url, version }
  */
-class ReferenceStrategy {
+class ReferenceParser {
   static referenceToArchiveRequest (reference) {
     const scopeOrReference = this.normalizeReference(reference)
     const resource = this.scopeToResource(scopeOrReference)
@@ -137,4 +137,4 @@ class ReferenceStrategy {
   }
 }
 
-module.exports = ReferenceStrategy
+module.exports = ReferenceParser
