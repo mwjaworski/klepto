@@ -12,9 +12,7 @@ const Discover = {
  * and evaluates which version to load in to the .vault/staging
  */
 class VaultStrategy {
-  static of ({ archiveRequest }) {
-    const { uri } = archiveRequest
-
+  static of ({ uri }) {
     // supports only single version download (currently)
     return this.__ofNull(uri)
   }
