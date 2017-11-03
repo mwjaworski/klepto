@@ -35,35 +35,10 @@ module.exports = {
           .then(() => {
             StatusLog.completeSuccess()
 
-            const versionRequirements = DependencyLog.calculateVersionRequirements()
-            const versionMatches = DependencyLog.calculateVersionMatches(versionRequirements)
-            const versionConflicts = DependencyLog.calculateVersionConflicts(versionRequirements)
+            const resolutions = DependencyLog.resolutions()
 
-            const conflictsResolutionRequests = _.map(versionConflicts, (conflicts, archive) => {
-              const versionOptions = _.keys(conflicts)
-              const highestVersion = _.first(versionOptions.sort(semver.lt))
-
-              return {
-                type: 'list',
-                name: `${archive}`,
-                choices: versionOptions,
-                default: highestVersion,
-                message: `Select a version for ${archive}: `
-              }
-            })
-
-            if (_.size(conflictsResolutionRequests) <= 0) {
-              return done()
-            }
-
-            this
-              .prompt(conflictsResolutionRequests)
-              .then((versionDecisions) => {
-                const versionResolutions = _.merge({}, versionMatches, versionDecisions)
-
-                vorpal.log(versionResolutions)
-                done()
-              })
+            vorpal.log(resolutions)
+            return done()
 
             // TODO install call components
               // 1. figure out version

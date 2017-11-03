@@ -28,7 +28,23 @@ class DependencyLog {
     return !!this.__installed[uuid]
   }
 
-  static calculateVersionMatches(versionRequirements) {
+  static resolutions() {
+    const versionRequirements = DependencyLog.__collapseRequirements(DependencyLog.__calculateVersionRequirements())
+    const versionMatches = DependencyLog.__calculateVersionMatches(versionRequirements)
+    const versionConflicts = DependencyLog.__calculateVersionConflicts(versionRequirements)
+
+    const versionConflictsResolution = _.mapValues(versionConflicts, (conflicts, archive) => {
+      const versionOptions = _.keys(conflicts)
+      const highestVersion = _.first(versionOptions.sort(semver.lt))
+
+      // TODO support two rules (highest version OR most requested)
+      return highestVersion
+    })
+
+    return _.merge({}, versionMatches, versionConflictsResolution)
+  }
+
+  static __calculateVersionMatches(versionRequirements) {
     const versionMatches = {}
 
     _.each(versionRequirements, (archiveRequirements, archive) => {
@@ -40,7 +56,7 @@ class DependencyLog {
     return versionMatches
   }
 
-  static calculateVersionConflicts(versionRequirements) {
+  static __calculateVersionConflicts(versionRequirements) {
     const versionConflicts = {}
 
     _.each(versionRequirements, (archiveRequirements, archive) => {
@@ -52,7 +68,17 @@ class DependencyLog {
     return versionConflicts
   }
 
-  static calculateVersionRequirements() {
+  /**
+   * collpase dependency tree by resolving all unbounded (e.g. >=3.4.5) requests to normalized requests (e.g. 3.4.5)
+   */
+  static __collapseRequirements(versionRequirements) {
+    return versionRequirements
+  }
+
+  /**
+   * reverse map all dependencies to a map of requests
+   */
+  static __calculateVersionRequirements() {
     const dependencies = this.__dependencies
     const versionRequirements = {}
 
