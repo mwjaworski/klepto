@@ -45,7 +45,7 @@ class ReferenceParser {
    */
   static scopeToResource (scopeOrReference) {
     const patternMarkers = applicationConfiguration.get(`rules.patternMarkers`)
-    const [uri, version = ``] = this.__splitVersion(scopeOrReference)
+    const [uri, version = ``] = this.splitURIVersion(scopeOrReference)
     const uriAspects = uri.split(patternMarkers.separator)
     const sourceConversionRule = this.__matchConversionRule(uriAspects)
 
@@ -70,15 +70,16 @@ class ReferenceParser {
    * @param {*} reference
    */
   static resourceToArchiveRequest (reference) {
+    const versionMarker = _.first(applicationConfiguration.get(`rules.patternMarkers.version`))
     const { staging, cache } = applicationConfiguration.get(`paths`)
 
-    const [uri, version = `master`] = this.__splitVersion(reference)
-    const [_0, archive, extension] = Discover.COMPONENT_ASPECT.exec(uri) // eslint-disable-line
+    const [uri, version = `master`] = this.splitURIVersion(reference)
+    const [archive, extension] = this.splitArchiveExtension(uri)
 
     const safeExtension = (extension) ? `.${extension}` : `/`
     const cachePath = `${cache}/${archive}__${version}${safeExtension}`
     const stagingPath = `${staging}/${archive}/${version}/`
-    const uuid = `${archive}--${version}`
+    const uuid = `${archive}${versionMarker}${version}`
 
     return {
       stagingPath,
@@ -103,6 +104,18 @@ class ReferenceParser {
     return `${archiveFolder}/${archiveName}/`
   }
 
+  static splitURIVersion (reference) {
+    const patternMarkers = applicationConfiguration.get(`rules.patternMarkers`)
+    const versionMarker = _.find(patternMarkers.version, (versionMarker) => reference.indexOf(versionMarker) !== -1)
+
+    return reference.split(versionMarker || _.first(patternMarkers.version))
+  }
+
+  static splitArchiveExtension (uri) {
+    const [_0, archive, extension] = Discover.COMPONENT_ASPECT.exec(uri) || [``, uri, ``] // eslint-disable-line
+    return [archive, extension]
+  }
+
   /**
    *
    * @param {*} uri
@@ -117,12 +130,6 @@ class ReferenceParser {
     })
   }
 
-  static __splitVersion (reference) {
-    const patternMarkers = applicationConfiguration.get(`rules.patternMarkers`)
-    const versionMarker = _.find(patternMarkers.version, (versionMarker) => reference.indexOf(versionMarker) !== -1)
-
-    return reference.split(versionMarker || _.first(patternMarkers.version))
-  }
 }
 
 module.exports = ReferenceParser

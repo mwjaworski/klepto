@@ -7,7 +7,7 @@ module.exports = {
       .validate(function (args) {
         return true
       })
-      .action((args, done) => {
+      .action(function (args, done) {
         done()
       })
   }

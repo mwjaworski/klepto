@@ -1,8 +1,8 @@
 const downloadArchivesAction = require('../actions/download_archives_action')
 
 const ManifestConfiguration = require('../configurations/manifest')
-const StatusLog = require('../support/status_log')
 const DependencyLog = require('../support/dependency_log')
+const StatusLog = require('../support/status_log')
 
 module.exports = {
   registerVorpalCommand: (vorpal, applicationConfiguration) => {
@@ -10,11 +10,11 @@ module.exports = {
       .command(`download [reference]`)
       .option('-a, --audit', `Inspect the tools selected for a reference`)
       .option('-r, --rename <archive>', `Rename the reference`)
-      .description(`Download an archive.`)
+      .description(`Download an archive(s).`)
       .validate(function (args) {
         return true
       })
-      .action((args, done) => {
+      .action(function (args, done) {
         const singleDependency = {
           [args.options.rename || '']: args.reference
         }
@@ -31,7 +31,6 @@ module.exports = {
           })
           .then(() => {
             StatusLog.completeSuccess()
-            console.dir(DependencyLog)
             return done()
           })
       })

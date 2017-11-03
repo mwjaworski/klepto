@@ -11,9 +11,9 @@ class StatusLog {
       }
     })
 
-    status.start({
-      pattern: `{spinner.hamburger.yellow} {uptime.gray} {process.white.custom}`
-    })
+    // status.start({
+    //   pattern: `{spinner.hamburger.yellow} {uptime.gray} {process.white.custom}`
+    // })
   }
 
   static uninitialize () {
@@ -25,7 +25,7 @@ class StatusLog {
 
   static notify (action, resource) {
     if (!this.__resources[resource]) {
-      this.__process.inc(1)
+      // this.__process.inc(1)
     }
 
     this.__resources[resource] = resource

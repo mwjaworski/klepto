@@ -15,6 +15,7 @@ const promoteArchiveAction = (archiveRequest) => {
   )
 
   return FileSystem
+    .removeDirectory(`${paths.archives}/${archiveRequest.archive}`)
     .createDirectory(`${paths.archives}/`)
     .copyNonIgnoredFiles(archiveRequest.stagingPath, archivePath, ignoreFolders)
     .then(() => manifestJson)
