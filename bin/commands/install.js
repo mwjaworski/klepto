@@ -24,14 +24,13 @@ module.exports = {
 
         StatusLog.initialize()
 
-        downloadArchivesAction(archiveDependencies, vorpal)
+        downloadArchivesAction(archiveDependencies, `__root__`)
           .catch(err => {
             vorpal.log(err.toString())
             StatusLog.completeFailure(err.toString())
             done()
           })
           .then(() => {
-            //
 
             // TODO install call components
               // 1. figure out version

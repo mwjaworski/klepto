@@ -8,7 +8,9 @@ class GitTransit {
       ])
       .then(resolve)
       .catch((err) => {
-        reject(new Error(err))
+        // TODO permit this to fail but not kill the whole process (do this for all transit functions)
+        // console.error(err)
+        resolve()
       })
     })
   }

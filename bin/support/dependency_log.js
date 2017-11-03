@@ -1,29 +1,29 @@
 
 class DependencyLog {
   static initialize () {
-    this.__deps = {}
+    // TODO build this list on start
+    this.__installed = {}
+    this.__dependencies = {}
     return this
   }
 
   static uninitialize () {
-    this.__deps = {}
+    this.__installed = {}
     return this
   }
 
-  static request ({ uuid }, requestedBy) {
-    const request = this.__deps[uuid] = this.__deps[uuid] || {
-      requesters: {}
-    }
+  static trackInstallation ({ uuid }) {
+    const request = this.__installed[uuid] = this.__installed[uuid] || {}
+    return this
+  }
 
-    if (requestedBy) {
-      request.requesters[requestedBy.uri] = requestedBy.version
-    }
-
+  static trackDependencies(uuid, dependencies) {
+    this.__dependencies[uuid] = dependencies
     return this
   }
 
   static hasRequest ({ uuid }) {
-    return !!this.__deps[uuid]
+    return !!this.__installed[uuid]
   }
 }
 

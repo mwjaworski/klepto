@@ -2,6 +2,7 @@ const ReferenceParser = require(`../parsers/reference_parser`)
 const PackageFacade = require(`../facades/package_facade`)
 const TransitFacade = require(`../facades/transit_facade`)
 const DependencyLog = require('../support/dependency_log')
+const _ = require('lodash')
 
 module.exports = (reference) => {
   return new Promise((resolve, reject) => {
@@ -10,7 +11,7 @@ module.exports = (reference) => {
     const PackageTool = PackageFacade.of(archiveRequest)
     const TransitTool = TransitFacade.of(archiveRequest)
 
-    DependencyLog.request(archiveRequest)
+    DependencyLog.trackInstallation(archiveRequest)
 
     // console.dir(_.merge(archiveRequest, {
     //   package: PackageTool.name,

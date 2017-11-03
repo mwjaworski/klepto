@@ -2,6 +2,7 @@ const downloadArchivesAction = require('../actions/download_archives_action')
 
 const ManifestConfiguration = require('../configurations/manifest')
 const StatusLog = require('../support/status_log')
+const DependencyLog = require('../support/dependency_log')
 
 module.exports = {
   registerVorpalCommand: (vorpal, applicationConfiguration) => {
@@ -23,13 +24,14 @@ module.exports = {
 
         StatusLog.initialize()
 
-        downloadArchivesAction(archiveDependencies, vorpal)
+        downloadArchivesAction(archiveDependencies, `__root__`)
           .catch(err => {
             StatusLog.completeFailure(err.toString())
             done()
           })
           .then(() => {
             StatusLog.completeSuccess()
+            console.dir(DependencyLog)
             return done()
           })
       })
