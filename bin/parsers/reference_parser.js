@@ -129,7 +129,6 @@ class ReferenceParser {
       return scope === sourceKey
     })
   }
-
 }
 
 module.exports = ReferenceParser

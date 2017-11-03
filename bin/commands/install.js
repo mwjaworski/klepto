@@ -35,9 +35,10 @@ module.exports = {
           .then(() => {
             StatusLog.completeSuccess()
 
-            const resolutions = DependencyLog.resolutions()
+            // const resolutions = DependencyLog.resolutions()
 
-            vorpal.log(resolutions)
+            // vorpal.log(resolutions)
+            StatusLog.completeSuccess()
             return done()
 
             // TODO install call components

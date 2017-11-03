@@ -8,7 +8,6 @@ module.exports = {
         return true
       })
       .action(function (args, done) {
-
         var promise = this.prompt([
           {
             type: 'input',
@@ -22,8 +21,7 @@ module.exports = {
           }
         ], function (answers) {
           done()
-        });
-
+        })
       })
   }
 }
