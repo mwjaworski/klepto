@@ -18,7 +18,7 @@ test.cb('parser: reference (folder)', t => {
   t.is(archive, `sub_folder`, `the archive is the last folder name`)
   t.is(uri, `../folder/sub_folder/`, `uri is the base path to the resource`)
 
-  t.is(stagingPath, `${applicationConfiguration.get('paths.staging')}/${archive}/`, `staging path is the archive name in staging folder`)
+  t.is(stagingPath, `${applicationConfiguration.get('paths.staging')}/${archive}/${version}/`, `staging path is the archive name in staging folder`)
 
   t.end()
 })
