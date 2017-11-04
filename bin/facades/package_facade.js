@@ -11,7 +11,7 @@ const Discover = {
 /**
  *
  */
-class PackageStrategy {
+class PackageFacade {
   /**
    * we only support zip currently
    */
@@ -30,4 +30,4 @@ class PackageStrategy {
   }
 }
 
-module.exports = PackageStrategy
+module.exports = PackageFacade

@@ -1,15 +1,8 @@
-const axios = require('axios')
-const path = require('path')
-
 const fileSystem = require('../support/file_system')
-
-const applicationConfiguration = require('../configurations/application')
-const paths = applicationConfiguration.get(`paths`)
+const axios = require('axios')
 
 class HTTPTransit {
-  static sendToCache ({ uri }) {
-    const cachePath = this.__cachePath({ uri })
-
+  static sendToCache ({ uri, cachePath }) {
     return axios({
       responseType: `arraybuffer`,
       maxContentLength: 2000000,
@@ -22,18 +15,9 @@ class HTTPTransit {
       }
     }).then(response => {
       return fileSystem.write(cachePath, response.data).then(() => {
-        return {
-          cachePath
-        }
+        return {}
       })
     })
-  }
-
-  static __cachePath ({ uri }) {
-    const extension = path.extname(uri)
-    const file = path.basename(uri, extension)
-
-    return `${paths.cache}/${file}${extension}`
   }
 }
 

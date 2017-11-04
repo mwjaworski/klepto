@@ -1,27 +1,34 @@
 const createResourceRequestAction = require('./create_resource_request_action')
 const applicationConfiguration = require('../configurations/application')
-const VaultStrategy = require('../strategies/vault_strategy')
 const FileSystem = require('../support/file_system')
+const StatusLog = require('../support/status_log')
 
 const downloadArchiveAction = (reference) => {
+  // TODO cache with version name so we can pull multiple versions of one component to resolve requirements?
   return createResourceRequestAction(reference)
     .then((resourceRequest) => {
       const paths = applicationConfiguration.get(`paths`)
-      const { archiveRequest, PackageTool, TransitTool } = resourceRequest
+      const { isRedundant, archiveRequest, PackageTool, TransitTool } = resourceRequest
+
+      if (isRedundant) {
+        StatusLog.notify(`pre-cached ${archiveRequest.uri}`, archiveRequest.uuid)
+        return new Promise((resolve) => {
+          resolve(resourceRequest)
+        })
+      }
 
       FileSystem.createDirectory(`${archiveRequest.stagingPath}/`)
       FileSystem.createDirectory(`${paths.cache}/`)
 
+      StatusLog.notify(`cache ${archiveRequest.uri}`, archiveRequest.uuid)
       return TransitTool
         .sendToCache(archiveRequest)
-          .then(({ cachePath }) => {
-            return VaultStrategy
-              .of(archiveRequest)
-              .assignAppropriateVersion(archiveRequest)
-                .then(() => {
-                  return PackageTool
-                    .sendToStaging(archiveRequest, cachePath)
-                })
+          .then(() => {
+            FileSystem.removeDirectory(`${archiveRequest.stagingPath}`)
+
+            StatusLog.notify(`stage ${archiveRequest.uri}`, archiveRequest.uuid)
+            return PackageTool
+              .sendToStaging(archiveRequest)
           })
           .then(() => resourceRequest)
     })

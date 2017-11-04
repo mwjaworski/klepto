@@ -1,3 +1,4 @@
+
 module.exports = {
   registerVorpalCommand: (vorpal, applicationConfiguration) => {
     return vorpal
@@ -6,9 +7,21 @@ module.exports = {
       .validate(function (args) {
         return true
       })
-      .action((args, done) => {
-        vorpal.log(`pending...`)
-        done()
+      .action(function (args, done) {
+        var promise = this.prompt([
+          {
+            type: 'input',
+            name: 'username',
+            message: 'Username: '
+          },
+          {
+            type: 'password',
+            name: 'password',
+            message: 'Password: '
+          }
+        ], function (answers) {
+          done()
+        })
       })
   }
 }

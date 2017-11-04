@@ -11,7 +11,7 @@ const Discover = {
  * reads a .vault/cache/<archive> or manifest for that archive type
  * and evaluates which version to load in to the .vault/staging
  */
-class VaultStrategy {
+class VaultFacade {
   static of ({ uri }) {
     // supports only single version download (currently)
     return this.__ofNull(uri)
@@ -34,4 +34,4 @@ class VaultStrategy {
   }
 }
 
-module.exports = VaultStrategy
+module.exports = VaultFacade

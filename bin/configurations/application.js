@@ -15,8 +15,8 @@ class ApplicationConfiguration {
   load () {
     _.each([
       `configuration/application.json`,
-      `${os.homedir()}/.bauble`,
-      `${process.cwd()}/.bauble`
+      `${os.homedir()}/.vaultrc`,
+      `${process.cwd()}/.vaultrc`
     ], (configurationPath) => {
       this.loadFile(configurationPath)
     })
@@ -27,10 +27,14 @@ class ApplicationConfiguration {
   loadFile (filename) {
     try {
       this.__configuration = _.merge(this.__configuration,
-        JSON.parse(fs.readFileSync(filename).toString() || '{}')
+        JSON.parse(
+          fs.readFileSync(filename).toString() || '{}'
+        )
       )
     } catch (e) {
-      ;
+      if (e instanceof SyntaxError) {
+        console.error(`${filename} is malformed`)
+      }
     }
   }
 

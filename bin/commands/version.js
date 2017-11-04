@@ -5,7 +5,7 @@ module.exports = {
     return vorpal
       .command(`version`)
       .description(`View current version.`)
-      .action((args, done) => {
+      .action(function (args, done) {
         vorpal.log(packageConfiguration.version)
         done()
       })

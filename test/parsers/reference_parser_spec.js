@@ -1,10 +1,10 @@
 'use strict'
 
 const test = require('ava')
-const ReferenceStrategy = require('../../bin/strategies/reference_strategy')
+const ReferenceParser = require('../../bin/parsers/reference_parser')
 const applicationConfiguration = require(`../../bin/configurations/application`)
 
-test.cb('strategy: reference (folder)', t => {
+test.cb('parser: reference (folder)', t => {
   t.plan(4)
 
   const {
@@ -12,18 +12,18 @@ test.cb('strategy: reference (folder)', t => {
     version,
     archive,
     uri
-  } = ReferenceStrategy.referenceToArchiveRequest(`../folder/sub_folder/`)
+  } = ReferenceParser.referenceToArchiveRequest(`../folder/sub_folder/`)
 
   t.is(version, `master`, `version defaults to master`)
   t.is(archive, `sub_folder`, `the archive is the last folder name`)
   t.is(uri, `../folder/sub_folder/`, `uri is the base path to the resource`)
 
-  t.is(stagingPath, `${applicationConfiguration.get('paths.staging')}/${archive}/`, `staging path is the archive name in staging folder`)
+  t.is(stagingPath, `${applicationConfiguration.get('paths.staging')}/${archive}/${version}/`, `staging path is the archive name in staging folder`)
 
   t.end()
 })
 
-test.cb('strategy: scope-to-resource (local)', t => {
+test.cb('parser: scope-to-resource (local)', t => {
   t.plan(1)
 
   applicationConfiguration.override({
@@ -35,13 +35,13 @@ test.cb('strategy: scope-to-resource (local)', t => {
     }
   })
 
-  const uri = ReferenceStrategy.scopeToResource(`$local_source/def/ghi/hij@1.2.3`)
+  const uri = ReferenceParser.scopeToResource(`local_source/def/ghi/hij@1.2.3`)
 
   t.is(uri, `~/local_source/components/def/ghi/hij/1.2.3/`)
   t.end()
 })
 
-test.cb('strategy: scope-to-resource (web)', t => {
+test.cb('parser: scope-to-resource (web)', t => {
   t.plan(1)
 
   applicationConfiguration.override({
@@ -53,7 +53,7 @@ test.cb('strategy: scope-to-resource (web)', t => {
     }
   })
 
-  const uri = ReferenceStrategy.scopeToResource(`$web-source/blueprint@1.2.3`)
+  const uri = ReferenceParser.scopeToResource(`web-source/blueprint@1.2.3`)
 
   t.is(uri, `http://phoenix.eab.com/eabui/blueprint__1.2.3.zip`)
   t.end()

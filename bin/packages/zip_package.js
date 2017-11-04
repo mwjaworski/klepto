@@ -5,7 +5,7 @@ const fs = require('fs-extra')
 class ZipPackage {
   static sendToStaging (archiveRequest, cachePath) {
     return FileSystem
-      .read(cachePath)
+      .read(archiveRequest.cachePath)
       .then((binaryData) => {
         return this.__extractZip(binaryData, archiveRequest)
       })

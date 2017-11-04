@@ -90,10 +90,10 @@ F. local + folder      a/b/c/ 1.2.3                                   YES
 node bin/index.js download ../link-talk@1.2.3
 node bin/index.js install ../link-talk@1.2.3
 
-node bin/index.js install ../bower-alternative-source-resolver.zip
-node bin/index.js install ../my-tarball.tgz
+node bin/index.js download ../bower-alternative-source-resolver.zip
+node bin/index.js download ../my-tarball.tgz
 
-node bin/index.js install  http://phoenix.eab.com/projects/core-ply-brand_3.8.0.zip@1.2.3
+node bin/index.js download http://phoenix.eab.com/projects/core-ply-brand_3.8.0.zip@1.2.3
 
 node bin/index.js download https://JaworskM@repo.advisory.com/scm/eabui/capability-ng-favorites.git --audit
 
@@ -144,4 +144,15 @@ node bin/index.js cache  https://github.com/advisory/phoenix/blob/master/ui-ply-
 https://github.com/advisory/phoenix/ ui-ply-input_3.8.0.zip
 bauble cache https://github.com/advisory/phoenix.git ui-ply-input_3.8.0.zip
 bauble install https://github.com/advisory/phoenix.git ui-ply-input_3.8.0.zip
+```
+
+
+```
+{
+  "core-sass-brand-v3": "core-sass-brand#3.0.0"
+}
+
+or
+
+bauble install core-sass-brand#3.0.0 --rename core-sass-brand-v3
 ```

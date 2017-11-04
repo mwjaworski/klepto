@@ -40,7 +40,7 @@ class FileSystem {
 
   static createDirectory (directoryName) {
     directoryName = path.normalize(directoryName).split(path.sep)
-    directoryName.forEach((sdir, index) => {
+    directoryName.forEach((_0, index) => {
       const pathInQuestion = directoryName.slice(0, index + 1).join(path.sep)
 
       if (pathInQuestion && !this.isDirectory(pathInQuestion)) {

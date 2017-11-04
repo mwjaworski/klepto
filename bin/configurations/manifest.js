@@ -33,7 +33,7 @@ class ManifestConfiguration {
     }
 
     return {
-      configurationSystem: _.find(configurationSystemList, (system) => system.archiveManifest === `bauble.json`),
+      configurationSystem: _.find(configurationSystemList, (system) => system.archiveManifest === `vault.json`),
       json: this.__defaultManifest()
     }
   }
@@ -49,10 +49,6 @@ class ManifestConfiguration {
 
   get system () {
     return this.__system
-  }
-
-  get manifest () {
-    return this.__manifest
   }
 
   get name () {
