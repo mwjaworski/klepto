@@ -1,4 +1,6 @@
 const OperatingSystem = require('../support/operating_system')
+const _ = require('lodash')
+const os = require('os')
 
 class GitTransit {
   static sendToCache ({ uri, version, cachePath }) {
@@ -14,10 +16,23 @@ class GitTransit {
       })
     })
   }
-  static getVersions (archiveRequest) {
-    return new Promise((resolve, reject) => {
-      resolve([archiveRequest.version])
-    })
+  static getVersions () {
+    return OperatingSystem.execute([
+      `git ls-remote --tags`
+    ])
+    .then(this.__cleanGitVersionList)
+  }
+  /**
+   * @param {*} rawVersionList output from `git ls-remote --tags`
+   * @return {Array<String>} each version on the repository.
+   */
+  static __cleanGitVersionList (rawVersionList) {
+    const GetTag = /\/([-rcv\d\.]*?)\^?$/g
+    const versions = rawVersionList.split(os.EOL)
+
+    return _.map(_.compact(_.map(versions, (version) => {
+      return GetTag.exec(version)
+    })), (annotatedVersion) => _.nth(annotatedVersion, 1))
   }
 }
 

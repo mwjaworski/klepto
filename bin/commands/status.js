@@ -1,3 +1,6 @@
+const OperatingSystem = require('../support/operating_system')
+const os = require('os')
+const GitTransit = require('../transits/git_transit')
 
 module.exports = {
   registerVorpalCommand: (vorpal, applicationConfiguration) => {
@@ -8,20 +11,12 @@ module.exports = {
         return true
       })
       .action(function (args, done) {
-        var promise = this.prompt([
-          {
-            type: 'input',
-            name: 'username',
-            message: 'Username: '
-          },
-          {
-            type: 'password',
-            name: 'password',
-            message: 'Password: '
-          }
-        ], function (answers) {
+
+        GitTransit.getVersions().then((v) => {
+          console.log(v)
           done()
         })
+
       })
   }
 }
