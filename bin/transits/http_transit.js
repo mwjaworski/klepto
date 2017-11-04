@@ -19,6 +19,11 @@ class HTTPTransit {
       })
     })
   }
+  static getVersions (archiveRequest) {
+    return new Promise((resolve, reject) => {
+      resolve([archiveRequest.version])
+    })
+  }
 }
 
 module.exports = HTTPTransit

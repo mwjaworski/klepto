@@ -14,6 +14,11 @@ class GitTransit {
       })
     })
   }
+  static getVersions (archiveRequest) {
+    return new Promise((resolve, reject) => {
+      resolve([archiveRequest.version])
+    })
+  }
 }
 
 module.exports = GitTransit

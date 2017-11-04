@@ -3,17 +3,10 @@ const semver = require('semver')
 const _ = require('lodash')
 
 class DependencyLog {
-
-  static get __allPossibleVersions() {
-
-  }
-
   static initialize () {
     // TODO build this list on start
     this.__installed = {}
     this.__dependencies = {}
-    // this.__allVersions = _.times(100, (i) => _.times(100, (j) => _.times(100, (k) => [i, j, k])))
-    // _.flattenDeep(_.times(2, (i) => _.times(2, (j) => _.times(2, (k) => `${[i, j, k]}`))))
     return this
   }
 
@@ -23,7 +16,7 @@ class DependencyLog {
   }
 
   static trackInstallation ({ uuid }) {
-    const request = this.__installed[uuid] = this.__installed[uuid] || {}
+    // const request = this.__installed[uuid] = this.__installed[uuid] || {}
     return this
   }
 
@@ -80,9 +73,6 @@ class DependencyLog {
    * collpase dependency tree by resolving all unbounded (e.g. >=3.4.5) requests to normalized requests (e.g. 3.4.5)
    */
   static __collapseRequirements (versionRequirements) {
-
-    // semver.maxSatisfying(['1.1.1', '1.2.1', '1.3.1'], '>=1.1.1 <3.2.3  1.2.1')
-
     return versionRequirements
   }
 
