@@ -1,8 +1,11 @@
 const fileSystem = require('../support/file_system')
 const axios = require('axios')
 
+/**
+ * currently only retrieves the version requested, cannot handle version ranges.
+ */
 class HTTPTransit {
-  static sendToCache ({ uri, cachePath }) {
+  static sendToCache ({ uri, installedVersion, cachePath }) {
     return axios({
       responseType: `arraybuffer`,
       maxContentLength: 2000000,
@@ -15,13 +18,10 @@ class HTTPTransit {
       }
     }).then(response => {
       return fileSystem.write(cachePath, response.data).then(() => {
-        return {}
+        return {
+          installedVersion
+        }
       })
-    })
-  }
-  static getVersions (archiveRequest) {
-    return new Promise((resolve, reject) => {
-      resolve([archiveRequest.version])
     })
   }
 }

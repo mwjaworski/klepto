@@ -4,7 +4,7 @@ const _ = require('lodash')
 const applicationConfiguration = require('../configurations/application')
 
 const Discover = {
-  COMPONENT_ASPECT: /.*?\/([a-z0-9-_\.]*?)[\.\/]?(zip|tar|tgz|gz|tar\.gz|git)?$/i, // eslint-disable-line
+  COMPONENT_ASPECT: /.*?\/([a-z0-9-_.]*?)[./]?(zip|tar|tgz|gz|tar.gz|git)?$/i,
   IS_VERSION: /^[~^>=<]?\d{1,2}\.\d{1,2}\.\d{1,2}$/i
 }
 
@@ -82,6 +82,7 @@ class ReferenceParser {
     const uuid = `${archive}${versionMarker}${version}`
 
     return {
+      installedVersion: version,
       stagingPath,
       cachePath,
       archive,

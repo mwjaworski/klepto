@@ -1,8 +1,11 @@
 const fs = require('fs-extra')
 const _ = require('lodash')
 
+/**
+ * currently only retrieves the version requested, cannot handle version ranges.
+ */
 class LocalTransit {
-  static sendToCache ({ uri, cachePath }) {
+  static sendToCache ({ uri, installedVersion, cachePath }) {
     // TODO if we provide a file:// prefix then we have to tear it off
     const originalLocation = _.trimEnd(`${uri}`)
 
@@ -11,14 +14,11 @@ class LocalTransit {
         if (err) {
           reject(new Error(err))
         } else {
-          resolve({})
+          resolve({
+            installedVersion
+          })
         }
       })
-    })
-  }
-  static getVersions (archiveRequest) {
-    return new Promise((resolve, reject) => {
-      resolve([archiveRequest.version])
     })
   }
 }

@@ -11,12 +11,10 @@ module.exports = {
         return true
       })
       .action(function (args, done) {
-
         GitTransit.getVersions().then((v) => {
           console.log(v)
           done()
         })
-
       })
   }
 }
