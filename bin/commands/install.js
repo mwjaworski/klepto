@@ -33,20 +33,12 @@ module.exports = {
             done()
           })
           .then(() => {
-            StatusLog.completeSuccess()
-
-            // const resolutions = DependencyLog.resolutions()
-
-            // vorpal.log(resolutions)
-            StatusLog.completeSuccess()
-            return done()
-
-            // TODO install call components
-              // 1. figure out version
-              // 2. figure out name
-            // installArchiveAction(archiveDependencies, vorpal)
-
-            // return done()
+            StatusLog
+              .completeSuccess()
+              .then(() => {
+                console.log(DependencyLog.resolutions())
+              })
+              .then(done)
           })
       })
   }

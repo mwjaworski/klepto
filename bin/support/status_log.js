@@ -76,20 +76,22 @@ class StatusLog {
 
   static completeSuccess () {
     this.__action = 'success'
-    setTimeout(() => {
-      this.stop()
-    }, 1000)
 
-    return this
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve(this.stop())
+      }, 1000)
+    })
   }
 
   static completeFailure (reason) {
     this.__action = `${reason}`
-    setTimeout(() => {
-      this.stop()
-    }, 1000)
 
-    return this
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve(this.stop())
+      }, 1000)
+    })
   }
 }
 
