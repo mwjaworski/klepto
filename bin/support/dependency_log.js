@@ -15,8 +15,10 @@ class DependencyLog {
     return this
   }
 
-  static trackInstallation ({ uuid }) {
-    // const request = this.__installed[uuid] = this.__installed[uuid] || {}
+  static trackInstallation (archiveRequest) {
+    const { uuid } = archiveRequest
+
+    this.__installed[uuid] = this.__installed[uuid] || archiveRequest
     return this
   }
 
