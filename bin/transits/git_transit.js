@@ -59,6 +59,7 @@ class GitTransit {
         archiveRequest.installedVersion = installedVersion
 
         return {
+          availableVersions: versionList,
           installedVersion
         }
       })

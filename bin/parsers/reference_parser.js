@@ -81,6 +81,10 @@ class ReferenceParser {
     const stagingPath = `${staging}/${archive}/${version}/`
     const uuid = `${archive}${versionMarker}${version}`
 
+    // TODO cachePath and stagingPath can avoid issues with folders named >=
+    // var crypto = require('crypto');
+    // crypto.createHash('md5').update(data).digest("hex");
+
     return {
       installedVersion: version,
       stagingPath,

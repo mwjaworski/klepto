@@ -19,6 +19,7 @@ class HTTPTransit {
     }).then(response => {
       return fileSystem.write(cachePath, response.data).then(() => {
         return {
+          availableVersions: [installedVersion],
           installedVersion
         }
       })

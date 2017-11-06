@@ -79,7 +79,7 @@ class StatusLog {
 
     return new Promise((resolve, reject) => {
       setTimeout(() => {
-        resolve(this.stop())
+        resolve(this.stop().uninitialize())
       }, 1000)
     })
   }
@@ -89,7 +89,7 @@ class StatusLog {
 
     return new Promise((resolve, reject) => {
       setTimeout(() => {
-        resolve(this.stop())
+        resolve(this.stop().uninitialize())
       }, 1000)
     })
   }
