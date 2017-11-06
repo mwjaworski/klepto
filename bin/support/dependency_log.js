@@ -57,7 +57,7 @@ class DependencyLog {
         // 3. if it is a range - we... need the installed version so we can call findappriprivate just fro that rule and get a version...!
 
         // NOTE this is still an issue - what if it is a ~2.1.2
-        const mostRequested  = _.findKey(conflicts, (requestedBy, version) => {
+        const mostRequested = _.findKey(conflicts, (requestedBy, version) => {
           return requestedBy.length;
         })
 
