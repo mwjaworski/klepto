@@ -63,16 +63,16 @@ node bin/index.js cache https://JaworskM@repo.advisory.com/scm/~jaworskm/test-te
 
 <!--
 // source/group/file
-`bauble install repo/data-ng-academic-planner/core-ply-brand_3.8.0`
+`klepto install repo/data-ng-academic-planner/core-ply-brand_3.8.0`
 
 // source/file
-`bauble install repo/core-ply-brand_3.8.0`
+`klepto install repo/core-ply-brand_3.8.0`
 
 // web because of http(s) and zip/tar
-`bauble install http://phoenix.eab.com/projects/core-ply-brand_3.8.0.zip`
+`klepto install http://phoenix.eab.com/projects/core-ply-brand_3.8.0.zip`
 
 // file because of no http(s) and zip/tar
-`bauble install http://phoenix.eab.com/projects/core-ply-brand_3.8.0.zip`
+`klepto install http://phoenix.eab.com/projects/core-ply-brand_3.8.0.zip`
 -->
 
 node bin/index.js cache --audit http://phoenix.eab.com/projects/core-ply-brand_3.8.0.zip
@@ -142,8 +142,8 @@ node bin/index.js cache  ../link-talk
 node bin/index.js cache
 node bin/index.js cache  https://github.com/advisory/phoenix/blob/master/ui-ply-input_3.8.0.zip?raw=true
 https://github.com/advisory/phoenix/ ui-ply-input_3.8.0.zip
-bauble cache https://github.com/advisory/phoenix.git ui-ply-input_3.8.0.zip
-bauble install https://github.com/advisory/phoenix.git ui-ply-input_3.8.0.zip
+klepto cache https://github.com/advisory/phoenix.git ui-ply-input_3.8.0.zip
+klepto install https://github.com/advisory/phoenix.git ui-ply-input_3.8.0.zip
 ```
 
 
@@ -154,5 +154,5 @@ bauble install https://github.com/advisory/phoenix.git ui-ply-input_3.8.0.zip
 
 or
 
-bauble install core-sass-brand#3.0.0 --rename core-sass-brand-v3
+klepto install core-sass-brand#3.0.0 --rename core-sass-brand-v3
 ```

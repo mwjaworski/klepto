@@ -1,4 +1,4 @@
-The Bauble Specification is very light.
+The Klepto Specification is very light.
 
 ```json
 {

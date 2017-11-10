@@ -30,8 +30,9 @@ module.exports = {
             done()
           })
           .then(() => {
-            StatusLog.completeSuccess()
-            return done()
+            StatusLog
+              .completeSuccess()
+              .then(done)
           })
       })
   }

@@ -1,64 +1,64 @@
-# Bauble
+# Klepto
 
-[![Build Status](https://img.shields.io/badge/bauble-available-green.svg)](https://www.npmjs.com/package/bauble)
-[![Build Status](https://travis-ci.org/mwjaworski/bauble.svg?branch=docs-and-testing)](https://travis-ci.org/mwjaworski/bauble)
-[![Coverage Status](https://coveralls.io/repos/github/mwjaworski/bauble/badge.svg?branch=master)](https://coveralls.io/github/mwjaworski/bauble?branch=master)
-[![npm version](https://badge.fury.io/js/bauble.svg)](https://badge.fury.io/js/bauble)
-[![Changelog Status](https://changelogs.md/img/changelog-check-green.svg)](https://changelogs.md/github/mwjaworski/bauble/)
+[![Build Status](https://img.shields.io/badge/klepto-available-green.svg)](https://www.npmjs.com/package/klepto)
+[![Build Status](https://travis-ci.org/mwjaworski/klepto.svg?branch=docs-and-testing)](https://travis-ci.org/mwjaworski/klepto)
+[![Coverage Status](https://coveralls.io/repos/github/mwjaworski/klepto/badge.svg?branch=master)](https://coveralls.io/github/mwjaworski/klepto?branch=master)
+[![npm version](https://badge.fury.io/js/klepto.svg)](https://badge.fury.io/js/klepto)
+[![Changelog Status](https://changelogs.md/img/changelog-check-green.svg)](https://changelogs.md/github/mwjaworski/klepto/)
 
 > The do-it-yourself package manager
 
-### What does Bauble do?
+### What does Klepto do?
 
-Bauble is a package manager supporting self-hosted archive sets. Bauble provides the standard set of package management tools, but is designed to work alongside existing bower or npm package configurations.
+Klepto is a package manager supporting self-hosted archive sets. Klepto provides the standard set of package management tools, but is designed to work alongside existing bower or npm package configurations.
 
-Bauble supports archives distributed through the web, github repositories, or local folders. It supports archives being pulled from multiple sources and also searching across multiple sources.
+Klepto supports archives distributed through the web, github repositories, or local folders. It supports archives being pulled from multiple sources and also searching across multiple sources.
 
-_Archive_ is used to refer to any package Bauble can install and should be taken as a synonym for module, package, or component.
+_Archive_ is used to refer to any package Klepto can install and should be taken as a synonym for module, package, or component.
 
-### How does Bauble work?
+### How does Klepto work?
 
-When Bauble installs archives it:
+When Klepto installs archives it:
 
 1. Resolves the reference against configurable scoping rules (eg @internal/sub-folder/repo)
 2. Pulls and caches a zip, tar, or folder from the web, git, or local folder
-3. Reviews the _bower.json_, _package.json_ or _bauble.json_ rules to install further archives (ie. configurable per scope or url match)
+3. Reviews the _bower.json_, _package.json_ or _klepto.json_ rules to install further archives (ie. configurable per scope or url match)
 4. All archives are placed in project archive folders, defined by the scope or match rule
 
-Bauble does not pass through any commands to existing package managers. It is a stand-alone package manager which allows a development team to distribute packages as they choose.
+Klepto does not pass through any commands to existing package managers. It is a stand-alone package manager which allows a development team to distribute packages as they choose.
 
-### Why Bauble?
+### Why Klepto?
 
 The primary use-case is for corporations with their own internal archive sets.
 
 ## Installation
 
-> Bauble relies on Node v6 and upwards
+> Klepto relies on Node v6 and upwards
 
 Install globally via [npm](npmjs.org).
 
 ```bash
-npm install --global bauble;
+npm install --global klepto;
 ```
 
 Install globally via [yarn](https://yarnpkg.com/).
 
 ```bash
-yarn global add bauble;
+yarn global add klepto;
 ```
 
 ## Usage
 
-After Bauble is installed globally, you can run `bauble` from the command-line interface in interactive mode:
+After Klepto is installed globally, you can run `klepto` from the command-line interface in interactive mode:
 
 ```bash
-bauble
+klepto
 ```
 
 You can invoke any command as a one-off by giving the command on the command-line.
 
 ```bash
-bauble [command] <options>
+klepto [command] <options>
 ```
 
 ## Commands
@@ -75,7 +75,7 @@ bauble [command] <options>
 
 ## OPEN Statuc
 
-Bauble is an [OPEN Open Source Project](http://openopensource.org/).
+Klepto is an [OPEN Open Source Project](http://openopensource.org/).
 
 ## License
 

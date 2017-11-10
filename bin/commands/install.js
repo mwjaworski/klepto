@@ -25,28 +25,22 @@ module.exports = {
         const vaultDependencies = ManifestConfiguration.build(`./`).dependencies()
         const archiveDependencies = (!args.reference) ? vaultDependencies : singleDependency
 
-        StatusLog.initialize()
+        StatusLog.initialize().start()
 
         downloadArchivesAction(archiveDependencies, `__root__`)
           .catch(err => {
+            console.error(err)
             StatusLog.completeFailure(err.toString())
             done()
           })
           .then(() => {
-            StatusLog.completeSuccess()
-
-            // const resolutions = DependencyLog.resolutions()
-
-            // vorpal.log(resolutions)
-            StatusLog.completeSuccess()
-            return done()
-
-            // TODO install call components
-              // 1. figure out version
-              // 2. figure out name
-            // installArchiveAction(archiveDependencies, vorpal)
-
-            // return done()
+            StatusLog
+              .completeSuccess()
+              .then(() => {
+                // console.log(JSON.stringify(DependencyLog.__availableVersions, null, 2))
+                console.log(JSON.stringify(DependencyLog.resolutions(), null, 2))
+                done()
+              })
           })
       })
   }

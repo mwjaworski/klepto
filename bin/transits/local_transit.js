@@ -15,6 +15,7 @@ class LocalTransit {
           reject(new Error(err))
         } else {
           resolve({
+            availableVersions: [installedVersion],
             installedVersion
           })
         }

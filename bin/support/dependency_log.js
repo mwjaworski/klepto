@@ -1,4 +1,5 @@
 const ReferenceParser = require('../parsers/reference_parser')
+const VersionServant = require('../servants/version_servant')
 const semver = require('semver')
 const _ = require('lodash')
 
@@ -7,6 +8,7 @@ class DependencyLog {
     // TODO build this list on start
     this.__installed = {}
     this.__dependencies = {}
+    this.__availableVersions = {}
     return this
   }
 
@@ -15,8 +17,15 @@ class DependencyLog {
     return this
   }
 
-  static trackInstallation ({ uuid }) {
-    // const request = this.__installed[uuid] = this.__installed[uuid] || {}
+  static trackAvailableVersions({ archive }, availableVersions) {
+    this.__availableVersions[archive] = availableVersions
+    return this
+  }
+
+  static trackInstallation (archiveRequest) {
+    const { uuid } = archiveRequest
+
+    this.__installed[uuid] = this.__installed[uuid] || archiveRequest
     return this
   }
 
@@ -30,17 +39,40 @@ class DependencyLog {
   }
 
   static resolutions () {
-    const versionRequirements = DependencyLog.__collapseRequirements(DependencyLog.__calculateVersionRequirements())
+    const versionRequirements = DependencyLog.__calculateVersionRequirements()
     const versionMatches = DependencyLog.__calculateVersionMatches(versionRequirements)
     const versionConflicts = DependencyLog.__calculateVersionConflicts(versionRequirements)
 
     const versionConflictsResolution = _.mapValues(versionConflicts, (conflicts, archive) => {
-      const versionOptions = _.keys(conflicts)
-      const highestVersion = _.first(versionOptions.sort(semver.lt))
+      const availableVersions = this.__availableVersions[archive]
+      const versionRange = _.keys(conflicts).join(' || ')
+      const appropriateVersion = VersionServant.findAppropriateVersion(availableVersions, versionRange)
 
-      // TODO support two rules (highest version OR most requested)
-      return highestVersion
+      if (!appropriateVersion) {
+        conflicts // what do I choose? it could:
+        // >=3.2.3 <4.0.0 - if we do not match, then?
+
+        // 1. get only versions from `conflicts` and choose which array is higher
+        // 2. get the version (just version) that is highest
+        // 3. if it is a range - we... need the installed version so we can call findappriprivate just fro that rule and get a version...!
+
+        // NOTE this is still an issue - what if it is a ~2.1.2
+        const mostRequested = _.findKey(conflicts, (requestedBy, version) => {
+          return requestedBy.length;
+        })
+
+        // TODO
+        const highestRequested = 0
+
+        // what if this is still null?!
+        return VersionServant.findAppropriateVersion(availableVersions, mostRequested)
+      }
+
+      return appropriateVersion
     })
+
+    // TODO if we have this version - great. if not, then we need to get a new version - which means download again...
+    // then we can copy folders
 
     return _.merge({}, versionMatches, versionConflictsResolution)
   }
@@ -67,13 +99,6 @@ class DependencyLog {
     })
 
     return versionConflicts
-  }
-
-  /**
-   * collpase dependency tree by resolving all unbounded (e.g. >=3.4.5) requests to normalized requests (e.g. 3.4.5)
-   */
-  static __collapseRequirements (versionRequirements) {
-    return versionRequirements
   }
 
   /**
