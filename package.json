@@ -1,8 +1,8 @@
 {
-  "name": "bauble",
+  "name": "klepto",
   "description": "Manage components packaged in zip files",
   "version": "0.3.0",
-  "homepage": "https://github.com/mwjaworski/bauble",
+  "homepage": "https://github.com/mwjaworski/klepto",
   "author": {
     "name": "Michael Jaworski",
     "url": "https://github.com/mwjaworski",
@@ -10,10 +10,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/mwjaworski/bauble.git"
+    "url": "git://github.com/mwjaworski/klepto.git"
   },
   "bugs": {
-    "url": "https://github.com/mwjaworski/bauble/issues"
+    "url": "https://github.com/mwjaworski/klepto/issues"
   },
   "license": "MIT",
   "keywords": [
@@ -22,7 +22,7 @@
   ],
   "preferGlobal": true,
   "bin": {
-    "bauble": "bin/index.js"
+    "klepto": "bin/index.js"
   },
   "main": "bin/index.js",
   "engines": {

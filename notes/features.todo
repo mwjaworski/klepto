@@ -12,7 +12,7 @@ commands:
 
   publish:
 
-    ☐ Package a tar, zip or folder (add a bauble.json if no other manifest exists)
+    ☐ Package a tar, zip or folder (add a klepto.json if no other manifest exists)
     ☐ With GIT - pull repository, copy, and push
     ☐ With Folder - copy to folder
     ☐ With Web - define a server API to PUT, POST, and DELETE like a form file saving
@@ -27,8 +27,8 @@ rules:
 
 configuration:
 
-  ☐ Define what the bauble.json format will be
-  ☐ Define what properties `bauble` will read from <manifest>.json files
+  ☐ Define what the klepto.json format will be
+  ☐ Define what properties `klepto` will read from <manifest>.json files
 
 extended ideas:
 
