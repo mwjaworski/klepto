@@ -1,6 +1,10 @@
 # Klepto Changelog
 
+## 0.4.0
 
+- ADDED support for version resolution
+
+> Project renamed from `bauble` to `klepto`
 
 ## 0.3.0
 
