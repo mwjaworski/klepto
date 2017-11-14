@@ -22,10 +22,8 @@ class ReferenceParser {
   static referenceToArchiveRequest (reference) {
     const scopeOrReference = this.normalizeReference(reference)
     const { resource, scope } = this.scopeToResource(scopeOrReference)
-    console.log(`resource, scope`, resource, scope)
     const archiveRequest = this.resourceToArchiveRequest(resource, scope)
 
-    console.log(`archiveRequest`, archiveRequest)
     return archiveRequest
   }
 
