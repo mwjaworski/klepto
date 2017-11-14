@@ -26,13 +26,14 @@ module.exports = {
 
         downloadArchivesAction(archiveDependencies, `__root__`)
           .catch(err => {
-            StatusLog.completeFailure(err.toString())
-            done()
+            StatusLog
+              .completeFailure(err.toString())
+              .then(() => done())
           })
           .then(() => {
-            StatusLog
+            return StatusLog
               .completeSuccess()
-              .then(done)
+              .then(() => done())
           })
       })
   }

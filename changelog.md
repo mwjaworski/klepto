@@ -1,5 +1,9 @@
 # Klepto Changelog
 
+## 0.5.0
+
+- ADDED `install` with name resolution
+
 ## 0.4.0
 
 - ADDED support for version resolution

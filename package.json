@@ -5,8 +5,7 @@
   "homepage": "https://github.com/mwjaworski/klepto",
   "author": {
     "name": "Michael Jaworski",
-    "url": "https://github.com/mwjaworski",
-    "email": ""
+    "url": "https://github.com/mwjaworski"
   },
   "repository": {
     "type": "git",
@@ -18,7 +17,11 @@
   "license": "MIT",
   "keywords": [
     "cli",
-    "command line"
+    "command line",
+    "respository",
+    "package management",
+    "zip",
+    "tar"
   ],
   "preferGlobal": true,
   "bin": {

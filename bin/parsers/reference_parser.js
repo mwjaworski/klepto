@@ -1,3 +1,4 @@
+const crypto = require('crypto')
 const path = require('path')
 const _ = require('lodash')
 
@@ -53,14 +54,15 @@ class ReferenceParser {
       return scopeOrReference
     }
 
+    // TODO when we do `publish` we should use `push_uri` and configure this based on the operation
     const {
       pattern,
-      template,
+      pull_uri,
       constants
     } = sourceConversionRule
     const templateVariables = _.zipObject(pattern.split(patternMarkers.separator), uriAspects)
 
-    return _.template(template)(_.merge({}, templateVariables, constants, {
+    return _.template(pull_uri)(_.merge({}, templateVariables, constants, {
       version
     }))
   }
@@ -73,17 +75,15 @@ class ReferenceParser {
     const versionMarker = _.first(applicationConfiguration.get(`rules.patternMarkers.version`))
     const { staging, cache } = applicationConfiguration.get(`paths`)
 
+    // TODO should I default to * because master is for git?
     const [uri, version = `master`] = this.splitURIVersion(reference)
     const [archive, extension] = this.splitArchiveExtension(uri)
 
+    const versionFolder = crypto.createHash(`md5`).update(version).digest(`hex`)
     const safeExtension = (extension) ? `.${extension}` : `/`
-    const cachePath = `${cache}/${archive}__${version}${safeExtension}`
-    const stagingPath = `${staging}/${archive}/${version}/`
+    const cachePath = `${cache}/${archive}__${versionFolder}${safeExtension}`
+    const stagingPath = `${staging}/${archive}/${versionFolder}/`
     const uuid = `${archive}${versionMarker}${version}`
-
-    // TODO cachePath and stagingPath can avoid issues with folders named >=
-    // var crypto = require('crypto');
-    // crypto.createHash('md5').update(data).digest("hex");
 
     return {
       installedVersion: version,

@@ -73,10 +73,7 @@ klepto [command] <options>
 | `resolve`     | Report on archive version and access
 | `status`      | Write a summary of the projects archive rules
 
-## OPEN Statuc
-
-Klepto is an [OPEN Open Source Project](http://openopensource.org/).
-
 ## License
 
 MIT. Copyright (c) 2017-10-11 [Michael Jaworski](https://github.com/mwjaworski).
+Klepto is an [OPEN Open Source Project](http://openopensource.org/).
