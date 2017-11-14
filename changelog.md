@@ -3,6 +3,9 @@
 ## 0.5.0
 
 - ADDED `install` with name resolution
+- ADDED `install` with installation folder and subfolder resolution
+- FIXED documentation from `@return` to `@returns`
+- REFACTORED the `uri` is parsed to see if the version is embedded in the archive name
 
 ## 0.4.0
 

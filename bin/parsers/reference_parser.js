@@ -6,7 +6,7 @@ const applicationConfiguration = require('../configurations/application')
 
 const Discover = {
   COMPONENT_ASPECT: /.*?\/([a-z0-9-_.]*?)[./]?(zip|tar|tgz|gz|tar.gz|git)?$/i,
-  HAS_EMBEDDED_VERSION: /[]*?_([\d\.]*)$/i
+  HAS_EMBEDDED_VERSION: /[]*?[\/_-]+([\d\.]*)$/i
 }
 
 /**
