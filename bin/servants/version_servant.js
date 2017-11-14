@@ -18,7 +18,7 @@ class VersionServant {
    *
    * @param {*} possibleVersions
    * @param {*} versionRange
-   * @return {null|String} the version or null if nothing matches
+   * @returns {null|String} the version or null if nothing matches
    */
   static findAppropriateVersion (possibleVersions, versionRange) {
     return semver.maxSatisfying(_.compact(_.map(possibleVersions, this.fixVersion)), versionRange)

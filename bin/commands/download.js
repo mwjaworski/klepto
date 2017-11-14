@@ -22,15 +22,21 @@ module.exports = {
         const vaultDependencies = ManifestConfiguration.build(`./`).dependencies()
         const archiveDependencies = (!args.reference) ? vaultDependencies : singleDependency
 
-        StatusLog.initialize()
+        StatusLog
+          .initialize()
+          // .start()
 
         downloadArchivesAction(archiveDependencies, `__root__`)
           .catch(err => {
+            console.error(err)
             StatusLog
               .completeFailure(err.toString())
               .then(() => done())
           })
           .then(() => {
+            console.log(JSON.stringify(DependencyLog.__availableVersions, null, 2))
+            console.log(JSON.stringify(DependencyLog.__dependencies, null, 2))
+            console.log(JSON.stringify(DependencyLog.__installed, null, 2))
             return StatusLog
               .completeSuccess()
               .then(() => done())

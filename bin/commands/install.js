@@ -1,11 +1,9 @@
 const downloadArchivesAction = require('../actions/download_archives_action')
-// const installArchiveAction = require('../actions/install_archive_action')
+const installArchivesAction = require('../actions/install_archives_action')
 
 const ManifestConfiguration = require('../configurations/manifest')
 const DependencyLog = require('../support/dependency_log')
 const StatusLog = require('../support/status_log')
-const _ = require('lodash')
-const semver = require('semver')
 
 module.exports = {
   registerVorpalCommand: (vorpal, applicationConfiguration) => {
@@ -25,22 +23,27 @@ module.exports = {
         const vaultDependencies = ManifestConfiguration.build(`./`).dependencies()
         const archiveDependencies = (!args.reference) ? vaultDependencies : singleDependency
 
-        StatusLog.initialize().start()
+        StatusLog
+          .initialize()
+          // .start()
 
         downloadArchivesAction(archiveDependencies, `__root__`)
           .catch(err => {
             console.error(err)
-            StatusLog.completeFailure(err.toString())
-            done()
+            StatusLog
+              .completeFailure(err.toString())
+              .then(() => done())
           })
           .then(() => {
-            StatusLog
+            console.log(JSON.stringify(DependencyLog.__availableVersions, null, 2))
+            console.log(JSON.stringify(DependencyLog.__dependencies, null, 2))
+            console.log(JSON.stringify(DependencyLog.__installed, null, 2))
+            return installArchivesAction(DependencyLog.__installed)
+          })
+          .then(() => {
+            return StatusLog
               .completeSuccess()
-              .then(() => {
-                // console.log(JSON.stringify(DependencyLog.__availableVersions, null, 2))
-                console.log(JSON.stringify(DependencyLog.resolutions(), null, 2))
-                done()
-              })
+              .then(() => done())
           })
       })
   }

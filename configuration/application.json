@@ -5,7 +5,7 @@
   "paths": {
     "staging": ".vault/staging",
     "cache": ".vault/cache",
-    "archives": "./vault"
+    "archive": "./vault"
   },
   "rules": {
     "patternMarkers": {
@@ -27,12 +27,10 @@
       "package-lock.json"
     ],
     "configurationSystem": [{
-        "repositoryFolder": "bower_components",
         "toolConfiguration": ".bowerrc",
         "archiveManifest": "bower.json"
       },
       {
-        "repositoryFolder": "vault",
         "toolConfiguration": ".vaultrc",
         "archiveManifest": "vault.json"
       }

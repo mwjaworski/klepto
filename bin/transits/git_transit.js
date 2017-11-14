@@ -89,7 +89,7 @@ class GitTransit {
 
   /**
    * @param {*} rawVersionList output from `git ls-remote --tags`
-   * @return {Array<String>} each version on the repository.
+   * @returns {Array<String>} each version on the repository.
    */
   static __cleanGitVersionList (rawVersionList) {
     const GetTag = /\/([-rcv\d.]*?)\^?$/g

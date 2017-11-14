@@ -15,7 +15,7 @@ const Discover = {
 class TransitFacade {
   /**
    * @param {String} uri uri for resource
-   * @return {Transit} the Transit if the uri passes, if the uri does not match then NullTransit is returned
+   * @returns {Transit} the Transit if the uri passes, if the uri does not match then NullTransit is returned
    */
   static of ({ uri, archive }) {
     // NOTE order matters, ofNull is the default case
@@ -27,7 +27,7 @@ class TransitFacade {
 
   /**
    * @param {String} uri
-   * @return {LocalTransit | undefined} the LocalTransit if the uri passes
+   * @returns {LocalTransit | undefined} the LocalTransit if the uri passes
    */
   static __ofLocal (uri) {
     const isNotURLBySignature = uri.match(Discover.IS_URL) === null
@@ -38,7 +38,7 @@ class TransitFacade {
 
   /**
    * @param {String} uri
-   * @return {HTTPTransit | undefined} the HTTPTransit if the uri passes
+   * @returns {HTTPTransit | undefined} the HTTPTransit if the uri passes
    */
   static __ofWeb (uri) {
     const isFileByExtension = uri.match(Discover.IS_EXTENSION) !== null
@@ -50,7 +50,7 @@ class TransitFacade {
 
   /**
    * @param {String} uri
-   * @return {GitTransit | undefined} the HTTPTransit if the uri passes
+   * @returns {GitTransit | undefined} the HTTPTransit if the uri passes
    */
   static __ofGit (uri) {
     const isGitByExtension = uri.match(Discover.IS_GIT) !== null
@@ -62,7 +62,7 @@ class TransitFacade {
 
   /**
    * @param {String} uri
-   * @return {NullTransit} the NullTransit to produce nothing
+   * @returns {NullTransit} the NullTransit to produce nothing
    */
   static __ofNull (uri) {
     return NullTransit

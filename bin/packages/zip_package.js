@@ -19,9 +19,7 @@ class ZipPackage {
         const filesWritten = []
 
         zip.forEach((relativePath, file) => {
-          // TODO smarter splitting where we detect the version
-          // NOTE we could look at file names for versions and re-write the archive
-          const archivePrefix = _.head(`${archive}`.split(`_`))
+          const archivePrefix = `${archive}`
 
           if (relativePath.indexOf(archivePrefix) >= 0) {
             relativePath = relativePath.substr(`${archivePrefix}/`.length)

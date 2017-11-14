@@ -6,7 +6,7 @@ const applicationConfiguration = require('../configurations/application')
 
 const Discover = {
   COMPONENT_ASPECT: /.*?\/([a-z0-9-_.]*?)[./]?(zip|tar|tgz|gz|tar.gz|git)?$/i,
-  IS_VERSION: /^[~^>=<]?\d{1,2}\.\d{1,2}\.\d{1,2}$/i
+  HAS_EMBEDDED_VERSION: /[]*?_([\d\.]*)$/i
 }
 
 /**
@@ -21,9 +21,11 @@ const Discover = {
 class ReferenceParser {
   static referenceToArchiveRequest (reference) {
     const scopeOrReference = this.normalizeReference(reference)
-    const resource = this.scopeToResource(scopeOrReference)
-    const archiveRequest = this.resourceToArchiveRequest(resource)
+    const { resource, scope } = this.scopeToResource(scopeOrReference)
+    console.log(`resource, scope`, resource, scope)
+    const archiveRequest = this.resourceToArchiveRequest(resource, scope)
 
+    console.log(`archiveRequest`, archiveRequest)
     return archiveRequest
   }
 
@@ -34,7 +36,7 @@ class ReferenceParser {
    * folder res        => folder#master res
    *
    * @param { reference } reference
-   * @return "reference"
+   * @returns "reference"
    */
   static normalizeReference (reference) {
     return _.trimEnd(_.trimStart(reference || '', path.sep))
@@ -48,10 +50,13 @@ class ReferenceParser {
     const patternMarkers = applicationConfiguration.get(`rules.patternMarkers`)
     const [uri, version = ``] = this.splitURIVersion(scopeOrReference)
     const uriAspects = uri.split(patternMarkers.separator)
-    const sourceConversionRule = this.__matchConversionRule(uriAspects)
+    const scope = this.__matchConversionRule(uriAspects)
 
-    if (!sourceConversionRule) {
-      return scopeOrReference
+    if (!scope) {
+      return {
+        resource: scopeOrReference,
+        scope: {}
+      }
     }
 
     // TODO when we do `publish` we should use `push_uri` and configure this based on the operation
@@ -59,25 +64,29 @@ class ReferenceParser {
       pattern,
       pull_uri,
       constants
-    } = sourceConversionRule
+    } = scope
     const templateVariables = _.zipObject(pattern.split(patternMarkers.separator), uriAspects)
 
-    return _.template(pull_uri)(_.merge({}, templateVariables, constants, {
-      version
-    }))
+    return {
+      scope,
+      resource: _.template(pull_uri)(_.merge({}, templateVariables, constants, {
+        version
+      }))
+    }
   }
 
   /**
    *
-   * @param {*} reference
+   * @param {*} resource
    */
-  static resourceToArchiveRequest (reference) {
+  static resourceToArchiveRequest (resource, scope) {
     const versionMarker = _.first(applicationConfiguration.get(`rules.patternMarkers.version`))
     const { staging, cache } = applicationConfiguration.get(`paths`)
 
+    const [uri, versionTentative] = this.splitURIVersion(resource)
+    const [archiveTentative, extension] = this.splitArchiveExtension(uri)
     // TODO should I default to * because master is for git?
-    const [uri, version = `master`] = this.splitURIVersion(reference)
-    const [archive, extension] = this.splitArchiveExtension(uri)
+    const [archive, version = `master`] = this.__detectVersionInArchive(archiveTentative, versionTentative)
 
     const versionFolder = crypto.createHash(`md5`).update(version).digest(`hex`)
     const safeExtension = (extension) ? `.${extension}` : `/`
@@ -91,22 +100,10 @@ class ReferenceParser {
       cachePath,
       archive,
       version,
+      scope,
       uuid,
       uri
     }
-  }
-
-  /**
-   *
-   * @param {*} archiveRequest
-   * @param {*} archiveManifest
-   */
-  static buildArchivePath (archiveRequest, archiveManifest) {
-    const paths = applicationConfiguration.get(`paths`)
-    const archiveName = (archiveManifest.name) ? archiveManifest.name : archiveRequest.archive
-    const archiveFolder = archiveManifest.repositoryFolder || paths.archives
-
-    return `${archiveFolder}/${archiveName}/`
   }
 
   static splitURIVersion (reference) {
@@ -116,6 +113,17 @@ class ReferenceParser {
     return reference.split(versionMarker || _.first(patternMarkers.version))
   }
 
+  static __detectVersionInArchive(archive, version) {
+    const embeddedVersion = Discover.HAS_EMBEDDED_VERSION.exec(archive)
+
+    if (embeddedVersion) {
+      return [archive.substr(0, embeddedVersion.index), _.last(embeddedVersion)]
+    }
+    else {
+      return [archive, version]
+    }
+  }
+
   static splitArchiveExtension (uri) {
     const [_0, archive, extension] = Discover.COMPONENT_ASPECT.exec(uri) || [``, uri, ``] // eslint-disable-line
     return [archive, extension]
@@ -123,8 +131,8 @@ class ReferenceParser {
 
   /**
    *
-   * @param {*} uri
    * @param {*} uriAspects
+   * @returns a scope object or undefined
    */
   static __matchConversionRule (uriAspects) {
     const sources = applicationConfiguration.get(`sources`)
