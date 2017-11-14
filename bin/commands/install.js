@@ -25,11 +25,11 @@ module.exports = {
 
         StatusLog
           .initialize()
-          // .start()
+          .start()
 
         downloadArchivesAction(archiveDependencies, `__root__`)
           .catch(err => {
-            console.error(err)
+            // console.error(err)
             StatusLog
               .completeFailure(err.toString())
               .then(() => done())
