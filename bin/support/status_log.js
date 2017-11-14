@@ -1,7 +1,6 @@
 const spinners = require('cli-spinners')
 const readline = require('readline')
 const color = require('cli-color')
-const _ = require('lodash')
 
 const Colors = {
   gray: color.xterm(8),
@@ -13,33 +12,32 @@ const Spinner = {
 }
 
 class StatusLog {
-
-  static __drawLine(content) {
+  static __drawLine (content) {
     if (this.__stream) {
-      this.__stream.write(null, { ctrl: true, name: 'u' });
+      this.__stream.write(null, { ctrl: true, name: 'u' })
       this.__stream.write(content)
     }
   }
 
-  static __drawContent() {
+  static __drawContent () {
     const spinner = Spinner.running[this.__frame % Spinner.running.length]
     const seconds = parseInt(this.__frame / (1000 / this.__refreshRate), 10)
 
     return `${Colors.yellow(spinner)} ${Colors.gray(seconds + 's')} (${this.__action})`
   }
 
-  static start() {
+  static start () {
     this.__interval = setInterval(() => {
-      this.__frame += 1;
+      this.__frame += 1
       this.__drawLine(this.__drawContent())
     }, this.__refreshRate)
 
     return this
   }
 
-  static stop() {
+  static stop () {
     clearInterval(this.__interval)
-    if (!!this.__stream) {
+    if (this.__stream) {
       this.__stream.write(null, { ctrl: true, name: 'u' })
     }
 

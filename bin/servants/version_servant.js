@@ -29,11 +29,11 @@ class VersionServant {
   static isVersionRange (version) {
     return version.match(Discover.IS_VERSION_RANGE) !== null
   }
-  static fixVersion(version) {
+  static fixVersion (version) {
     const versionAspects = []
     let versionAspect = ''
 
-    while((versionAspect = Discover.VERSION_ASPECT.exec(version)) !== null) {
+    while ((versionAspect = Discover.VERSION_ASPECT.exec(version)) !== null) {
       versionAspects.push(versionAspect[1])
     }
 

@@ -1,7 +1,6 @@
 const applicationConfiguration = require('../configurations/application')
 const ManifestConfiguration = require('../configurations/manifest')
 
-const ReferenceParser = require('../parsers/reference_parser')
 const FileSystem = require('../support/file_system')
 const StatusLog = require('../support/status_log')
 const _ = require('lodash')

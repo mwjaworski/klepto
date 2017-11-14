@@ -37,7 +37,7 @@ module.exports = {
           .then(() => {
             // console.log(JSON.stringify(DependencyLog.__availableVersions, null, 2))
             // console.log(JSON.stringify(DependencyLog.__installed, null, 2))
-            // console.log(JSON.stringify(DependencyLog.resolutions(), null, 2))
+            console.log(JSON.stringify(DependencyLog.resolutions(), null, 2))
             return installArchivesAction(DependencyLog.resolutions())
           })
           .then(() => {

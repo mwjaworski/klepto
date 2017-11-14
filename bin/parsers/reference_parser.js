@@ -6,7 +6,7 @@ const applicationConfiguration = require('../configurations/application')
 
 const Discover = {
   COMPONENT_ASPECT: /.*?\/([a-z0-9-_.]*?)[./]?(zip|tar|tgz|gz|tar.gz|git)?$/i,
-  HAS_EMBEDDED_VERSION: /[]*?[\/_-]+([\d\.]*)$/i
+  HAS_EMBEDDED_VERSION: /[]*?[/_-]+([\d.]*)$/i
 }
 
 /**
@@ -19,10 +19,13 @@ const Discover = {
  * "uri#version" ===> { url, version }
  */
 class ReferenceParser {
-  static referenceToArchiveRequest (reference) {
+  static referenceToArchiveRequest(reference, overrideUniqueName = undefined) {
     const scopeOrReference = this.normalizeReference(reference)
-    const { resource, scope } = this.scopeToResource(scopeOrReference)
-    const archiveRequest = this.resourceToArchiveRequest(resource, scope)
+    const {
+      resource,
+      scope
+    } = this.__scopeToResource(scopeOrReference)
+    const archiveRequest = this.__resourceToArchiveRequest(resource, scope, overrideUniqueName)
 
     return archiveRequest
   }
@@ -36,15 +39,27 @@ class ReferenceParser {
    * @param { reference } reference
    * @returns "reference"
    */
-  static normalizeReference (reference) {
+  static normalizeReference(reference) {
     return _.trimEnd(_.trimStart(reference || '', path.sep))
+  }
+
+  static splitArchiveExtension(uri) {
+    const [_0, archive, extension] = Discover.COMPONENT_ASPECT.exec(uri) || [``, uri, ``] // eslint-disable-line
+    return [archive, extension]
+  }
+
+  static splitURIVersion(reference) {
+    const patternMarkers = applicationConfiguration.get(`rules.patternMarkers`)
+    const versionMarker = _.find(patternMarkers.version, (versionMarker) => reference.indexOf(versionMarker) !== -1)
+
+    return reference.split(versionMarker || _.first(patternMarkers.version))
   }
 
   /**
    *
    * @param {*} scopeOrReference
    */
-  static scopeToResource (scopeOrReference) {
+  static __scopeToResource(scopeOrReference) {
     const patternMarkers = applicationConfiguration.get(`rules.patternMarkers`)
     const [uri, version = ``] = this.splitURIVersion(scopeOrReference)
     const uriAspects = uri.split(patternMarkers.separator)
@@ -77,23 +92,31 @@ class ReferenceParser {
    *
    * @param {*} resource
    */
-  static resourceToArchiveRequest (resource, scope) {
+  static __resourceToArchiveRequest(resource, scope, overrideUniqueName = undefined) {
     const versionMarker = _.first(applicationConfiguration.get(`rules.patternMarkers.version`))
-    const { staging, cache } = applicationConfiguration.get(`paths`)
+    const {
+      staging,
+      cache
+    } = applicationConfiguration.get(`paths`)
 
-    const [uri, versionTentative] = this.splitURIVersion(resource)
-    const [archiveTentative, extension] = this.splitArchiveExtension(uri)
+    const [uri, _version] = this.splitURIVersion(resource)
+    const [_archive, extension] = this.splitArchiveExtension(uri)
     // TODO should I default to * because master is for git?
-    const [archive, version = `master`] = this.__detectVersionInArchive(archiveTentative, versionTentative)
+    const [archive, version = `master`] = this.__detectVersionInArchive(_archive, _version)
 
     const versionFolder = crypto.createHash(`md5`).update(version).digest(`hex`)
+    const installedName = overrideUniqueName || archive
+
     const safeExtension = (extension) ? `.${extension}` : `/`
     const cachePath = `${cache}/${archive}__${versionFolder}${safeExtension}`
     const stagingPath = `${staging}/${archive}/${versionFolder}/`
-    const uuid = `${archive}${versionMarker}${version}`
+    const uuid = `${installedName}${versionMarker}${version}`
+
+    // TODO pass unique name through to collect -v2 and v-3 and apply unique name
 
     return {
       installedVersion: version,
+      installedName,
       stagingPath,
       cachePath,
       archive,
@@ -104,35 +127,23 @@ class ReferenceParser {
     }
   }
 
-  static splitURIVersion (reference) {
-    const patternMarkers = applicationConfiguration.get(`rules.patternMarkers`)
-    const versionMarker = _.find(patternMarkers.version, (versionMarker) => reference.indexOf(versionMarker) !== -1)
-
-    return reference.split(versionMarker || _.first(patternMarkers.version))
-  }
-
   static __detectVersionInArchive(archive, version) {
     const embeddedVersion = Discover.HAS_EMBEDDED_VERSION.exec(archive)
 
     if (embeddedVersion) {
       return [archive.substr(0, embeddedVersion.index), _.last(embeddedVersion)]
-    }
-    else {
+    } else {
       return [archive, version]
     }
   }
 
-  static splitArchiveExtension (uri) {
-    const [_0, archive, extension] = Discover.COMPONENT_ASPECT.exec(uri) || [``, uri, ``] // eslint-disable-line
-    return [archive, extension]
-  }
 
   /**
    *
    * @param {*} uriAspects
    * @returns a scope object or undefined
    */
-  static __matchConversionRule (uriAspects) {
+  static __matchConversionRule(uriAspects) {
     const sources = applicationConfiguration.get(`sources`)
     const scope = uriAspects[0] = (_.first(uriAspects) || '')
 
