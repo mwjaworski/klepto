@@ -5,7 +5,7 @@
       "pull_uri": "https://repo.advisory.com/scm/eabui/${component}.git#${version}",
       "push_uri": "",
       "installation": {
-        "destination": "eabui",
+        "destination": "vault",
         "subfolder": ""
       },
       "constants": {

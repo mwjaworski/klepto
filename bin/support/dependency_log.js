@@ -74,7 +74,10 @@ class DependencyLog {
     // TODO if we have this version - great. if not, then we need to get a new version - which means download again...
     // then we can copy folders
 
-    return _.merge({}, versionMatches, versionConflictsResolution)
+    return _.mapValues(_.merge({}, versionMatches, versionConflictsResolution), (version, archive) => {
+      // TODO where does the @ come from?
+      return this.__installed[`${archive}@${version}`]
+    })
   }
 
   static __calculateVersionMatches (versionRequirements) {

@@ -34,9 +34,6 @@ module.exports = {
               .then(() => done())
           })
           .then(() => {
-            console.log(JSON.stringify(DependencyLog.__availableVersions, null, 2))
-            console.log(JSON.stringify(DependencyLog.__dependencies, null, 2))
-            console.log(JSON.stringify(DependencyLog.__installed, null, 2))
             return StatusLog
               .completeSuccess()
               .then(() => done())
