@@ -1,5 +1,6 @@
 const spinners = require('cli-spinners')
 const readline = require('readline')
+const winston = require('winston')
 const color = require('cli-color')
 
 const Colors = {
@@ -46,6 +47,23 @@ class StatusLog {
 
   static initialize () {
     this.uninitialize()
+
+    this.__logger = new (winston.Logger)({
+      level: 'info',
+      exitOnError: false,
+      transports: [
+        new (winston.transports.File)({
+          timestamp: () => Date.now(),
+          handleExceptions: true,
+          filename: `vault.log`,
+          json: false,
+          options: {
+            flags: 'w'
+          }
+        })
+      ]
+    })
+
     this.__stream = readline.createInterface({
       output: process.stdout,
       input: process.stdin,
@@ -56,19 +74,23 @@ class StatusLog {
   }
 
   static uninitialize () {
+    this.__logger = undefined
     this.__stream = undefined
     this.__refreshRate = 250
     this.__frame = 0
-    this.__resources = {}
     this.__action = ''
     return this
   }
 
-  static notify (action, resource) {
-    if (!this.__resources[resource]) {
-      this.__resources[resource] = resource
-      this.__action = action
-    }
+  static notify (action, resource, meta = {}) {
+    this.__logger.info(`[${resource}] ${action}`, meta)
+    this.__action = action
+    return this
+  }
+
+  static error (action, resource, meta = {}) {
+    this.__logger.error(`[${resource}] ${action}`, meta)
+    this.__action = action
     return this
   }
 
