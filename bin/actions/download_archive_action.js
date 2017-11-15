@@ -18,7 +18,6 @@ const downloadArchiveAction = (reference, installPath = undefined) => {
         })
       }
 
-      FileSystem.createDirectory(`${archiveRequest.stagingPath}/`)
       FileSystem.createDirectory(`${paths.cache}/`)
 
       StatusLog.notify(`cache ${archiveRequest.uri}`, archiveRequest.uuid)
@@ -27,6 +26,7 @@ const downloadArchiveAction = (reference, installPath = undefined) => {
           .then(({ availableVersions }) => {
             DependencyLog.trackAvailableVersions(archiveRequest, availableVersions)
             FileSystem.removeDirectory(`${archiveRequest.stagingPath}`)
+            FileSystem.createDirectory(`${archiveRequest.stagingPath}`)
 
             StatusLog.notify(`stage ${archiveRequest.uri}`, archiveRequest.uuid)
             return PackageTool

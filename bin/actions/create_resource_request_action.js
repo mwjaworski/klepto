@@ -10,6 +10,9 @@ const createResourceRequestAction = (reference, installPath = undefined) => {
     const PackageTool = PackageFacade.of(archiveRequest)
     const TransitTool = TransitFacade.of(archiveRequest)
 
+    // TODO add logging
+    // console.log(`archiveRequest`, JSON.stringify(archiveRequest, null, 2), PackageTool.name, TransitTool.name)
+
     DependencyLog.trackInstallation(archiveRequest)
 
     resolve({
