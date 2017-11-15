@@ -6,7 +6,7 @@ const DependencyLog = require('../support/dependency_log')
 const createResourceRequestAction = (reference, installPath = undefined) => {
   return new Promise((resolve, reject) => {
     const archiveRequest = ReferenceParser.referenceToArchiveRequest(reference, installPath)
-    const isRedundant = DependencyLog.hasRequest(archiveRequest)
+    const isRedundant = DependencyLog.hasInstalled(archiveRequest)
     const PackageTool = PackageFacade.of(archiveRequest)
     const TransitTool = TransitFacade.of(archiveRequest)
 
