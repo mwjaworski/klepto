@@ -4,7 +4,6 @@ const _ = require('lodash')
 
 class DependencyLog {
   static initialize () {
-    // TODO build this list on start
     this.__installed = {}
     this.__availableVersions = {}
     return this

@@ -5,8 +5,6 @@ const FileSystem = require('../support/file_system')
 const StatusLog = require('../support/status_log')
 const _ = require('lodash')
 
-// const installPath = _.get(scope, 'install_to', archiveDefaultFolder)
-
 const installArchiveAction = (archiveRequest, installedName) => {
   const paths = applicationConfiguration.get(`paths`)
   // TODO cache this?

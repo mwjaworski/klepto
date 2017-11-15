@@ -32,7 +32,7 @@ module.exports = {
 
         StatusLog
           .initialize()
-          // .start()
+          .start()
 
         downloadArchivesAction(archiveDependencies, archiveName)
           .catch(err => {

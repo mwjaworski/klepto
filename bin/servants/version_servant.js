@@ -1,7 +1,6 @@
 const semver = require('semver')
 const _ = require('lodash')
 
-// semver.maxSatisfying(['1.1.1', '1.2.1', '1.3.1'], '>=1.1.1 <3.2.3  1.2.1')
 const Discover = {
   VERSION_ASPECT: /(\d+)/gi,
   IS_VERSION_RANGE: /[^\d.]/g,
