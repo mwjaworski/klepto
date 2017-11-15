@@ -1,14 +1,14 @@
-
 module.exports = {
   registerVorpalCommand: (vorpal, applicationConfiguration) => {
     return vorpal
-      .command(`status`)
-      .description(`Review internal settings.`)
+      .command(`initialize`)
+      .alias(`init`)
+      .description(`Create an initial configuration`)
       .validate(function (args) {
         return true
       })
       .action(function (args, done) {
-
+        done()
       })
   }
 }

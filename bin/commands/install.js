@@ -1,11 +1,9 @@
 const downloadArchivesAction = require('../actions/download_archives_action')
-// const installArchiveAction = require('../actions/install_archive_action')
+const installArchivesAction = require('../actions/install_archives_action')
 
 const ManifestConfiguration = require('../configurations/manifest')
 const DependencyLog = require('../support/dependency_log')
 const StatusLog = require('../support/status_log')
-const _ = require('lodash')
-const semver = require('semver')
 
 module.exports = {
   registerVorpalCommand: (vorpal, applicationConfiguration) => {
@@ -18,29 +16,38 @@ module.exports = {
         return true
       })
       .action(function (args, done) {
-        const singleDependency = {
-          [args.options.rename || '']: args.reference
+        const vaultConfiguration = ManifestConfiguration.build(`./`)
+        const singleConfiguration = {
+          name: 'solo',
+          dependencies: () => {
+            return {
+              [args.options.rename || '']: args.reference
+            }
+          }
         }
 
-        const vaultDependencies = ManifestConfiguration.build(`./`).dependencies()
-        const archiveDependencies = (!args.reference) ? vaultDependencies : singleDependency
+        const archiveConfiguration = (!args.reference) ? vaultConfiguration : singleConfiguration
+        const archiveDependencies = archiveConfiguration.dependencies()
+        const archiveName = archiveConfiguration.name
 
-        StatusLog.initialize().start()
+        StatusLog
+          .initialize()
+          .start()
 
-        downloadArchivesAction(archiveDependencies, `__root__`)
+        downloadArchivesAction(archiveDependencies, archiveName)
           .catch(err => {
-            console.error(err)
-            StatusLog.completeFailure(err.toString())
-            done()
+            StatusLog.error(err.toString())
+            StatusLog
+              .completeFailure(err.toString())
+              .then(() => done())
           })
           .then(() => {
-            StatusLog
+            return installArchivesAction(DependencyLog.resolutions())
+          })
+          .then(() => {
+            return StatusLog
               .completeSuccess()
-              .then(() => {
-                // console.log(JSON.stringify(DependencyLog.__availableVersions, null, 2))
-                console.log(JSON.stringify(DependencyLog.resolutions(), null, 2))
-                done()
-              })
+              .then(() => done())
           })
       })
   }

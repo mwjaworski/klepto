@@ -6,7 +6,7 @@
 [![npm version](https://badge.fury.io/js/klepto.svg)](https://badge.fury.io/js/klepto)
 [![Changelog Status](https://changelogs.md/img/changelog-check-green.svg)](https://changelogs.md/github/mwjaworski/klepto/)
 
-> The do-it-yourself package manager
+> Composite package management
 
 ### What does Klepto do?
 
@@ -65,18 +65,16 @@ klepto [command] <options>
 
 | Command       | Purpose
 |:--------------|:-----------------------------------------
-| `version`     | Write the current version
-| `cache`       | Install a archive(s) to local cache
-| `uncache`     | Remove a archive from local cache
+| `clean`       | Erase vault
+| `download`    | Install a archive(s) to local cache
 | `install`     | Install a archive(s) to the project
 | `uninstall`   | Remove a archive to the project
-| `resolve`     | Report on archive version and access
-| `status`      | Write a summary of the projects archive rules
-
-## OPEN Statuc
-
-Klepto is an [OPEN Open Source Project](http://openopensource.org/).
+| `publish`     | (pending) Package an archive and upload
+| `initialize`  | (pending) Initialize a vault manifest
+| `settings`    | (pending) Configure Kelpto
+| `version`     | Write the current version
 
 ## License
 
 MIT. Copyright (c) 2017-10-11 [Michael Jaworski](https://github.com/mwjaworski).
+Klepto is an [OPEN Open Source Project](http://openopensource.org/).

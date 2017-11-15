@@ -13,18 +13,18 @@ node bin/index.js cache --audit ../bower-alternative-source-resolver.zip 1.2.3
   sources: {
     "repo": {
       "pattern": "source/group/resource",
-      "template": "https://${username}@repo.advisory.com/scm/eabui/${group}.git ${resource}.zip",
+      "pull_uri": "https://${username}@repo.advisory.com/scm/eabui/${group}.git ${resource}.zip",
       "constants": {
         "username": "jaworskm"
       }
     },
     "local": {
       "pattern": "${source}/${group}/${sub_group}/${resource}",
-      "template": "~/folder/${group}/${sub_group}/${resource}"
+      "pull_uri": "~/folder/${group}/${sub_group}/${resource}"
     },
     "phoenix": {
       "pattern": "${source}/${group}/${resource}",
-      "template": "http://phoenix.eab.com/${group}/${resource}.zip"
+      "pull_uri": "http://phoenix.eab.com/${group}/${resource}.zip"
     }
   }
 }

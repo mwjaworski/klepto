@@ -2,7 +2,12 @@
   "sources": {
     "eabui": {
       "pattern": "source/component",
-      "template": "https://repo.advisory.com/scm/eabui/${component}.git#${version}",
+      "pull_uri": "https://repo.advisory.com/scm/eabui/${component}.git#${version}",
+      "push_uri": "",
+      "installation": {
+        "destination": "vault",
+        "subfolder": ""
+      },
       "constants": {
 
       }

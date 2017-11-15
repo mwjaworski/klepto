@@ -1,7 +1,6 @@
 const semver = require('semver')
 const _ = require('lodash')
 
-// semver.maxSatisfying(['1.1.1', '1.2.1', '1.3.1'], '>=1.1.1 <3.2.3  1.2.1')
 const Discover = {
   VERSION_ASPECT: /(\d+)/gi,
   IS_VERSION_RANGE: /[^\d.]/g,
@@ -18,7 +17,7 @@ class VersionServant {
    *
    * @param {*} possibleVersions
    * @param {*} versionRange
-   * @return {null|String} the version or null if nothing matches
+   * @returns {null|String} the version or null if nothing matches
    */
   static findAppropriateVersion (possibleVersions, versionRange) {
     return semver.maxSatisfying(_.compact(_.map(possibleVersions, this.fixVersion)), versionRange)
@@ -29,11 +28,11 @@ class VersionServant {
   static isVersionRange (version) {
     return version.match(Discover.IS_VERSION_RANGE) !== null
   }
-  static fixVersion(version) {
+  static fixVersion (version) {
     const versionAspects = []
     let versionAspect = ''
 
-    while((versionAspect = Discover.VERSION_ASPECT.exec(version)) !== null) {
+    while ((versionAspect = Discover.VERSION_ASPECT.exec(version)) !== null) {
       versionAspects.push(versionAspect[1])
     }
 

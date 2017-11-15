@@ -15,24 +15,36 @@ module.exports = {
         return true
       })
       .action(function (args, done) {
-        const singleDependency = {
-          [args.options.rename || '']: args.reference
+
+        const vaultConfiguration = ManifestConfiguration.build(`./`)
+        const singleConfiguration = {
+          name: 'solo',
+          dependencies: () => {
+            return {
+              [args.options.rename || '']: args.reference
+            }
+          }
         }
 
-        const vaultDependencies = ManifestConfiguration.build(`./`).dependencies()
-        const archiveDependencies = (!args.reference) ? vaultDependencies : singleDependency
+        const archiveConfiguration = (!args.reference) ? vaultConfiguration : singleConfiguration
+        const archiveDependencies = archiveConfiguration.dependencies()
+        const archiveName = archiveConfiguration.name || `root`
 
-        StatusLog.initialize()
+        StatusLog
+          .initialize()
+          .start()
 
-        downloadArchivesAction(archiveDependencies, `__root__`)
+        downloadArchivesAction(archiveDependencies, archiveName)
           .catch(err => {
-            StatusLog.completeFailure(err.toString())
-            done()
+            StatusLog.error(err.toString())
+            StatusLog
+              .completeFailure(err.toString())
+              .then(() => done())
           })
           .then(() => {
-            StatusLog
+            return StatusLog
               .completeSuccess()
-              .then(done)
+              .then(() => done())
           })
       })
   }

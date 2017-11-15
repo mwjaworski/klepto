@@ -1,6 +1,7 @@
 'use strict'
 
 const test = require('ava')
+const crypto = require('crypto')
 const ReferenceParser = require('../../bin/parsers/reference_parser')
 const applicationConfiguration = require(`../../bin/configurations/application`)
 
@@ -18,7 +19,9 @@ test.cb('parser: reference (folder)', t => {
   t.is(archive, `sub_folder`, `the archive is the last folder name`)
   t.is(uri, `../folder/sub_folder/`, `uri is the base path to the resource`)
 
-  t.is(stagingPath, `${applicationConfiguration.get('paths.staging')}/${archive}/${version}/`, `staging path is the archive name in staging folder`)
+  const versionFolder = crypto.createHash(`md5`).update(version).digest(`hex`)
+
+  t.is(stagingPath, `${applicationConfiguration.get('paths.staging')}/${archive}/${versionFolder}/`, `staging path is the archive name in staging folder`)
 
   t.end()
 })
@@ -30,14 +33,14 @@ test.cb('parser: scope-to-resource (local)', t => {
     'sources': {
       'local_source': {
         'pattern': 'source/group/sub_group/resource',
-        'template': '~/<%= source %>/components/<%= group %>/<%= sub_group %>/<%= resource %>/<%= version %>/'
+        'pull_uri': '~/<%= source %>/components/<%= group %>/<%= sub_group %>/<%= resource %>/<%= version %>/'
       }
     }
   })
 
-  const uri = ReferenceParser.scopeToResource(`local_source/def/ghi/hij@1.2.3`)
+  const { resource } = ReferenceParser.__scopeToResource(`local_source/def/ghi/hij@1.2.3`)
 
-  t.is(uri, `~/local_source/components/def/ghi/hij/1.2.3/`)
+  t.is(resource, `~/local_source/components/def/ghi/hij/1.2.3/`)
   t.end()
 })
 
@@ -48,13 +51,13 @@ test.cb('parser: scope-to-resource (web)', t => {
     'sources': {
       'web-source': {
         'pattern': 'source/resource',
-        'template': 'http://phoenix.eab.com/eabui/<%= resource %>__<%= version %>.zip'
+        'pull_uri': 'http://phoenix.eab.com/eabui/<%= resource %>__<%= version %>.zip'
       }
     }
   })
 
-  const uri = ReferenceParser.scopeToResource(`web-source/blueprint@1.2.3`)
+  const { resource } = ReferenceParser.__scopeToResource(`web-source/blueprint@1.2.3`)
 
-  t.is(uri, `http://phoenix.eab.com/eabui/blueprint__1.2.3.zip`)
+  t.is(resource, `http://phoenix.eab.com/eabui/blueprint__1.2.3.zip`)
   t.end()
 })

@@ -1,12 +1,11 @@
 {
   "name": "klepto",
   "description": "Manage components packaged in zip files",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "homepage": "https://github.com/mwjaworski/klepto",
   "author": {
     "name": "Michael Jaworski",
-    "url": "https://github.com/mwjaworski",
-    "email": ""
+    "url": "https://github.com/mwjaworski"
   },
   "repository": {
     "type": "git",
@@ -18,7 +17,11 @@
   "license": "MIT",
   "keywords": [
     "cli",
-    "command line"
+    "command line",
+    "respository",
+    "package management",
+    "zip",
+    "tar"
   ],
   "preferGlobal": true,
   "bin": {
@@ -50,13 +53,15 @@
     "cli-color": "1.2.0",
     "cli-spinners": "^1.1.0",
     "fs-extra": "^4.0.2",
+    "is_js": "^0.9.0",
     "jsonfile": "4.0.0",
     "jszip": "^3.1.4",
     "lodash": "4.17.4",
     "micromatch": "^3.1.4",
     "semver": "^5.4.1",
     "tar": "^4.0.2",
-    "vorpal": "^1.12.0"
+    "vorpal": "^1.12.0",
+    "winston": "^2.4.0"
   },
   "devDependencies": {
     "ava": "0.23.0",

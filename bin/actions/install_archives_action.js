@@ -1,13 +1,8 @@
-// const downloadArchiveAction = require('./download_archive_action')
-// const promoteArchiveAction = require('./promote_archive_action')
-// const StatusLog = require('../support/status_log')
+const installArchiveAction = require('./install_archive_action')
+const _ = require('lodash')
 
-const installArchivesAction = (reference) => {
-  // return downloadArchiveAction(reference)
-  //   .then(({ archiveRequest }) => {
-  //     StatusLog.notify(`install ${archiveRequest.uri}`, archiveRequest.uuid)
-  //     return promoteArchiveAction(archiveRequest)
-  //   })
+const installArchivesAction = function (cachedArchives) {
+  return Promise.all(_.map(cachedArchives, installArchiveAction))
 }
 
 module.exports = installArchivesAction

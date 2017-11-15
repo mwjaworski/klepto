@@ -10,10 +10,8 @@ const downloadArchivesAction = function (requests, requestedBy) {
     })
   }
 
-  DependencyLog.trackDependencies(requestedBy, requests)
-
   return Promise.all(_.map(requests, (reference, installPath) => {
-    return downloadArchiveAction(reference)
+    return downloadArchiveAction(reference, installPath)
       .then(({ archiveRequest }) => {
         return downloadArchivesAction(
           ManifestConfiguration
