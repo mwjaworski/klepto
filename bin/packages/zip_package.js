@@ -20,7 +20,7 @@ class ZipPackage {
         zip.forEach((relativePath, file) => {
           const archivePrefix = `${archive}`
 
-          if (relativePath.indexOf(archivePrefix) >= 0) {
+          if (relativePath.indexOf(archivePrefix) === 0) {
             relativePath = relativePath.substr(`${archivePrefix}/`.length)
           }
 

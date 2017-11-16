@@ -2,10 +2,12 @@
 
 ## 0.6.0
 
+- ADDED `--verbose` to show all operations on console
 - ADDED `klepto clean` will erase staging and cache
 - ADDED support for `file://` paths
 - FIXED performance improvements on loading manifest files
 - FIXED addressed TODO's
+- FIXED zip transit folder stripping
 
 ## 0.5.0
 
