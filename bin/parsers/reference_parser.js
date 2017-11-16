@@ -6,7 +6,7 @@ const applicationConfiguration = require('../configurations/application')
 
 const Discover = {
   COMPONENT_ASPECT: /.*?\/([a-z0-9-_.]*?)[./]?(zip|tar|tgz|gz|tar.gz|git)?$/i,
-  HAS_EMBEDDED_VERSION: /[]*?[_-]+([\d.]*)$/i
+  HAS_EMBEDDED_VERSION: /.*?[_-]+([\d.]*)$/i
 }
 
 /**
@@ -19,7 +19,7 @@ const Discover = {
  * "uri#version" ===> { url, version }
  */
 class ReferenceParser {
-  static referenceToArchiveRequest(reference, overrideUniqueName = undefined) {
+  static referenceToArchiveRequest (reference, overrideUniqueName = undefined) {
     const scopeOrReference = this.normalizeReference(reference)
     const {
       resource,
@@ -39,16 +39,16 @@ class ReferenceParser {
    * @param { reference } reference
    * @returns "reference"
    */
-  static normalizeReference(reference) {
+  static normalizeReference (reference) {
     return _.trimEnd(_.trimStart(reference || '', path.sep))
   }
 
-  static splitArchiveExtension(uri) {
+  static splitArchiveExtension (uri) {
     const [_0, archive, extension] = Discover.COMPONENT_ASPECT.exec(uri) || [``, uri, ``] // eslint-disable-line
     return [archive, extension]
   }
 
-  static splitURIVersion(reference) {
+  static splitURIVersion (reference) {
     const patternMarkers = applicationConfiguration.get(`rules.patternMarkers`)
     const versionMarker = _.find(patternMarkers.version, (versionMarker) => reference.indexOf(versionMarker) !== -1)
 
@@ -59,7 +59,7 @@ class ReferenceParser {
    *
    * @param {*} scopeOrReference
    */
-  static __scopeToResource(scopeOrReference) {
+  static __scopeToResource (scopeOrReference) {
     const patternMarkers = applicationConfiguration.get(`rules.patternMarkers`)
     const [uri, version = ``] = this.splitURIVersion(scopeOrReference)
     const uriAspects = uri.split(patternMarkers.separator)
@@ -91,7 +91,7 @@ class ReferenceParser {
    *
    * @param {*} resource
    */
-  static __resourceToArchiveRequest(resource, scope, overrideUniqueName = undefined) {
+  static __resourceToArchiveRequest (resource, scope, overrideUniqueName = undefined) {
     const versionMarker = _.first(applicationConfiguration.get(`rules.patternMarkers.version`))
     const {
       staging,
@@ -123,7 +123,7 @@ class ReferenceParser {
     }
   }
 
-  static __detectVersionInArchive(archive, version) {
+  static __detectVersionInArchive (archive, version) {
     const embeddedVersion = Discover.HAS_EMBEDDED_VERSION.exec(archive)
 
     if (embeddedVersion) {
@@ -133,13 +133,12 @@ class ReferenceParser {
     }
   }
 
-
   /**
    *
    * @param {*} uriAspects
    * @returns a scope object or undefined
    */
-  static __matchConversionRule(uriAspects) {
+  static __matchConversionRule (uriAspects) {
     const sources = applicationConfiguration.get(`sources`)
     const scope = uriAspects[0] = (_.first(uriAspects) || '')
 

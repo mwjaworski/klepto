@@ -1,7 +1,6 @@
 const downloadArchivesAction = require('../actions/download_archives_action')
 
 const ManifestConfiguration = require('../configurations/manifest')
-const DependencyLog = require('../support/dependency_log')
 const StatusLog = require('../support/status_log')
 
 module.exports = {
@@ -15,7 +14,6 @@ module.exports = {
         return true
       })
       .action(function (args, done) {
-
         const vaultConfiguration = ManifestConfiguration.build(`./`)
         const singleConfiguration = {
           name: 'solo',

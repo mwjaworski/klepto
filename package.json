@@ -18,7 +18,7 @@
   "keywords": [
     "cli",
     "command line",
-    "respository",
+    "repository",
     "package management",
     "zip",
     "tar"
@@ -29,7 +29,7 @@
   },
   "main": "bin/index.js",
   "engines": {
-    "node": ">=6"
+    "node": ">=6.5.0"
   },
   "ignore": [
     "node_modules",
@@ -54,7 +54,6 @@
     "cli-spinners": "^1.1.0",
     "fs-extra": "^4.0.2",
     "is_js": "^0.9.0",
-    "jsonfile": "4.0.0",
     "jszip": "^3.1.4",
     "lodash": "4.17.4",
     "micromatch": "^3.1.4",

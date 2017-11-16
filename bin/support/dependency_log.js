@@ -1,4 +1,3 @@
-const ReferenceParser = require('../parsers/reference_parser')
 const VersionServant = require('../servants/version_servant')
 const _ = require('lodash')
 
@@ -99,7 +98,6 @@ class DependencyLog {
 
     return versionConflicts
   }
-
 }
 
 module.exports = DependencyLog.initialize()

@@ -9,7 +9,6 @@ module.exports = {
         return true
       })
       .action(function (args, done) {
-
         switch (args.reference) {
           case 'cache':
             fs.removeSync(applicationConfiguration.get(`paths.cache`))
@@ -22,7 +21,7 @@ module.exports = {
             fs.removeSync(applicationConfiguration.get(`paths.cache`))
         }
 
-        done();
+        done()
       })
   }
 }

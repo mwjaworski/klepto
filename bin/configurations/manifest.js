@@ -4,14 +4,14 @@ const _ = require('lodash')
 const is = require('is_js')
 
 class ManifestConfiguration {
-
-  static initialize() {
+  static initialize () {
     this.__manifests = {}
-    return this;
+    return this
   }
 
   static build (archivePath) {
-    return this.__manifests[archivePath] = this.__manifests[archivePath] || new ManifestConfiguration(archivePath)
+    this.__manifests[archivePath] = this.__manifests[archivePath] || new ManifestConfiguration(archivePath)
+    return this.__manifests[archivePath]
   }
 
   constructor (archivePath) {

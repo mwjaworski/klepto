@@ -1,4 +1,3 @@
-const is = require('is_js')
 
 module.exports = {
   registerVorpalCommand: (vorpal, applicationConfiguration) => {
@@ -12,7 +11,6 @@ module.exports = {
         return true
       })
       .action(function (args, done) {
-        console.log(args, args.options, is.boolean(args.options.value === 'true'))
         done()
       })
   }

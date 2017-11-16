@@ -62,7 +62,7 @@ class StatusLog {
           flags: 'w'
         }
       })
-    ];
+    ]
 
     if (_.includes(process.argv, `--verbose`)) {
       transports.push(new winston.transports.Console({
