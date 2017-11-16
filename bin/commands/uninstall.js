@@ -21,8 +21,6 @@ module.exports = {
           uninstallArchiveAction(archive, vorpal)
           .catch(err => {
             StatusLog
-              .error(err.toString())
-            StatusLog
               .completeFailure(err.toString())
               .then(() => done())
           })
