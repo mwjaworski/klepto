@@ -1,23 +1,35 @@
-const demoteArchiveAction = require('../actions/demote_archive_action')
+const uninstallArchiveAction = require('../actions/uninstall_archive_action')
+const StatusLog = require('../support/status_log')
 
 module.exports = {
   registerVorpalCommand: (vorpal, applicationConfiguration) => {
     return vorpal
       .command(`uninstall <archive>`)
-      .option('-a, --audit', `Inspect the tools selected for a reference`)
       .description(`Uninstall an archive.`)
       .validate(function (args) {
         return true
       })
       .action(function (args, done) {
-        const { archive } = args
+        const {
+          archive
+        } = args
 
-        demoteArchiveAction(archive, vorpal)
+        StatusLog
+          .initialize()
+          .start()
+
+          uninstallArchiveAction(archive, vorpal)
           .catch(err => {
-            vorpal.log(err.toString())
+            StatusLog
+              .error(err.toString())
+            StatusLog
+              .completeFailure(err.toString())
+              .then(() => done())
           })
           .then(() => {
-            return done()
+            return StatusLog
+              .completeSuccess()
+              .then(() => done())
           })
       })
   }

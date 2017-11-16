@@ -1,10 +1,21 @@
 const applicationConfiguration = require('../configurations/application')
 const fs = require('fs-extra')
+const path = require('path')
 const _ = require('lodash')
+const is = require('is_js')
 
 class ManifestConfiguration {
-  static build (archivePath) {
-    return new ManifestConfiguration(archivePath)
+  static initialize () {
+    this.__manifests = {}
+    return this
+  }
+
+  static build (archivePath, forceUpdate) {
+    this.__manifests[archivePath] = (!forceUpdate)
+      ? this.__manifests[archivePath] || new ManifestConfiguration(archivePath)
+      : new ManifestConfiguration(archivePath)
+
+    return this.__manifests[archivePath]
   }
 
   constructor (archivePath) {
@@ -12,10 +23,11 @@ class ManifestConfiguration {
   }
 
   assignManifest (archivePath) {
-    const { configurationSystem, json } = this.__locatePrioritizedManifest(archivePath)
+    const { configurationSystem, json, path } = this.__locatePrioritizedManifest(archivePath)
 
     this.__system = configurationSystem
     this.__manifest = json
+    this.__path = path
   }
 
   __locatePrioritizedManifest (archivePath, configurationSystemList = applicationConfiguration.get(`rules.configurationSystem`)) {
@@ -27,24 +39,53 @@ class ManifestConfiguration {
       if (json) {
         return {
           configurationSystem,
-          json
+          json: this.__initialize(json),
+          path: `${archivePath}/${configurationSystem.archiveManifest}`
         }
       }
     }
 
     return {
       configurationSystem: _.find(configurationSystemList, (system) => system.archiveManifest === `vault.json`),
-      json: this.__defaultManifest()
+      json: this.__defaultManifest(),
+      path: ``
     }
+  }
+
+  initialize () {
+    this.__manifest = this.__initialize(this.__manifest)
+    return this
+  }
+
+  __initialize (json = {}) {
+    return _.merge({}, this.__defaultManifest(), json)
   }
 
   __defaultManifest () {
     return {
       name: '',
       version: '',
-      dependencies: [],
+      dependencies: {},
+      resolutions: {},
       ignore: []
     }
+  }
+
+  initializeLocal () {
+    this.initialize()
+
+    this.__manifest.name = this.__manifest.name || _.last(process.cwd().split(path.sep))
+    this.__manifest.version = this.__manifest.version || `0.1.0`
+    return this
+  }
+
+  saveLocal () {
+    fs.writeFileSync(`./${this.__system.archiveManifest}`, JSON.stringify(this.__manifest, null, 2))
+    return this
+  }
+
+  get path () {
+    return this.__path || `vault.json`
   }
 
   get system () {
@@ -63,6 +104,10 @@ class ManifestConfiguration {
     return this.__getSafeProp(`dependencies`, {})
   }
 
+  resolutions () {
+    return this.__getSafeProp(`resolutions`, {})
+  }
+
   devDependencies () {
     return this.__getSafeProp(`devDependencies`, {})
   }
@@ -74,11 +119,8 @@ class ManifestConfiguration {
   __getSafeProp (property, defaultValue) {
     const val = this.__manifest[property]
 
-    // TODO do a better job identifying if the value is of the right type (object or array)
-    return (typeof val === typeof defaultValue) ? val : defaultValue
+    return (is.sameType(val, defaultValue)) ? val : defaultValue
   }
 }
 
-module.exports = {
-  build: ManifestConfiguration.build
-}
+module.exports = ManifestConfiguration.initialize()

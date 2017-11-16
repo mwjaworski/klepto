@@ -9,7 +9,6 @@ module.exports = {
   registerVorpalCommand: (vorpal, applicationConfiguration) => {
     return vorpal
       .command(`install [reference]`)
-      .option('-a, --audit', `Inspect the tools selected for a reference`)
       .option('-r, --rename <archive>', `Rename the reference`)
       .description(`Install an archive(s).`)
       .validate(function (args) {
@@ -36,7 +35,8 @@ module.exports = {
 
         downloadArchivesAction(archiveDependencies, archiveName)
           .catch(err => {
-            StatusLog.error(err.toString())
+            StatusLog
+              .error(err.toString())
             StatusLog
               .completeFailure(err.toString())
               .then(() => done())

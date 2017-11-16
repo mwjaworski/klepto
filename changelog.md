@@ -1,5 +1,17 @@
 # Klepto Changelog
 
+## 0.6.0
+
+- ADDED `--verbose` to show all operations on console
+- ADDED `klepto clean` will erase staging and cache
+- ADDED support for `file://` paths
+- ADDED `configure` command to change the configuration
+- ADDED `initialize` command to initialize an empty repository
+- FIXED performance improvements on loading manifest files
+- FIXED addressed TODO's
+- FIXED zip transit folder stripping
+- FIXED `uninstall`
+
 ## 0.5.0
 
 - ADDED `install` with name resolution

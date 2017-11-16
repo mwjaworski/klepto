@@ -15,7 +15,7 @@ test.cb('parser: reference (folder)', t => {
     uri
   } = ReferenceParser.referenceToArchiveRequest(`../folder/sub_folder/`)
 
-  t.is(version, `master`, `version defaults to master`)
+  t.is(version, `*`, `version defaults to master`)
   t.is(archive, `sub_folder`, `the archive is the last folder name`)
   t.is(uri, `../folder/sub_folder/`, `uri is the base path to the resource`)
 

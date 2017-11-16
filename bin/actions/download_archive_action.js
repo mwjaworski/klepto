@@ -5,7 +5,6 @@ const FileSystem = require('../support/file_system')
 const StatusLog = require('../support/status_log')
 
 const downloadArchiveAction = (reference, installPath = undefined) => {
-  // TODO cache with version name so we can pull multiple versions of one component to resolve requirements?
   return createResourceRequestAction(reference, installPath)
     .then((resourceRequest) => {
       const paths = applicationConfiguration.get(`paths`)
