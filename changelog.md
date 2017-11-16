@@ -1,5 +1,12 @@
 # Klepto Changelog
 
+## 0.6.0
+
+- ADDED `klepto clean` will erase staging and cache
+- ADDED support for `file://` paths
+- FIXED performance improvements on loading manifest files
+- FIXED addressed TODO's
+
 ## 0.5.0
 
 - ADDED `install` with name resolution

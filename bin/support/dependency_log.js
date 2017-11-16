@@ -47,35 +47,29 @@ class DependencyLog {
       const versionRange = _.keys(conflicts).join(' || ')
       const appropriateVersion = VersionServant.findAppropriateVersion(availableVersions, versionRange)
 
-      if (!appropriateVersion) {
-        // conflicts // what do I choose? it could:
-        // >=3.2.3 <4.0.0 - if we do not match, then?
-
-        // 1. get only versions from `conflicts` and choose which array is higher
-        // 2. get the version (just version) that is highest
-        // 3. if it is a range - we... need the installed version so we can call find appropriate just fro that rule and get a version...!
-
-        const firstRequest = _.first(_.toArray(conflicts))
-
-        // NOTE this is still an issue - what if it is a ~2.1.2
-        // const mostRequested = _.findKey(conflicts, (requestedBy, version) => {
-        //   return requestedBy.length
-        // })
-
-        // TODO
-        // const highestRequested = 0
-
-        // what if this is still null?!
-        return VersionServant.findAppropriateVersion(availableVersions, firstRequest)
+      if (appropriateVersion) {
+        return appropriateVersion
       }
 
-      return appropriateVersion
+      // OPTION 1 not ideal, the first resolution may not be desired
+      const firstRequested = _.first(_.toArray(conflicts))
+
+      // OPTION 2
+      // const mostRequested = _.findKey(conflicts, (requestedBy, version) => {
+      //   return requestedBy.length
+      // })
+
+      // OPTION 3
+      // const highestRequested = 0
+
+      // TODO what if this is still null?
+      return VersionServant.findAppropriateVersion(availableVersions, firstRequested)
     })
 
     // TODO if we have this version - great. if not, then we need to get a new version - which means download again...
     // then we can copy folders
 
-    return _.mapValues(_.merge({}, versionMatches, versionConflictsResolution), (version, installedName /* ISSUE might be archive */) => {
+    return _.mapValues(_.merge({}, versionMatches, versionConflictsResolution), (version, installedName) => {
       return _.get(this.__installed, `["${installedName}"]["${version}"]`, {
         'warning': 'no version?!'
       })

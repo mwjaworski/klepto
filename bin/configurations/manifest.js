@@ -1,10 +1,17 @@
 const applicationConfiguration = require('../configurations/application')
 const fs = require('fs-extra')
 const _ = require('lodash')
+const is = require('is_js')
 
 class ManifestConfiguration {
+
+  static initialize() {
+    this.__manifests = {}
+    return this;
+  }
+
   static build (archivePath) {
-    return new ManifestConfiguration(archivePath)
+    return this.__manifests[archivePath] = this.__manifests[archivePath] || new ManifestConfiguration(archivePath)
   }
 
   constructor (archivePath) {
@@ -74,11 +81,8 @@ class ManifestConfiguration {
   __getSafeProp (property, defaultValue) {
     const val = this.__manifest[property]
 
-    // TODO do a better job identifying if the value is of the right type (object or array)
-    return (typeof val === typeof defaultValue) ? val : defaultValue
+    return (is.sameType(val, defaultValue)) ? val : defaultValue
   }
 }
 
-module.exports = {
-  build: ManifestConfiguration.build
-}
+module.exports = ManifestConfiguration.initialize()

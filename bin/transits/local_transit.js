@@ -6,8 +6,7 @@ const _ = require('lodash')
  */
 class LocalTransit {
   static sendToCache ({ uri, installedVersion, cachePath }) {
-    // TODO if we provide a file:// prefix then we have to tear it off
-    const originalLocation = _.trimEnd(`${uri}`)
+    const originalLocation = _.trimEnd(`${uri}`).replace(`file://`, ``)
 
     return new Promise((resolve, reject) => {
       fs.copy(originalLocation, cachePath, err => {

@@ -72,10 +72,9 @@ class ReferenceParser {
       }
     }
 
-    // TODO when we do `publish` we should use `push_uri` and configure this based on the operation
     const {
       pattern,
-      pull_uri,
+      pull_uri, // OR push_uri if operation is publish
       constants
     } = scope
     const templateVariables = _.zipObject(pattern.split(patternMarkers.separator), uriAspects)
@@ -101,8 +100,7 @@ class ReferenceParser {
 
     const [uri, _version] = this.splitURIVersion(resource)
     const [_archive, extension] = this.splitArchiveExtension(uri)
-    // TODO should I default to * because master is for git?
-    const [archive, version = `master`] = this.__detectVersionInArchive(_archive, _version)
+    const [archive, version = `*`] = this.__detectVersionInArchive(_archive, _version)
 
     const versionFolder = crypto.createHash(`md5`).update(version).digest(`hex`)
     const installedName = overrideUniqueName || archive
@@ -111,8 +109,6 @@ class ReferenceParser {
     const cachePath = `${cache}/${archive}__${versionFolder}${safeExtension}`
     const stagingPath = `${staging}/${archive}/${versionFolder}/`
     const uuid = `${installedName}${versionMarker}${version}`
-
-    // TODO pass unique name through to collect -v2 and v-3 and apply unique name
 
     return {
       installedVersion: version,

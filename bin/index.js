@@ -3,8 +3,6 @@
 const applicationConfiguration = require('./configurations/application')
 const vorpal = require('vorpal')()
 
-global.vorpal = vorpal
-
 // register all commands available to vorpal
 //
 //
@@ -21,4 +19,4 @@ require('./commands/version').registerVorpalCommand(vorpal, applicationConfigura
 // vorpal must parse arguments after all commands are registered
 //
 //
-require('./core/terminal').registerVorpalCommand(vorpal, applicationConfiguration)
+require('./core/terminal').initializeVorpal(vorpal, applicationConfiguration)

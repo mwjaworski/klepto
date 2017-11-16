@@ -9,22 +9,20 @@ module.exports = {
         return true
       })
       .action(function (args, done) {
-        let action
 
         switch (args.reference) {
           case 'cache':
-            action = fs.remove(applicationConfiguration.get(`paths.cache`))
+            fs.removeSync(applicationConfiguration.get(`paths.cache`))
             break
           case 'staging':
-            action = fs.remove(applicationConfiguration.get(`paths.staging`))
+            fs.removeSync(applicationConfiguration.get(`paths.staging`))
             break
+          default:
+            fs.removeSync(applicationConfiguration.get(`paths.staging`))
+            fs.removeSync(applicationConfiguration.get(`paths.cache`))
         }
 
-        action
-          .catch((err) => {
-            vorpal.log(err.toString())
-          })
-          .then(done)
+        done();
       })
   }
 }

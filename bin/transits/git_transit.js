@@ -24,9 +24,8 @@ class GitTransit {
         .then(resolve)
         .catch(err => {
           console.error(err)
-          // TODO permit this to fail but not kill the whole process (do this for all transit functions)
+
           resolve({
-            // TODO what does this mean?
             installedVersion: 'x.x.x'
           })
         })

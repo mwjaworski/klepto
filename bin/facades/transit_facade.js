@@ -31,7 +31,8 @@ class TransitFacade {
    */
   static __ofLocal (uri) {
     const isNotURLBySignature = uri.match(Discover.IS_URL) === null
-    const isLocal = isNotURLBySignature
+    const isExplicitFile = uri.indexOf(`file://`) === 0
+    const isLocal = isNotURLBySignature || isExplicitFile
 
     return isLocal ? LocalTransit : undefined
   }
