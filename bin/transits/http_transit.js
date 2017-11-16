@@ -8,7 +8,7 @@ class HTTPTransit {
   static sendToCache ({ uri, installedVersion, cachePath }) {
     return axios({
       responseType: `arraybuffer`,
-      maxContentLength: 2000000,
+      maxContentLength: 99999999,
       withCredentials: false,
       method: `get`,
       url: uri,

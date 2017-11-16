@@ -11,6 +11,20 @@
       "constants": {
 
       }
+    },
+    "universal-es6": {
+      "pattern": "source/component",
+      "pull_uri": "http://phoenix.eab.com/release/components/${component}/${component}--${version}.zip",
+      "installation": {
+        "subfolder": "release/es6/"
+      }
+    },
+    "universal-es5": {
+      "pattern": "source/component",
+      "pull_uri": "http://phoenix.eab.com/release/components/${component}/${component}--${version}.zip",
+      "installation": {
+        "subfolder": "release/es5/"
+      }
     }
   }
 }

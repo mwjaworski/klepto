@@ -3,18 +3,27 @@
 const applicationConfiguration = require('./configurations/application')
 const vorpal = require('vorpal')()
 
+const augmentCommand = (vorpalCommand) => {
+  return vorpalCommand
+    .option('--verbose', '')
+}
+
 // register all commands available to vorpal
 //
 //
-require('./commands/clean').registerVorpalCommand(vorpal, applicationConfiguration)
-require('./commands/download').registerVorpalCommand(vorpal, applicationConfiguration)
-require('./commands/initialize').registerVorpalCommand(vorpal, applicationConfiguration)
-require('./commands/install').registerVorpalCommand(vorpal, applicationConfiguration)
-require('./commands/publish').registerVorpalCommand(vorpal, applicationConfiguration)
-require('./commands/settings').registerVorpalCommand(vorpal, applicationConfiguration)
-require('./commands/status').registerVorpalCommand(vorpal, applicationConfiguration)
-require('./commands/uninstall').registerVorpalCommand(vorpal, applicationConfiguration)
-require('./commands/version').registerVorpalCommand(vorpal, applicationConfiguration)
+[
+  `clean`,
+  `download`,
+  `initialize`,
+  `install`,
+  `publish`,
+  `settings`,
+  `status`,
+  `uninstall`,
+  `version`
+].forEach((command) => {
+  augmentCommand(require(`./commands/${command}`).registerVorpalCommand(vorpal, applicationConfiguration))
+})
 
 // vorpal must parse arguments after all commands are registered
 //

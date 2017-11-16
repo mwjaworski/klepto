@@ -2,6 +2,8 @@ const spinners = require('cli-spinners')
 const readline = require('readline')
 const winston = require('winston')
 const color = require('cli-color')
+const process = require('process')
+const _ = require('lodash')
 
 const Colors = {
   gray: color.xterm(8),
@@ -28,10 +30,12 @@ class StatusLog {
   }
 
   static start () {
-    this.__interval = setInterval(() => {
-      this.__frame += 1
-      this.__drawLine(this.__drawContent())
-    }, this.__refreshRate)
+    if (!_.includes(process.argv, `--verbose`)) {
+      this.__interval = setInterval(() => {
+        this.__frame += 1
+        this.__drawLine(this.__drawContent())
+      }, this.__refreshRate)
+    }
 
     return this
   }
@@ -48,20 +52,28 @@ class StatusLog {
   static initialize () {
     this.uninitialize()
 
+    const transports = [
+      new (winston.transports.File)({
+        timestamp: () => Date.now(),
+        handleExceptions: true,
+        filename: `vault.log`,
+        json: false,
+        options: {
+          flags: 'w'
+        }
+      })
+    ];
+
+    if (_.includes(process.argv, `--verbose`)) {
+      transports.push(new winston.transports.Console({
+
+      }))
+    }
+
     this.__logger = new (winston.Logger)({
-      level: 'info',
       exitOnError: false,
-      transports: [
-        new (winston.transports.File)({
-          timestamp: () => Date.now(),
-          handleExceptions: true,
-          filename: `vault.log`,
-          json: false,
-          options: {
-            flags: 'w'
-          }
-        })
-      ]
+      level: 'info',
+      transports
     })
 
     this.__stream = readline.createInterface({
@@ -76,7 +88,7 @@ class StatusLog {
   static uninitialize () {
     this.__logger = undefined
     this.__stream = undefined
-    this.__refreshRate = 250
+    this.__refreshRate = 128
     this.__frame = 0
     this.__action = ''
     return this

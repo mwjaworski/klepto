@@ -16,7 +16,6 @@ const installArchiveAction = (archiveRequest, installedName) => {
     manifestJson.ignore
   )
 
-  StatusLog.notify(`install ${archivePath}`, archiveRequest.uuid)
   return FileSystem
     .createDirectory(`${archiveFolder}/`)
     .removeDirectory(`${archiveFolder}/${archiveRequest.archive}`)
