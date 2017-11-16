@@ -8,9 +8,7 @@
         "destination": "vault",
         "subfolder": ""
       },
-      "constants": {
-
-      }
+      "constants": {}
     },
     "universal-es6": {
       "pattern": "source/component",

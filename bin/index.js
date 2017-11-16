@@ -13,11 +13,11 @@ const augmentCommand = (vorpalCommand) => {
 //
 [
   `clean`,
+  `configure`,
   `download`,
   `initialize`,
   `install`,
   `publish`,
-  `settings`,
   `status`,
   `uninstall`,
   `version`
