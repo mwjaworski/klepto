@@ -1,3 +1,5 @@
+const ManifestConfiguration = require('../configurations/manifest')
+
 module.exports = {
   registerVorpalCommand: (vorpal, applicationConfiguration) => {
     return vorpal
@@ -8,6 +10,10 @@ module.exports = {
         return true
       })
       .action(function (args, done) {
+        const projectManifest = ManifestConfiguration.build(`./`, `force-update`)
+
+        projectManifest.initializeLocal()
+        projectManifest.saveLocal()
         done()
       })
   }
