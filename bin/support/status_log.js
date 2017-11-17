@@ -57,6 +57,13 @@ class StatusLog {
     this.uninitialize()
 
     const transports = [
+      new winston.transports.Console({
+        level: 'error',
+        json: false,
+        formatter: (info) => {
+          return (info.message) ? `${Colors.red('Failure(s)')}\n${info.message}` : ``
+        }
+      }),
       new (winston.transports.File)({
         timestamp: () => Date.now(),
         handleExceptions: true,
@@ -106,7 +113,6 @@ class StatusLog {
   }
 
   static error (reason, resource, meta = {}) {
-    this.__logger.error(`[${resource}] ${reason}`, meta)
     this.__errors.push(reason)
     return this
   }
@@ -116,7 +122,7 @@ class StatusLog {
 
     return new Promise((resolve, reject) => {
       setTimeout(() => {
-        resolve(this.stop().uninitialize())
+        resolve(this.stop().__writeErrors().uninitialize())
       }, 1000)
     })
   }
@@ -127,9 +133,18 @@ class StatusLog {
     StatusLog.error(reason)
     return new Promise((resolve, reject) => {
       setTimeout(() => {
-        resolve(this.stop().uninitialize())
+        resolve(this.stop().__writeErrors().uninitialize())
       }, 1000)
     })
+  }
+
+  static __writeErrors() {
+    const errors = _.reduce(this.__errors, (content, reason, index) => {
+      return `${content}${index + 1}. ${Colors.gray(reason)}\n`
+    }, ``)
+
+    this.__logger.error(errors)
+    return this
   }
 }
 
