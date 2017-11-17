@@ -2,6 +2,7 @@
 
 ## 0.7.0
 
+- ADDED show `help` if no commands are given
 - ADDED support for tracking errors during an process
 - ADDED `--save/-dev` support for `install`
 - ADDED support for honoring existing resolutions over calculated resolutions

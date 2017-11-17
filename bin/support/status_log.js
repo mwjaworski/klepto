@@ -143,7 +143,10 @@ class StatusLog {
       return `${content}${index + 1}. ${Colors.gray(reason)}\n`
     }, ``)
 
-    this.__logger.error(errors)
+    if (!_.isEmpty(errors)) {
+      this.__logger.error(errors)
+    }
+
     return this
   }
 }

@@ -1,5 +1,6 @@
 const OperatingSystem = require('../support/operating_system')
 const VersionServant = require('../servants/version_servant')
+const StatusLog = require('../support/status_log')
 const fs = require('fs-extra')
 const _ = require('lodash')
 const os = require('os')
@@ -23,8 +24,7 @@ class GitTransit {
       return __sendToCache(archiveRequest)
         .then(resolve)
         .catch(err => {
-          console.error(err)
-
+          StatusLog.error(err, archiveRequest)
           resolve({
             installedVersion: 'x.x.x'
           })
