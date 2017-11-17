@@ -1,3 +1,4 @@
+const injectDependencyReferenceAction = require('../actions/inject_dependency_reference_action')
 const downloadArchivesAction = require('../actions/download_archives_action')
 
 const ManifestConfiguration = require('../configurations/manifest')
@@ -7,7 +8,6 @@ module.exports = {
   registerVorpalCommand: (vorpal, applicationConfiguration) => {
     return vorpal
       .command(`download [reference]`)
-      .option('-a, --audit', `Inspect the tools selected for a reference`)
       .option('-r, --rename <archive>', `Rename the reference`)
       .description(`Download an archive(s).`)
       .validate(function (args) {
@@ -15,34 +15,29 @@ module.exports = {
       })
       .action(function (args, done) {
         const vaultConfiguration = ManifestConfiguration.build(`./`)
-        const singleConfiguration = {
-          name: 'solo',
-          dependencies: () => {
-            return {
-              [args.options.rename || '']: args.reference
-            }
-          }
-        }
-
+        const singleConfiguration = ManifestConfiguration.build().initializeLocal()
         const archiveConfiguration = (!args.reference) ? vaultConfiguration : singleConfiguration
-        const archiveDependencies = archiveConfiguration.dependencies()
-        const archiveName = archiveConfiguration.name || `root`
 
-        StatusLog
-          .initialize()
-          .start()
+        injectDependencyReferenceAction(archiveConfiguration.dependencies(), args.reference, args.options.rename)
+          .then((activeDependencies) => {
+            const archiveDependencies = archiveConfiguration.allDependencies()
+            const archiveName = archiveConfiguration.name
 
-        downloadArchivesAction(archiveDependencies, archiveName)
-          .catch(err => {
-            StatusLog.error(err.toString())
             StatusLog
-              .completeFailure(err.toString())
-              .then(() => done())
-          })
-          .then(() => {
-            return StatusLog
-              .completeSuccess()
-              .then(() => done())
+              .initialize()
+              .start()
+
+            downloadArchivesAction(archiveDependencies, archiveName)
+              .catch(err => {
+                StatusLog
+                  .completeFailure(err.toString())
+                  .then(() => done())
+              })
+              .then(() => {
+                return StatusLog
+                  .completeSuccess()
+                  .then(() => done())
+              })
           })
       })
   }

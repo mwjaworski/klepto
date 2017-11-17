@@ -1,12 +1,21 @@
 {
   "name": "klepto",
-  "version": "0.1.0",
+  "version": "3.1.0",
   "dependencies": {
     "core-sass-brand-v3": "eabui/core-sass-brand#~3.0.0",
     "ui-sass-spacing": "eabui/ui-sass-spacing#2.0.0",
     "ui-sass-sizing": "eabui/ui-sass-sizing#2.0.0",
-    "ui-sass-border": "eabui/ui-sass-border#3.0.0"
+    "ui-sass-border": "eabui/ui-sass-border#3.0.0",
+    "ui-sass-typography": "eabui/ui-sass-typography#~3.0.0"
   },
-  "resolutions": {},
+  "devDependencies": {},
+  "resolutions": {
+    "ui-sass-spacing": "2.0.0",
+    "ui-sass-sizing": "2.0.0",
+    "ui-sass-border": "3.0.0",
+    "ui-sass-typography": "3.0.0",
+    "core-sass-brand": "2.4.0",
+    "core-sass-brand-v3": "3.1.0"
+  },
   "ignore": []
 }

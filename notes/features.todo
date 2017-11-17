@@ -4,4 +4,6 @@ TODO:
   ☐ Support `archive` to package as a (zip, tar, ...)
   ☐ Support `upload` to send (http?, git, ftp, ...)
   ☐ Support `publish` which does an `archive` followed by `upload`
-  ☐ Support `--save` in `install` to update the component library
+  ✔ Support `--save` in `install` to update the component library @done (2017-11-17 09:32:49)
+  ✔ Support `--save-dev` in `install` to update the component library @done (2017-11-17 09:32:49)
+  ✔ Support integrating the resolutions of the main <system>.json with the calculated resolutions @done (2017-11-17 07:50:34)

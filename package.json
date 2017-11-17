@@ -1,7 +1,7 @@
 {
   "name": "klepto",
   "description": "Manage components packaged in zip files",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "homepage": "https://github.com/mwjaworski/klepto",
   "author": {
     "name": "Michael Jaworski",
@@ -49,12 +49,12 @@
     "postcoveralls": "rm -Rf ./coverage"
   },
   "dependencies": {
-    "axios": "^0.17.0",
+    "axios": "^0.17.1",
     "cli-color": "1.2.0",
     "cli-spinners": "^1.1.0",
     "fs-extra": "^4.0.2",
     "is_js": "^0.9.0",
-    "jszip": "^3.1.4",
+    "jszip": "^3.1.5",
     "lodash": "4.17.4",
     "micromatch": "^3.1.4",
     "semver": "^5.4.1",
