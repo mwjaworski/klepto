@@ -61,7 +61,7 @@ class ReferenceParser {
    */
   static __scopeToResource (scopeOrReference) {
     const patternMarkers = applicationConfiguration.get(`rules.patternMarkers`)
-    const [uri, version = ``] = this.splitURIVersion(scopeOrReference)
+    const [uri, version = `*`] = this.splitURIVersion(scopeOrReference)
     const uriAspects = uri.split(patternMarkers.separator)
     const scope = this.__matchConversionRule(uriAspects)
 

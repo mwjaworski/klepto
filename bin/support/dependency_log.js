@@ -35,23 +35,30 @@ class DependencyLog {
     return this
   }
 
-  static resolutions () {
+  static resolutions (existingResolutions = {}) {
     const versionRequirements = this.__installed
     const versionMatches = DependencyLog.__calculateVersionMatches(versionRequirements)
     const versionConflicts = DependencyLog.__calculateVersionConflicts(versionRequirements)
 
     const versionConflictsResolution = _.mapValues(versionConflicts, (conflicts, installedName) => {
       const archiveName = _.get(_.first(_.toArray(conflicts)), `archive`)
-      const availableVersions = this.__availableVersions[archiveName]
+      const availableVersions = this.__availableVersions[archiveName] || this.__findExactVersions(conflicts)
       const versionRange = _.keys(conflicts).join(' || ')
-      const appropriateVersion = VersionServant.findAppropriateVersion(availableVersions, versionRange)
+      const resolutionAttempt1 = VersionServant.findAppropriateVersion(availableVersions, versionRange)
 
-      if (appropriateVersion) {
-        return appropriateVersion
+      if (resolutionAttempt1) {
+        return resolutionAttempt1
       }
 
       // OPTION 1 not ideal, the first resolution may not be desired
-      const firstRequested = _.first(_.toArray(conflicts))
+      const resolutionAttempt2 = VersionServant.findAppropriateVersion(availableVersions, _.first(_.toArray(conflicts)))
+
+      if (resolutionAttempt2) {
+        return resolutionAttempt2
+      }
+
+      // TODO what if this is still null?
+      return null
 
       // OPTION 2
       // const mostRequested = _.findKey(conflicts, (requestedBy, version) => {
@@ -62,17 +69,27 @@ class DependencyLog {
       // const highestRequested = 0
 
       // TODO what if this is still null?
-      return VersionServant.findAppropriateVersion(availableVersions, firstRequested)
+
     })
 
     // TODO if we have this version - great. if not, then we need to get a new version - which means download again...
     // then we can copy folders
 
-    return _.mapValues(_.merge({}, versionMatches, versionConflictsResolution), (version, installedName) => {
+    const calculatedResolutions = _.mapValues(_.merge({}, versionMatches, versionConflictsResolution), (version, installedName) => {
       return _.get(this.__installed, `["${installedName}"]["${version}"]`, {
-        'warning': 'no version?!'
+        [`${installedName}`]: 'no-ver'
       })
     })
+
+    return _.merge({}, calculatedResolutions, existingResolutions)
+  }
+
+  static __findExactVersions (conflicts) {
+    const IS_EXACT_VERSION = /[\d\.\-rc]+/g
+
+    return _.uniq(_.flatten(_.filter(_.map(_.keys(conflicts), (version) => version.match(IS_EXACT_VERSION), (version) => {
+      return (doesMatch) ? _.size(_.first(doesMatch)) : false
+    }))))
   }
 
   static __calculateVersionMatches (versionRequirements) {

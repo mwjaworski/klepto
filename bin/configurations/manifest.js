@@ -31,6 +31,11 @@ class ManifestConfiguration {
   }
 
   __locatePrioritizedManifest (archivePath, configurationSystemList = applicationConfiguration.get(`rules.configurationSystem`)) {
+
+    if (!archivePath) {
+      return this.__emptyManifest()
+    }
+
     for (const configurationSystem of configurationSystemList) {
       const json = fs.readJsonSync(`${archivePath}/${configurationSystem.archiveManifest}`, {
         throws: false
@@ -44,6 +49,12 @@ class ManifestConfiguration {
         }
       }
     }
+
+    return this.__emptyManifest()
+  }
+
+  __emptyManifest() {
+    const configurationSystemList = applicationConfiguration.get(`rules.configurationSystem`)
 
     return {
       configurationSystem: _.find(configurationSystemList, (system) => system.archiveManifest === `vault.json`),
@@ -66,6 +77,7 @@ class ManifestConfiguration {
       name: '',
       version: '',
       dependencies: {},
+      devDependencies: {},
       resolutions: {},
       ignore: []
     }
@@ -92,6 +104,10 @@ class ManifestConfiguration {
     return this.__system
   }
 
+  set name (name) {
+    this.__setSafeProp(`name`, name, ``)
+  }
+
   get name () {
     return this.__getSafeProp(`name`, ``)
   }
@@ -100,8 +116,16 @@ class ManifestConfiguration {
     return this.__getSafeProp(`version`, ``)
   }
 
+  allDependencies() {
+    return _.merge({}, this.dependencies(), this.devDependencies())
+  }
+
   dependencies () {
     return this.__getSafeProp(`dependencies`, {})
+  }
+
+  applyResolutions(_resolutions) {
+    this.__setSafeProp(`resolutions`, _.mapValues(_resolutions, `installedVersion`), this.resolutions())
   }
 
   resolutions () {
@@ -114,6 +138,10 @@ class ManifestConfiguration {
 
   ignore () {
     return this.__getSafeProp(`ignore`, [])
+  }
+
+  __setSafeProp (property, val, defaultValue) {
+    this.__manifest[property] = (is.sameType(val, defaultValue)) ? val : defaultValue
   }
 
   __getSafeProp (property, defaultValue) {

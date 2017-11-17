@@ -1,5 +1,14 @@
 # Klepto Changelog
 
+## 0.7.0
+
+- ADDED show `help` if no commands are given
+- ADDED support for tracking errors during an process
+- ADDED `--save/-dev` support for `install`
+- ADDED support for honoring existing resolutions over calculated resolutions
+- ADDED support to write the <vault>.json file on `--save` or `--save-dev`
+- UPGRADED library dependencies to latest (axios, jszip)
+
 ## 0.6.0
 
 - ADDED `--verbose` to show all operations on console
