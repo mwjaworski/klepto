@@ -36,8 +36,6 @@ module.exports = {
         downloadArchivesAction(archiveDependencies, archiveName)
           .catch(err => {
             StatusLog
-              .error(err.toString())
-            StatusLog
               .completeFailure(err.toString())
               .then(() => done())
           })

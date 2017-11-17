@@ -7,7 +7,8 @@ const _ = require('lodash')
 
 const Colors = {
   gray: color.xterm(8),
-  yellow: color.yellow
+  yellow: color.yellow,
+  red: color.redBright
 }
 
 const Spinner = {
@@ -26,7 +27,10 @@ class StatusLog {
     const spinner = Spinner.running[this.__frame % Spinner.running.length]
     const seconds = parseInt(this.__frame / (1000 / this.__refreshRate), 10)
 
-    return `${Colors.yellow(spinner)} ${Colors.gray(seconds + 's')} (${this.__action})`
+    const errorCount = _.size(this.__errors)
+    const errors = (errorCount > 0) ? Colors.red(errorCount + '! ') : ``
+
+    return `${Colors.yellow(spinner)} ${Colors.gray(seconds + 's')} ${errors}${this.__action}`
   }
 
   static start () {
@@ -53,6 +57,13 @@ class StatusLog {
     this.uninitialize()
 
     const transports = [
+      new winston.transports.Console({
+        level: 'error',
+        json: false,
+        formatter: (info) => {
+          return (info.message) ? `${Colors.red('Failure(s)')}\n${info.message}` : ``
+        }
+      }),
       new (winston.transports.File)({
         timestamp: () => Date.now(),
         handleExceptions: true,
@@ -90,6 +101,7 @@ class StatusLog {
     this.__stream = undefined
     this.__refreshRate = 128
     this.__frame = 0
+    this.__errors = []
     this.__action = ''
     return this
   }
@@ -100,30 +112,39 @@ class StatusLog {
     return this
   }
 
-  static error (action, resource, meta = {}) {
-    this.__logger.error(`[${resource}] ${action}`, meta)
-    this.__action = action
+  static error (reason, resource, meta = {}) {
+    this.__errors.push(reason)
     return this
   }
 
   static completeSuccess () {
-    this.__action = 'success'
+    this.__action = 'completed'
 
     return new Promise((resolve, reject) => {
       setTimeout(() => {
-        resolve(this.stop().uninitialize())
+        resolve(this.stop().__writeErrors().uninitialize())
       }, 1000)
     })
   }
 
   static completeFailure (reason) {
-    this.__action = `${reason}`
+    this.__action = 'failed'
 
+    StatusLog.error(reason)
     return new Promise((resolve, reject) => {
       setTimeout(() => {
-        resolve(this.stop().uninitialize())
+        resolve(this.stop().__writeErrors().uninitialize())
       }, 1000)
     })
+  }
+
+  static __writeErrors() {
+    const errors = _.reduce(this.__errors, (content, reason, index) => {
+      return `${content}${index + 1}. ${Colors.gray(reason)}\n`
+    }, ``)
+
+    this.__logger.error(errors)
+    return this
   }
 }
 

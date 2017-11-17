@@ -1,35 +1,7 @@
-commands:
+TODO:
 
-  cache:
-
-    ☐ Handle if an update wipes out folers/files in cache or does not
-
-  install:
-
-    ☐ Install without references will look in manifest and install all
-    ☐ When installing we want --save to save components
-    ☐ Install will look in manifest for more to install
-
-  publish:
-
-    ☐ Package a tar, zip or folder (add a klepto.json if no other manifest exists)
-    ☐ With GIT - pull repository, copy, and push
-    ☐ With Folder - copy to folder
-    ☐ With Web - define a server API to PUT, POST, and DELETE like a form file saving
-
-rules:
-
-  Support semver installation:
-
-    ☐ On Folder
-    ☐ On GIT
-    ☐ On Web // if an manifest.json exists
-
-configuration:
-
-  ☐ Define what the klepto.json format will be
-  ☐ Define what properties `klepto` will read from <manifest>.json files
-
-extended ideas:
-
-  ☐ Support FTP as a Transit
+  ☐ Verify that if we installed an archive at version x.x.x and request an install of x.x.x+1 we override
+  ☐ Support `archive` to package as a (zip, tar, ...)
+  ☐ Support `upload` to send (http?, git, ftp, ...)
+  ☐ Support `publish` which does an `archive` followed by `upload`
+  ☐ Support `--save` in `install` to update the component library
