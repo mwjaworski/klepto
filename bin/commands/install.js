@@ -19,13 +19,10 @@ module.exports = {
         return true
       })
       .action(function (args, done) {
-        const vaultConfiguration = ManifestConfiguration.build(`./`).initializeLocal()
-        const activeDependency = (args.options['save-dev']) ? vaultConfiguration.devDependencies() : vaultConfiguration.dependencies()
-
-        injectDependencyReferenceAction(activeDependency, args.reference, args.options.rename)
-          .then(() => {
-            const archiveDependencies = vaultConfiguration.allDependencies()
-            const archiveName = vaultConfiguration.name
+        injectDependencyReferenceAction(args.reference, args.options)
+          .then((archiveConfiguration) => {
+            const archiveDependencies = archiveConfiguration.allDependencies()
+            const archiveName = archiveConfiguration.name
 
             StatusLog
               .initialize()
@@ -38,14 +35,14 @@ module.exports = {
                   .then(() => done())
               })
               .then(() => {
-                const resolutions = DependencyLog.resolutions(vaultConfiguration.resolutions)
+                const resolutions = DependencyLog.resolutions(archiveConfiguration.resolutions)
 
-                vaultConfiguration.applyResolutions(resolutions)
+                archiveConfiguration.applyResolutions(resolutions)
                 return installArchivesAction(resolutions)
               })
               .then(() => {
                 if (args.options['save-dev'] || args.options['save']) {
-                  vaultConfiguration.saveLocal()
+                  archiveConfiguration.saveLocal()
                 }
               })
               .then(() => {

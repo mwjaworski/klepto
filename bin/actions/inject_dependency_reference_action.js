@@ -1,16 +1,20 @@
+const ManifestConfiguration = require('../configurations/manifest')
 const ReferenceParser = require(`../parsers/reference_parser`)
 const _ = require('lodash')
 
-const injectDependencyReferenceAction = (dependencies, reference, alternateName) => {
+const injectDependencyReferenceAction = (reference, options) => {
   return new Promise((resolve, reject) => {
+    const archiveConfiguration = (!reference) ? ManifestConfiguration.build(`./`) : ManifestConfiguration.build().initializeLocal()
+    const activeDependency = (options['save-dev']) ? archiveConfiguration.devDependencies() : archiveConfiguration.dependencies()
+
     if (reference) {
-      const { installedName } = ReferenceParser.referenceToArchiveRequest(reference, alternateName)
+      const { installedName } = ReferenceParser.referenceToArchiveRequest(reference, options.rename)
 
       // TODO find a way to normalize this version?! bower wants a # (have to match this against the system type)
-      dependencies[installedName] = `${reference}`.replace(`@`, `#`)
+      activeDependency[installedName] = `${reference}`.replace(`@`, `#`)
     }
 
-    resolve(dependencies)
+    resolve(archiveConfiguration)
   })
 }
 

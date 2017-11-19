@@ -14,12 +14,8 @@ module.exports = {
         return true
       })
       .action(function (args, done) {
-        const vaultConfiguration = ManifestConfiguration.build(`./`)
-        const singleConfiguration = ManifestConfiguration.build().initializeLocal()
-        const archiveConfiguration = (!args.reference) ? vaultConfiguration : singleConfiguration
-
-        injectDependencyReferenceAction(archiveConfiguration.dependencies(), args.reference, args.options.rename)
-          .then((activeDependencies) => {
+        injectDependencyReferenceAction(args.reference, args.options)
+          .then((archiveConfiguration) => {
             const archiveDependencies = archiveConfiguration.allDependencies()
             const archiveName = archiveConfiguration.name
 
