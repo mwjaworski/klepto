@@ -1,8 +1,8 @@
 module.exports = {
   registerVorpalCommand: (vorpal, applicationConfiguration) => {
     return vorpal
-      .command(`publish`)
-      .description(`Bundle, then upload`)
+      .command(`upload`)
+      .description(`Export release to host`)
       .validate(function (args) {
         return true
       })

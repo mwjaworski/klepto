@@ -29,7 +29,7 @@ const downloadArchiveAction = (reference, installPath = undefined) => {
 
             StatusLog.notify(`stage ${archiveRequest.uri}`, archiveRequest.uuid)
             return PackageTool
-              .sendToStaging(archiveRequest)
+              .unpack(archiveRequest)
           })
           .then(() => resourceRequest)
     })

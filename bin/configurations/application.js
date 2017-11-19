@@ -5,6 +5,8 @@ const os = require('os')
 
 class ApplicationConfiguration {
   constructor () {
+    // TODO make this search from process.cwd upwards until we hit root
+    // NOTE keep the home directory and do a uniq, just in case
     this.__paths = {
       application: `configuration/application.json`,
       global: `${os.homedir()}/.vaultrc`,

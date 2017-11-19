@@ -3,6 +3,7 @@
 
   },
   "paths": {
+    "release": ".vault/release",
     "staging": ".vault/staging",
     "cache": ".vault/cache",
     "archive": "./vault"

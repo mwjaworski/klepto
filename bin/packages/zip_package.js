@@ -3,7 +3,12 @@ const JSZip = require('jszip')
 const fs = require('fs-extra')
 
 class ZipPackage {
-  static sendToStaging (archiveRequest, cachePath) {
+  static pack (archiveRequest, cachePath) {
+    return new Promise((resolve, reject) => {
+      reject(new Error('not implemented'))
+    })
+  }
+  static unpack (archiveRequest, cachePath) {
     return FileSystem
       .read(archiveRequest.cachePath)
       .then((binaryData) => {
