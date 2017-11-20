@@ -17,5 +17,8 @@
     "core-sass-brand": "2.4.0",
     "core-sass-brand-v3": "3.1.0"
   },
-  "ignore": []
+  "ignore": [
+    "node_modules",
+    "bower_components"
+  ]
 }

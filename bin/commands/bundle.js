@@ -18,10 +18,15 @@ module.exports = {
         const manifestConfiguration = ManifestConfiguration.build(`./`).initializeLocal()
         const { name, version } = manifestConfiguration
         const bundleAs = args.options.rename || `${name}`
+        const includeFiles = args.files || [`./`]
+
+        console.dir(manifestConfiguration)
 
         // does not matter, but we might write the reference in to the manifest
         manifestConfiguration.uri = args.reference = args.reference || manifestConfiguration.uri || `${bundleAs}`
-        manifestConfiguration.files = manifestConfiguration.files || args.files || [`./`]
+        manifestConfiguration.files = (manifestConfiguration.files.length > 0)
+          ? manifestConfiguration.files
+          : includeFiles
 
         // TODO add the files to include in the bundle in the archivePackage strcuture
 

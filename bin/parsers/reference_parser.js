@@ -120,14 +120,17 @@ class ReferenceParser {
     const versionFolder = crypto.createHash(`md5`).update(version).digest(`hex`)
 
     const uri = manifestConfiguration.uri
+    const files = manifestConfiguration.files
     const releasePath = `${release}/${archive}__${version}`
     const uuid = `${archive}${versionMarker}${version}`
 
     return {
+      ignore: manifestConfiguration.ignore(),
       releasePath,
       archive,
       version,
       scope,
+      files,
       uuid,
       uri
     }

@@ -1,16 +1,16 @@
+const FileSystem = require('../support/file_system')
 const fs = require('fs-extra')
 
 class FolderPackage {
-  static pack (archiveRequest, cachePath) {
+  static pack (resourcePackage) {
     return new Promise((resolve, reject) => {
-      reject(new Error('not implemented'))
-      // fs.copy(cachePath, stagingPath, err => {
-      //   if (err) {
-      //     reject(new Error(err))
-      //   } else {
-      //     resolve({})
-      //   }
-      // })
+
+      // TODO copy the files
+      resolve(FileSystem.copyNonIgnoredFiles(
+        resourcePackage.files,
+        resourcePackage.releasePath,
+        resourcePackage.ignore
+      ))
     })
   }
   static unpack ({ cachePath, stagingPath }) {
