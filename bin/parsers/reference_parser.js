@@ -25,15 +25,15 @@ class ReferenceParser {
    * @param {*} reference
    * @param {*} overrideUniqueName
    */
-  static referenceToArchivePackage (archiveName, manifestConfiguration) {
-    const reference = manifestConfiguration.uri
+  static referenceToArchivePackage (manifestConfiguration) {
+    const reference = manifestConfiguration.releaseReference
     const scopeOrReference = this.normalizeReference(reference)
     const {
       resource,
       scope
     } = this.__scopeToResource(scopeOrReference)
 
-    return this.__resourceToArchivePackage(archiveName, manifestConfiguration, resource, scope)
+    return this.__resourceToArchivePackage(manifestConfiguration, resource, scope)
   }
 
   static referenceToArchiveRequest (reference, overrideUniqueName = undefined) {
@@ -107,30 +107,28 @@ class ReferenceParser {
    *
    * @param {*} resource
    */
-  static __resourceToArchivePackage (archiveName, manifestConfiguration, resource, scope) {
+  static __resourceToArchivePackage (manifestConfiguration, resource, scope) {
     const versionMarker = _.first(applicationConfiguration.get(`rules.patternMarkers.version`))
     const {
       release
     } = applicationConfiguration.get(`paths`)
 
-    const [_uri, _0] = this.splitURIVersion(resource)
-    const [archive, _1] = this.splitArchiveExtension(_uri)
-
+    const archive = manifestConfiguration.name
     const version = manifestConfiguration.version
     const versionFolder = crypto.createHash(`md5`).update(version).digest(`hex`)
 
-    const uri = manifestConfiguration.uri
-    const files = manifestConfiguration.files
-    const releasePath = `${release}/${archive}__${version}`
+    const releaseFolder = manifestConfiguration.releaseFolder
+    const releaseStaging = `${release}/${archive}__${version}`
+    const uri = manifestConfiguration.releaseReference
+
     const uuid = `${archive}${versionMarker}${version}`
 
     return {
-      ignore: manifestConfiguration.ignore(),
-      releasePath,
+      releaseStaging,
+      releaseFolder,
       archive,
       version,
       scope,
-      files,
       uuid,
       uri
     }

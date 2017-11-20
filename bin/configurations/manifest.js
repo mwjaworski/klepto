@@ -76,11 +76,9 @@ class ManifestConfiguration {
     return {
       name: '',
       version: '',
-      uri: '',
       dependencies: {},
       devDependencies: {},
       resolutions: {},
-      files: [],
       ignore: []
     }
   }
@@ -90,8 +88,21 @@ class ManifestConfiguration {
 
     this.__manifest.name = this.__manifest.name || _.last(process.cwd().split(path.sep))
     this.__manifest.version = this.__manifest.version || `0.1.0`
-    this.__manifest.uri = this.__manifest.uri || ``
     return this
+  }
+
+  /**
+   *
+   */
+  initializeLocalRelease() {
+    this.initializeLocal()
+
+    this.__manifest.release = {
+      folder: this.releaseFolder,
+      ref: this.releaseReference
+    }
+
+    return this;
   }
 
   saveLocal () {
@@ -107,20 +118,20 @@ class ManifestConfiguration {
     return this.__system
   }
 
-  set files (_files) {
-    this.__setSafeProp(`files`, _files, [])
+  set releaseFolder (_folder) {
+    this.__setSafeProp(`release.folder`, _folder, './')
   }
 
-  get files () {
-    return this.__getSafeProp(`files`, [])
+  get releaseFolder () {
+    return this.__getSafeProp(`release.folder`, './')
   }
 
-  set uri (_uri) {
-    this.__setSafeProp(`uri`, _uri, ``)
+  set releaseReference (_ref) {
+    this.__setSafeProp(`release.ref`, _ref, `-`)
   }
 
-  get uri () {
-    return this.__getSafeProp(`uri`, ``)
+  get releaseReference () {
+    return this.__getSafeProp(`release.ref`, `-`)
   }
 
   set name (_name) {
@@ -160,11 +171,11 @@ class ManifestConfiguration {
   }
 
   __setSafeProp (property, val, defaultValue) {
-    this.__manifest[property] = (is.sameType(val, defaultValue)) ? val : defaultValue
+    _.set(this.__manifest, property, (is.sameType(val, defaultValue)) ? val : defaultValue)
   }
 
   __getSafeProp (property, defaultValue) {
-    const val = this.__manifest[property]
+    const val = _.get(this.__manifest, property)
 
     return (is.sameType(val, defaultValue)) ? val : defaultValue
   }

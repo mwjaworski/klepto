@@ -4,9 +4,9 @@ const TransitFacade = require(`../facades/transit_facade`)
 const StatusLog = require('../support/status_log')
 const _ = require('lodash')
 
-const createResourcePackageAction = (archiveName, manifestConfiguration) => {
+const createResourcePackageAction = (manifestConfiguration) => {
   return new Promise((resolve, reject) => {
-    const archiveBundle = ReferenceParser.referenceToArchivePackage(archiveName, manifestConfiguration)
+    const archiveBundle = ReferenceParser.referenceToArchivePackage(manifestConfiguration)
     const PackageTool = PackageFacade.of(archiveBundle)
     const TransitTool = TransitFacade.of(archiveBundle)
 
@@ -14,9 +14,6 @@ const createResourcePackageAction = (archiveName, manifestConfiguration) => {
       packageTool: PackageTool.name,
       transitTool: TransitTool.name
     }))
-
-    console.dir(archiveBundle)
-    console.log(PackageTool.name, TransitTool.name)
 
     resolve({
       archiveBundle,
