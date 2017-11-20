@@ -19,15 +19,31 @@ const Discover = {
  * "uri#version" ===> { url, version }
  */
 class ReferenceParser {
+
+  /**
+   * duplicate of `referenceToArchiveRequest`
+   * @param {*} reference
+   * @param {*} overrideUniqueName
+   */
+  static referenceToArchivePackage (archiveName, manifestConfiguration) {
+    const reference = manifestConfiguration.uri
+    const scopeOrReference = this.normalizeReference(reference)
+    const {
+      resource,
+      scope
+    } = this.__scopeToResource(scopeOrReference)
+
+    return this.__resourceToArchivePackage(archiveName, manifestConfiguration, resource, scope)
+  }
+
   static referenceToArchiveRequest (reference, overrideUniqueName = undefined) {
     const scopeOrReference = this.normalizeReference(reference)
     const {
       resource,
       scope
     } = this.__scopeToResource(scopeOrReference)
-    const archiveRequest = this.__resourceToArchiveRequest(resource, scope, overrideUniqueName)
 
-    return archiveRequest
+    return this.__resourceToArchiveRequest(resource, scope, overrideUniqueName)
   }
 
   /**
@@ -84,6 +100,36 @@ class ReferenceParser {
       resource: _.template(pull_uri)(_.merge({}, templateVariables, constants, {
         version
       }))
+    }
+  }
+
+  /**
+   *
+   * @param {*} resource
+   */
+  static __resourceToArchivePackage (archiveName, manifestConfiguration, resource, scope) {
+    const versionMarker = _.first(applicationConfiguration.get(`rules.patternMarkers.version`))
+    const {
+      release
+    } = applicationConfiguration.get(`paths`)
+
+    const [_uri, _0] = this.splitURIVersion(resource)
+    const [archive, _1] = this.splitArchiveExtension(_uri)
+
+    const version = manifestConfiguration.version
+    const versionFolder = crypto.createHash(`md5`).update(version).digest(`hex`)
+
+    const uri = manifestConfiguration.uri
+    const releasePath = `${release}/${archive}__${version}`
+    const uuid = `${archive}${versionMarker}${version}`
+
+    return {
+      releasePath,
+      archive,
+      version,
+      scope,
+      uuid,
+      uri
     }
   }
 

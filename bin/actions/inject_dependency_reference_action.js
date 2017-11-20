@@ -4,8 +4,8 @@ const _ = require('lodash')
 
 const injectDependencyReferenceAction = (reference, options) => {
   return new Promise((resolve, reject) => {
-    const archiveConfiguration = (!reference) ? ManifestConfiguration.build(`./`) : ManifestConfiguration.build().initializeLocal()
-    const activeDependency = (options['save-dev']) ? archiveConfiguration.devDependencies() : archiveConfiguration.dependencies()
+    const manifestConfiguration = (!reference) ? ManifestConfiguration.build(`./`) : ManifestConfiguration.build().initializeLocal()
+    const activeDependency = (options['save-dev']) ? manifestConfiguration.devDependencies() : manifestConfiguration.dependencies()
 
     if (reference) {
       const { installedName } = ReferenceParser.referenceToArchiveRequest(reference, options.rename)
@@ -14,7 +14,7 @@ const injectDependencyReferenceAction = (reference, options) => {
       activeDependency[installedName] = `${reference}`.replace(`@`, `#`)
     }
 
-    resolve(archiveConfiguration)
+    resolve(manifestConfiguration)
   })
 }
 

@@ -76,9 +76,11 @@ class ManifestConfiguration {
     return {
       name: '',
       version: '',
+      uri: '',
       dependencies: {},
       devDependencies: {},
       resolutions: {},
+      files: [],
       ignore: []
     }
   }
@@ -88,6 +90,7 @@ class ManifestConfiguration {
 
     this.__manifest.name = this.__manifest.name || _.last(process.cwd().split(path.sep))
     this.__manifest.version = this.__manifest.version || `0.1.0`
+    this.__manifest.uri = this.__manifest.uri || ``
     return this
   }
 
@@ -104,8 +107,24 @@ class ManifestConfiguration {
     return this.__system
   }
 
-  set name (name) {
-    this.__setSafeProp(`name`, name, ``)
+  set files (_files) {
+    this.__setSafeProp(`files`, _files, [])
+  }
+
+  get files () {
+    return this.__getSafeProp(`files`, [])
+  }
+
+  set uri (_uri) {
+    this.__setSafeProp(`uri`, _uri, ``)
+  }
+
+  get uri () {
+    return this.__getSafeProp(`uri`, ``)
+  }
+
+  set name (_name) {
+    this.__setSafeProp(`name`, _name, ``)
   }
 
   get name () {
