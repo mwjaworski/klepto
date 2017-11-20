@@ -31,7 +31,7 @@ class ReferenceParser {
     const {
       resource,
       scope
-    } = this.__scopeToResource(scopeOrReference)
+    } = this.__scopeToResource(scopeOrReference, `push_uri`)
 
     return this.__resourceToArchivePackage(manifestConfiguration, resource, scope)
   }
@@ -41,7 +41,7 @@ class ReferenceParser {
     const {
       resource,
       scope
-    } = this.__scopeToResource(scopeOrReference)
+    } = this.__scopeToResource(scopeOrReference, `pull_uri`)
 
     return this.__resourceToArchiveRequest(resource, scope, overrideUniqueName)
   }
@@ -74,8 +74,9 @@ class ReferenceParser {
   /**
    *
    * @param {*} scopeOrReference
+   * @param {String} operationType either `push_uri` or `pull_uri`
    */
-  static __scopeToResource (scopeOrReference) {
+  static __scopeToResource (scopeOrReference, operationType) {
     const patternMarkers = applicationConfiguration.get(`rules.patternMarkers`)
     const [uri, version = `*`] = this.splitURIVersion(scopeOrReference)
     const uriAspects = uri.split(patternMarkers.separator)
@@ -90,14 +91,13 @@ class ReferenceParser {
 
     const {
       pattern,
-      pull_uri, // OR push_uri if operation is publish
       constants
     } = scope
     const templateVariables = _.zipObject(pattern.split(patternMarkers.separator), uriAspects)
 
     return {
       scope,
-      resource: _.template(pull_uri)(_.merge({}, templateVariables, constants, {
+      resource: _.template(scope[operationType])(_.merge({}, templateVariables, constants, {
         version
       }))
     }

@@ -4,7 +4,7 @@ const tar = require('tar')
 class TarPackage {
   static pack (archiveBundle, manifestConfiguration) {
     return new Promise((resolve, reject) => {
-      reject(new Error('not implemented (tar)'))
+      reject(new Error('tar not implemented yet, use zip'))
     })
   }
   static unpack ({ cachePath, stagingPath }) {

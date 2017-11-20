@@ -6,7 +6,7 @@ const _ = require('lodash')
 
 class ZipPackage {
   static pack(archiveBundle, manifestConfiguration) {
-    return this.__packZip(FileSystem.flattenFolder(archiveBundle.releaseFolder))
+    return this.__packZip(archiveBundle, FileSystem.flattenFolder(archiveBundle.releaseFolder))
       .generateAsync({
         compression: 'deflate',
         type: 'nodebuffer',
@@ -16,7 +16,7 @@ class ZipPackage {
         FileSystem.write(`${archiveBundle.releaseStaging}.zip`, content)
       })
   }
-  static __packZip(fileList) {
+  static __packZip(archiveBundle, fileList) {
     const zip = new JSZip();
 
     fileList.forEach(filePath => {
@@ -46,13 +46,9 @@ class ZipPackage {
           }
       }
 
-      // const includeFile = folders.reduce((_zip, folder) => {
-      //   console.log(folder)
-      //   return _zip.folder(folder)
-      // }, zip)
-
+      // TODO figure out how we allow this to be configured...
       zip.file(
-        filePath,
+        `${archiveBundle.archive}${path.sep}${archiveBundle.version}${path.sep}${filePath}`,
         fs.readFileSync(filePath, readFileOptions),
         addZipOptions
       );
