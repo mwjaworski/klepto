@@ -26,6 +26,25 @@ class FileSystem {
     })
   }
 
+  static flattenFolder(folder) {
+    return this.__flattenFolder(folder, [])
+  }
+  static __flattenFolder(folder, allFiles) {
+    fs.readdirSync(folder).forEach(file => {
+      const filePath = path.join(folder, file)
+      const isDir = fs.statSync(filePath).isDirectory()
+
+      if (isDir) {
+        return this.__flattenFolder(filePath, allFiles)
+      }
+      else {
+        allFiles.push(filePath)
+      }
+    })
+
+    return allFiles
+  }
+
   /**
    *
    * @param {*} directoryPath

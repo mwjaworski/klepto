@@ -94,12 +94,12 @@ class ManifestConfiguration {
   /**
    *
    */
-  initializeLocalRelease() {
+  initializeLocalRelease({ releaseFolder, releaseReference }) {
     this.initializeLocal()
 
     this.__manifest.release = {
-      folder: this.releaseFolder,
-      ref: this.releaseReference
+      folder: releaseFolder || manifestConfiguration.releaseFolder,
+      ref: releaseReference
     }
 
     return this;

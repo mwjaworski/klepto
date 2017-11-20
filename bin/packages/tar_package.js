@@ -2,9 +2,9 @@ const FileSystem = require('../support/file_system')
 const tar = require('tar')
 
 class TarPackage {
-  static pack (archiveRequest, cachePath) {
+  static pack (archiveBundle, manifestConfiguration) {
     return new Promise((resolve, reject) => {
-      reject(new Error('not implemented'))
+      reject(new Error('not implemented (tar)'))
     })
   }
   static unpack ({ cachePath, stagingPath }) {

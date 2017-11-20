@@ -14,32 +14,17 @@ module.exports = {
         return true
       })
       .action(function (args, done) {
+        const manifestConfiguration = ManifestConfiguration.build(`./`).initializeLocalRelease({
+          releaseFolder: args['release_folder'],
+          releaseReference: args.reference
+        })
 
-        // requires reference
-        // ... if `-` then we look for { release: { ref: '' } }
-        // ... if no release_folder we look in { release: { folder: '' } }
-
-        const manifestConfiguration = ManifestConfiguration.build(`./`).initializeLocalRelease()
-
-        // TODO figure out how to mix-match reference and path (we want to specify path as release/ but leave reference alone)
-
-        // does not matter, but we might write the reference in to the manifest
-        manifestConfiguration.releaseFolder = args['release_folder'] || manifestConfiguration.releaseFolder
         manifestConfiguration.name = args.options.rename || manifestConfiguration.name
-        manifestConfiguration.releaseReference = args.reference
-
-        // TODO add the files to include in the bundle in the archivePackage strcuture
 
         StatusLog
           .initialize()
           // .start()
 
-        // default path to `./`
-        // package folder
-        // place in release/component__version
-        // manifest should derive from the current project
-
-        // console.warn(`not implemented`)
         bundleArchiveAction(manifestConfiguration)
           .catch(err => {
             StatusLog
