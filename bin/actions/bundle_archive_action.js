@@ -1,17 +1,17 @@
-const createResourcePackageAction = require('./create_resource_package_action')
+const createResourceBundleAction = require('./create_resource_bundle_action')
 const applicationConfiguration = require('../configurations/application')
 const StatusLog = require('../support/status_log')
 
-const bundleArchiveAction = (archiveName, manifestConfiguration) => {
-  return createResourcePackageAction(archiveName, manifestConfiguration)
+const bundleArchiveAction = (archiveName, bundleFolder, manifestConfiguration) => {
+  return createResourceBundleAction(archiveName, manifestConfiguration)
     .then((resourcePackage) => {
       const paths = applicationConfiguration.get(`paths`)
-      const { archiveRequest, PackageTool, TransitTool } = resourcePackage
+      const { archiveBundle, PackageTool, TransitTool } = resourcePackage
 
-      StatusLog.notify(`bundle ${archiveRequest.uri}`, archiveRequest.uuid)
+      StatusLog.notify(`bundle ${archiveBundle.uri}`, archiveBundle.uuid)
       return PackageTool
-        .pack(archiveRequest)
-        .then(() => archiveRequest)
+        .pack(archiveBundle, bundleFolder)
+        .then(() => archiveBundle)
     })
 }
 

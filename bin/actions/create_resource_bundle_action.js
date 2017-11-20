@@ -6,20 +6,20 @@ const _ = require('lodash')
 
 const createResourcePackageAction = (archiveName, manifestConfiguration) => {
   return new Promise((resolve, reject) => {
-    const resourcePackage = ReferenceParser.referenceToArchivePackage(archiveName, manifestConfiguration)
-    const PackageTool = PackageFacade.of(resourcePackage)
-    const TransitTool = TransitFacade.of(resourcePackage)
+    const archiveBundle = ReferenceParser.referenceToArchivePackage(archiveName, manifestConfiguration)
+    const PackageTool = PackageFacade.of(archiveBundle)
+    const TransitTool = TransitFacade.of(archiveBundle)
 
-    StatusLog.notify(`resource ${resourcePackage.uri}`, resourcePackage.uuid, _.merge({}, resourcePackage, {
+    StatusLog.notify(`resource ${archiveBundle.uri}`, archiveBundle.uuid, _.merge({}, archiveBundle, {
       packageTool: PackageTool.name,
       transitTool: TransitTool.name
     }))
 
-    console.dir(resourcePackage)
+    console.dir(archiveBundle)
     console.log(PackageTool.name, TransitTool.name)
 
     resolve({
-      resourcePackage,
+      archiveBundle,
       PackageTool,
       TransitTool
     })

@@ -2,12 +2,12 @@ const FileSystem = require('../support/file_system')
 const fs = require('fs-extra')
 
 class FolderPackage {
-  static pack (resourcePackage) {
+  static pack (resourcePackage, bundleFolder) {
     return new Promise((resolve, reject) => {
 
       // TODO copy the files
       resolve(FileSystem.copyNonIgnoredFiles(
-        resourcePackage.files,
+        bundleFolder,
         resourcePackage.releasePath,
         resourcePackage.ignore
       ))
