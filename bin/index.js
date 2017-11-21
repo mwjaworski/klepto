@@ -12,7 +12,6 @@ const augmentCommand = (vorpalCommand) => {
 //
 //
 [
-  `bundle`,
   `clean`,
   `configure`,
   `download`,
@@ -21,7 +20,6 @@ const augmentCommand = (vorpalCommand) => {
   `publish`,
   `status`,
   `uninstall`,
-  `upload`,
   `version`
 ].forEach((command) => {
   augmentCommand(require(`./commands/${command}`).registerVorpalCommand(vorpal, applicationConfiguration))

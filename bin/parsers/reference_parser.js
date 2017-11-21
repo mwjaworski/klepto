@@ -19,7 +19,6 @@ const Discover = {
  * "uri#version" ===> { url, version }
  */
 class ReferenceParser {
-
   /**
    * duplicate of `referenceToArchiveRequest`
    * @param {*} reference
@@ -115,7 +114,6 @@ class ReferenceParser {
 
     const archive = manifestConfiguration.name
     const version = manifestConfiguration.version
-    const versionFolder = crypto.createHash(`md5`).update(version).digest(`hex`)
 
     const releaseFolder = manifestConfiguration.releaseFolder
     const releaseStaging = `${release}/${archive}__${version}`
@@ -124,6 +122,7 @@ class ReferenceParser {
     const uuid = `${archive}${versionMarker}${version}`
 
     return {
+      releaseAsset: '--set by package tool--',
       releaseStaging,
       releaseFolder,
       archive,

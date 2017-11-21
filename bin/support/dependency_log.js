@@ -69,7 +69,6 @@ class DependencyLog {
       // const highestRequested = 0
 
       // TODO what if this is still null?
-
     })
 
     // TODO if we have this version - great. if not, then we need to get a new version - which means download again...
@@ -85,10 +84,10 @@ class DependencyLog {
   }
 
   static __findExactVersions (conflicts) {
-    const IS_EXACT_VERSION = /[\d\.\-rc]+/g
+    const IS_EXACT_VERSION = /[\d.\-rc]+/g
 
     return _.uniq(_.flatten(_.filter(_.map(_.keys(conflicts), (version) => version.match(IS_EXACT_VERSION), (version) => {
-      return (doesMatch) ? _.size(_.first(doesMatch)) : false
+      return (version) ? _.size(_.first(version)) : false
     }))))
   }
 

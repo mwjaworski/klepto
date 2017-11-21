@@ -21,7 +21,7 @@ const downloadArchiveAction = (reference, installPath = undefined) => {
 
       StatusLog.notify(`cache ${archiveRequest.uri}`, archiveRequest.uuid)
       return TransitTool
-        .sendToCache(archiveRequest)
+        .pull(archiveRequest)
           .then(({ availableVersions }) => {
             DependencyLog.trackAvailableVersions(archiveRequest, availableVersions)
             FileSystem.removeDirectory(`${archiveRequest.stagingPath}`)

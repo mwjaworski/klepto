@@ -3,22 +3,32 @@ const tar = require('tar')
 
 class TarPackage {
   static pack (archiveBundle, manifestConfiguration) {
-    return new Promise((resolve, reject) => {
-      reject(new Error('tar not implemented yet, use zip'))
-    })
-  }
-  static unpack ({ cachePath, stagingPath }) {
-    return new Promise((resolve, reject) => {
-      tar.extract({
-        cwd: stagingPath,
-        file: FileSystem.readPath(cachePath),
-        preserveOwner: false,
-        unlink: true,
-        strip: 1
+    const releaseAsset = `${archiveBundle.releaseStaging}/${archiveBundle.archive}__${archiveBundle.version}.tar`
+
+    return tar.create({
+      gzip: false,
+      file: FileSystem.readPath(releaseAsset)
+    }, [archiveBundle.releaseFolder])
+      .then(() => {
+        return {
+          releaseAsset
+        }
       })
-      .then(() => resolve({}))
-      .catch((reason) => reject(reason))
+  }
+  static unpack ({
+    cachePath,
+    stagingPath
+  }) {
+    return tar.extract({
+      cwd: stagingPath,
+      file: FileSystem.readPath(cachePath),
+      preserveOwner: false,
+      unlink: true,
+      strip: 1
     })
+      .then(() => {
+        return {}
+      })
   }
 }
 

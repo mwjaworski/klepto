@@ -2,8 +2,6 @@ const injectDependencyReferenceAction = require('../actions/inject_dependency_re
 const downloadArchivesAction = require('../actions/download_archives_action')
 const installArchivesAction = require('../actions/install_archives_action')
 
-const ManifestConfiguration = require('../configurations/manifest')
-const ReferenceParser = require('../parsers/reference_parser')
 const DependencyLog = require('../support/dependency_log')
 const StatusLog = require('../support/status_log')
 

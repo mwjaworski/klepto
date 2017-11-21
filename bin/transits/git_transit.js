@@ -6,7 +6,12 @@ const _ = require('lodash')
 const os = require('os')
 
 class GitTransit {
-  static sendToCache (archiveRequest) {
+  static push (archiveRequest) {
+    return new Promise((resolve, reject) => {
+      reject(new Error('not implemented transit push (git)'))
+    })
+  }
+  static pull (archiveRequest) {
     return new Promise((resolve, reject) => {
       const { version, cachePath } = archiveRequest
       const isVersionRange = VersionServant.isVersionRange(version)

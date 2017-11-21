@@ -1,7 +1,6 @@
 const injectDependencyReferenceAction = require('../actions/inject_dependency_reference_action')
 const downloadArchivesAction = require('../actions/download_archives_action')
 
-const ManifestConfiguration = require('../configurations/manifest')
 const StatusLog = require('../support/status_log')
 
 module.exports = {

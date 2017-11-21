@@ -1,8 +1,13 @@
 
 class NullTransit {
-  static sendToCache () {
+  static push (archiveRequest) {
     return new Promise((resolve, reject) => {
-      reject(new Error(`no matching Transit service`))
+      reject(new Error('no matching transit service to push archive'))
+    })
+  }
+  static pull () {
+    return new Promise((resolve, reject) => {
+      reject(new Error(`no matching transit service to pull archive`))
     })
   }
 }

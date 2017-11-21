@@ -5,7 +5,12 @@ const axios = require('axios')
  * currently only retrieves the version requested, cannot handle version ranges.
  */
 class HTTPTransit {
-  static sendToCache ({ uri, installedVersion, cachePath }) {
+  static push (archiveRequest) {
+    return new Promise((resolve, reject) => {
+      reject(new Error('not implemented transit push (http)'))
+    })
+  }
+  static pull ({ uri, installedVersion, cachePath }) {
     return axios({
       responseType: `arraybuffer`,
       maxContentLength: 99999999,

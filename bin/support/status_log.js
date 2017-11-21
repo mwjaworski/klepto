@@ -99,7 +99,7 @@ class StatusLog {
   static uninitialize () {
     this.__logger = undefined
     this.__stream = undefined
-    this.__refreshRate = 128
+    this.__refreshRate = 64
     this.__frame = 0
     this.__errors = []
     this.__action = ''
@@ -138,7 +138,7 @@ class StatusLog {
     })
   }
 
-  static __writeErrors() {
+  static __writeErrors () {
     const errors = _.reduce(this.__errors, (content, reason, index) => {
       return `${content}${index + 1}. ${Colors.gray(reason)}\n`
     }, ``)

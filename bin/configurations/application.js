@@ -33,7 +33,7 @@ class ApplicationConfiguration {
     return this
   }
 
-  saveGlobalFile (setting) {
+  saveGlobalFile (settings) {
     return this.saveFile(`global`, settings)
   }
 
@@ -41,7 +41,7 @@ class ApplicationConfiguration {
     return this.saveFile(`local`, settings)
   }
 
-  saveFile(type, settings) {
+  saveFile (type, settings) {
     const filename = this.__paths[type]
     const configurationContent = this.__getFile(filename)
 

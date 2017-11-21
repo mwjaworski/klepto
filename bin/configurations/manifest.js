@@ -31,7 +31,6 @@ class ManifestConfiguration {
   }
 
   __locatePrioritizedManifest (archivePath, configurationSystemList = applicationConfiguration.get(`rules.configurationSystem`)) {
-
     if (!archivePath) {
       return this.__emptyManifest()
     }
@@ -53,7 +52,7 @@ class ManifestConfiguration {
     return this.__emptyManifest()
   }
 
-  __emptyManifest() {
+  __emptyManifest () {
     const configurationSystemList = applicationConfiguration.get(`rules.configurationSystem`)
 
     return {
@@ -94,15 +93,15 @@ class ManifestConfiguration {
   /**
    *
    */
-  initializeLocalRelease({ releaseFolder, releaseReference }) {
+  initializeLocalRelease ({ releaseFolder, releaseReference }) {
     this.initializeLocal()
 
     this.__manifest.release = {
-      folder: releaseFolder || manifestConfiguration.releaseFolder,
-      ref: releaseReference
+      ref: releaseReference || this.releaseReference,
+      folder: releaseFolder || this.releaseFolder
     }
 
-    return this;
+    return this
   }
 
   saveLocal () {
@@ -146,7 +145,7 @@ class ManifestConfiguration {
     return this.__getSafeProp(`version`, ``)
   }
 
-  allDependencies() {
+  allDependencies () {
     return _.merge({}, this.dependencies(), this.devDependencies())
   }
 
@@ -154,7 +153,7 @@ class ManifestConfiguration {
     return this.__getSafeProp(`dependencies`, {})
   }
 
-  applyResolutions(_resolutions) {
+  applyResolutions (_resolutions) {
     this.__setSafeProp(`resolutions`, _.mapValues(_resolutions, `installedVersion`), this.resolutions())
   }
 

@@ -5,7 +5,9 @@ const path = require('path')
 const _ = require('lodash')
 
 class ZipPackage {
-  static pack(archiveBundle, manifestConfiguration) {
+  static pack (archiveBundle, manifestConfiguration) {
+    const releaseAsset = `${archiveBundle.releaseStaging}/${archiveBundle.archive}__${archiveBundle.version}.zip`
+
     return this.__packZip(archiveBundle, FileSystem.flattenFolder(archiveBundle.releaseFolder))
       .generateAsync({
         compression: 'deflate',
@@ -13,15 +15,18 @@ class ZipPackage {
         platform: 'UNIX'
       })
       .then((content) => {
-        FileSystem.write(`${archiveBundle.releaseStaging}.zip`, content)
+        FileSystem.write(releaseAsset, content)
+        return {
+          releaseAsset
+        }
       })
   }
-  static __packZip(archiveBundle, fileList) {
-    const zip = new JSZip();
+  static __packZip (archiveBundle, fileList) {
+    const zip = new JSZip()
 
     fileList.forEach(filePath => {
       const aspects = filePath.split(path.sep)
-      const [file, extension] = _.last(aspects).split(`.`)
+      const [, extension] = _.last(aspects).split(`.`)
 
       let addZipOptions
       let readFileOptions
@@ -36,7 +41,7 @@ class ZipPackage {
           readFileOptions = {
             encoding: 'base64'
           }
-          break;
+          break
         default:
           addZipOptions = {
             base64: false
@@ -51,20 +56,20 @@ class ZipPackage {
         `${archiveBundle.archive}${path.sep}${archiveBundle.version}${path.sep}${filePath}`,
         fs.readFileSync(filePath, readFileOptions),
         addZipOptions
-      );
+      )
     })
 
     return zip
   }
 
-  static unpack(archiveRequest, cachePath) {
+  static unpack (archiveRequest, cachePath) {
     return FileSystem
       .read(archiveRequest.cachePath)
       .then((binaryData) => {
         return this.__unpackZip(binaryData, archiveRequest)
       })
   }
-  static __unpackZip(binaryData, {
+  static __unpackZip (binaryData, {
     stagingPath,
     archive
   }, msg) {

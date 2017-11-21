@@ -1,12 +1,12 @@
-const applicationConfiguration = require('../configurations/application')
-const DependencyLog = require('../support/dependency_log')
-const FileSystem = require('../support/file_system')
 const StatusLog = require('../support/status_log')
 
-const uploadArchiveAction = (reference, installPath = undefined) => {
-  return new Promise((resolve, reject) => {
-    reject(new Error(`not implemented`))
-  })
+const uploadArchiveAction = (resourceBundle, manifestConfiguration) => {
+  const { archiveBundle, TransitTool } = resourceBundle
+
+  StatusLog.notify(`upload ${archiveBundle.uri}`, archiveBundle.uuid)
+  return TransitTool
+    .push(archiveBundle, manifestConfiguration)
+    .then(() => resourceBundle)
 }
 
 module.exports = uploadArchiveAction
