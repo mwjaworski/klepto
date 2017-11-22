@@ -124,17 +124,24 @@ class ReferenceParser {
     const archive = manifestConfiguration.name
     const version = manifestConfiguration.version
 
+    const sources = applicationConfiguration.get('sources')
+    const sourceScope = sources[scope.reference] || {}
+
+    manifestConfiguration.initializeLocalRelease({
+      releaseFolder: manifestConfiguration.releaseFolder || _.get(sourceScope, 'push.subfolder', `./`)
+    })
+
     const releaseFolder = manifestConfiguration.releaseFolder
     const releaseStaging = `${release}/${archive}__${version}`
-    const uri = resource
-
     const uuid = `${archive}${versionMarker}${version}`
+    const uri = resource
 
     return {
       // TODO turn this to null and stop process if it stays as null
       releaseAsset: '--set by package tool--',
       releaseStaging,
       releaseFolder,
+      sourceScope,
       archive,
       version,
       scope,

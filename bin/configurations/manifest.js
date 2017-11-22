@@ -118,11 +118,11 @@ class ManifestConfiguration {
   }
 
   set releaseFolder (_folder) {
-    this.__setSafeProp(`release.folder`, _folder, './')
+    this.__setSafeProp(`release.folder`, _folder, '')
   }
 
   get releaseFolder () {
-    return this.__getSafeProp(`release.folder`, './')
+    return this.__getSafeProp(`release.folder`, '')
   }
 
   set releaseReference (_ref) {

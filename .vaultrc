@@ -33,7 +33,8 @@
         "subfolder": "release/es5/"
       },
       "push": {
-        "uri": "ftp://jaworskm@10.150.131.39:21/var/www/html/release/components/${component}"
+        "uri": "ftp://jaworskm@10.150.131.39:21/var/www/html/release/components/${component}",
+        "subfolder": "./bin/"
       },
       "authentication": {
         "key": "e607cd1bb68ac68230f6"

@@ -18,7 +18,7 @@ class FTPTransit {
       })
 
       ftp.on('ready', () => {
-        const sourceScope = this.__sourceScope(archiveBundle)
+        const sourceScope = archiveBundle.sourceScope
         let uploaded = pushFiles.length
 
         pushFiles.forEach((file) => {
@@ -52,7 +52,7 @@ class FTPTransit {
     })
   }
 
-  static __ftpInfo({ uri, scope }) {
+  static __ftpInfo({ uri, scope, scopeSource }) {
     const PARSE_FTP = /(ftp:\/\/)([a-z0-9A-Z]+?)@([.a-z0-9A-Z]+?):([0-9]+?)\/(.*)/
     const ftpURI = PARSE_FTP.exec(uri)
     console.dir(ftpURI)
@@ -65,18 +65,12 @@ class FTPTransit {
       password: ''
     }
 
-    const encryptedKey = _.get(this.__sourceScope({ scope }), `authentication.key`)
+    const encryptedKey = _.get(scopeSource, `authentication.key`)
 
     ftpInfo.password = SecurityServant.decrypt(encryptedKey)
     return ftpInfo
   }
 
-  static __sourceScope({ scope }) {
-    const sources = applicationConfiguration.get('sources')
-    const sourceScope = sources[scope.reference]
-
-    return sourceScope
-  }
 }
 
 module.exports = FTPTransit
