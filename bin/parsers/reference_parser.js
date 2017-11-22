@@ -30,7 +30,7 @@ class ReferenceParser {
     const {
       resource,
       scope
-    } = this.__scopeToResource(scopeOrReference, `push_uri`)
+    } = this.__scopeToResource(scopeOrReference, `push.uri`)
 
     return this.__resourceToArchivePackage(manifestConfiguration, resource, scope)
   }
@@ -40,7 +40,7 @@ class ReferenceParser {
     const {
       resource,
       scope
-    } = this.__scopeToResource(scopeOrReference, `pull_uri`)
+    } = this.__scopeToResource(scopeOrReference, `pull.uri`)
 
     return this.__resourceToArchiveRequest(resource, scope, overrideUniqueName)
   }
@@ -92,11 +92,20 @@ class ReferenceParser {
       pattern,
       constants
     } = scope
+
     const templateVariables = _.zipObject(pattern.split(patternMarkers.separator), uriAspects)
+    const template = _.get(scope, operationType)
+
+    if (!template) {
+      return {
+        resource: scopeOrReference,
+        scope: {}
+      }
+    }
 
     return {
       scope,
-      resource: _.template(scope[operationType])(_.merge({}, templateVariables, constants, {
+      resource: _.template(template)(_.merge({}, templateVariables, constants, {
         version
       }))
     }
@@ -117,11 +126,12 @@ class ReferenceParser {
 
     const releaseFolder = manifestConfiguration.releaseFolder
     const releaseStaging = `${release}/${archive}__${version}`
-    const uri = manifestConfiguration.releaseReference
+    const uri = resource
 
     const uuid = `${archive}${versionMarker}${version}`
 
     return {
+      // TODO turn this to null and stop process if it stays as null
       releaseAsset: '--set by package tool--',
       releaseStaging,
       releaseFolder,
@@ -188,9 +198,15 @@ class ReferenceParser {
     const sources = applicationConfiguration.get(`sources`)
     const scope = uriAspects[0] = (_.first(uriAspects) || '')
 
-    return _.find(sources, (_0, sourceKey) => {
+    const scopeObj = _.find(sources, (_0, sourceKey) => {
       return scope === sourceKey
     })
+
+    if (scopeObj) {
+      scopeObj.reference = scope
+    }
+
+    return scopeObj
   }
 }
 

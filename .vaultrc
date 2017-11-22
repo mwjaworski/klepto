@@ -2,26 +2,41 @@
   "sources": {
     "eabui": {
       "pattern": "source/component",
-      "pull_uri": "https://repo.advisory.com/scm/eabui/${component}.git#${version}",
-      "push_uri": "",
-      "installation": {
+      "pull": {
+        "uri": "https://repo.advisory.com/scm/eabui/${component}.git#${version}",
         "destination": "vault",
         "subfolder": ""
+      },
+      "push": {
+
       },
       "constants": {}
     },
     "universal-es6": {
       "pattern": "source/component",
-      "pull_uri": "http://phoenix.eab.com/release/components/${component}/${component}--${version}.zip",
-      "installation": {
+      "pull": {
+        "uri": "http://phoenix.eab.com/release/components/${component}/${component}--${version}.zip",
         "subfolder": "release/es6/"
       }
     },
     "universal-es5": {
       "pattern": "source/component",
-      "pull_uri": "http://phoenix.eab.com/release/components/${component}/${component}--${version}.zip",
-      "installation": {
+      "pull": {
+        "uri": "http://phoenix.eab.com/release/components/${component}/${component}--${version}.zip",
         "subfolder": "release/es5/"
+      }
+    },
+    "eabui-ftp": {
+      "pattern": "source/component",
+      "pull": {
+        "uri": "ftp://jaworskm@10.150.131.39:21/${component}",
+        "subfolder": "release/es5/"
+      },
+      "push": {
+        "uri": "ftp://jaworskm@10.150.131.39:21/${component}"
+      },
+      "authentication": {
+        "key": "e607cd1bb68ac68230f6"
       }
     }
   }
