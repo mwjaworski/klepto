@@ -9,30 +9,33 @@ module.exports = {
   registerVorpalCommand: (vorpal, applicationConfiguration) => {
     return vorpal
       .command(`publish [reference] [release_folder]`)
-      .option(`-r, --rename <name>`, `Rename the package`)
       .description(`Bundle, then upload`)
       .validate(function (args) {
-        args.reference = (args.reference === '--') ? '' : args.reference
         return true
       })
       .action(function (args, done) {
-        const manifestConfiguration = ManifestConfiguration.build(`./`).initializeLocalRelease({
+        const manifestConfiguration = ManifestConfiguration.build(`./`)
+
+        const autoAssetName = `${manifestConfiguration.name}__${manifestConfiguration.version}`
+        args.reference = (args.reference || `./`).replace(`--`, autoAssetName)
+
+        manifestConfiguration.initializeLocalRelease({
           releaseFolder: args['release_folder'],
           releaseReference: args.reference
         })
 
-        manifestConfiguration.name = args.options.rename || manifestConfiguration.name
-
         StatusLog
           .initialize()
-          .start()
+          // .start()
 
         createResourceBundleAction(manifestConfiguration)
           .then((resourcePackage) => {
             return bundleArchiveAction(resourcePackage, manifestConfiguration)
               .then(() => {
+                console.log(`bundleArchiveAction`)
                 return uploadArchiveAction(resourcePackage, manifestConfiguration)
                   .then(() => {
+                    console.log(`uploadArchiveAction`)
                     return StatusLog
                       .completeSuccess()
                       .then(() => done())

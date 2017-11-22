@@ -1,69 +1,81 @@
-// const OperatingSystem = require('../support/operating_system')
-// const VersionServant = require('../servants/version_servant')
-// const StatusLog = require('../support/status_log')
-// const fs = require('fs-extra')
-// const _ = require('lodash')
-// const os = require('os')
-
 const applicationConfiguration = require('../configurations/application')
 const SecurityServant = require('../servants/security_servant')
+const FileSystem = require('../support/file_system')
+const path = require('path')
+const _ = require('lodash')
 const FTP = require('ftp')
 
 class FTPTransit {
-  static push (archiveRequest) {
+  static push(archiveBundle) {
     return new Promise((resolve, reject) => {
-      const { uri } = archiveRequest
+      const pushFiles = FileSystem.flattenFolder(archiveBundle.releaseAsset)
+      const ftpInfo = this.__ftpInfo(archiveBundle)
+      const recursivelyCreate = true
+      const ftp = new FTP()
 
-      const PARSE_FTP = /(ftp:\/\/)([a-z0-9A-Z]+?)@([.a-z0-9A-Z]+?):([0-9]+?)\//
-      const ftpURI = PARSE_FTP.exec(uri)
-      const ftpInfo = {
-        host: ftpURI[3],
-        port: ftpURI[4],
-        user: ftpURI[2],
-        secure: false,
-        password: ''
-      }
-
-      // if it was on a key... (we need to carry that through?!)
-      // if it was not, then we need a password...
-
-      // console.dir(ftpInfo)
-      // console.dir(archiveRequest)
-      console.dir(archiveRequest.scope.reference)
-      // [archiveRequest.scope.reference]
-      const sources = applicationConfiguration.get('sources')
-      const scope = sources[archiveRequest.scope.reference]
-      const encryptedKey = scope.authentication.key
-
-      ftpInfo.password = SecurityServant.decrypt(encryptedKey)
-
-      console.dir(ftpInfo)
-      // console.log(SecurityServant.encrypt(`L)V#on3Now`))
-
-      // reject(new Error('pending implemented transit push (ftp)'))
-      // return
-
-      const ftp = new FTP();
+      ftp.on('error', (err) => {
+        return reject(new Error(err))
+      })
 
       ftp.on('ready', () => {
-        ftp.list((err, list) => {
-          if (err) {
-            throw err
-          }
+        const sourceScope = this.__sourceScope(archiveBundle)
+        let uploaded = pushFiles.length
 
-          console.dir(list)
-          ftp.end()
-          resolve()
+        pushFiles.forEach((file) => {
+          const aspects = file.split(path.sep)
+          const folder = _.initial(aspects).join(path.sep)
+          const filename = _.last(aspects)
+
+          ftp.mkdir(folder, recursivelyCreate, () => {
+            ftp.put(file, ftpInfo.filePath, (err) => {
+              uploaded -= 1
+
+              if (err) {
+                reject(new Error(err.toString()))
+              }
+              else if (uploaded <= 0) {
+                ftp.end()
+                resolve()
+              }
+            })
+          })
         })
       })
 
       ftp.connect(ftpInfo)
     })
   }
-  static pull (archiveRequest) {
+
+  static pull(archiveRequest) {
     return new Promise((resolve, reject) => {
-      reject(new Error('not implemented transit pull (ftp)'))
+      reject('')
     })
+  }
+
+  static __ftpInfo({ uri, scope }) {
+    const PARSE_FTP = /(ftp:\/\/)([a-z0-9A-Z]+?)@([.a-z0-9A-Z]+?):([0-9]+?)\/(.*)/
+    const ftpURI = PARSE_FTP.exec(uri)
+    console.dir(ftpURI)
+    const ftpInfo = {
+      filePath: `/${ftpURI[5]}`,
+      host: ftpURI[3],
+      port: ftpURI[4],
+      user: ftpURI[2],
+      secure: false,
+      password: ''
+    }
+
+    const encryptedKey = _.get(this.__sourceScope({ scope }), `authentication.key`)
+
+    ftpInfo.password = SecurityServant.decrypt(encryptedKey)
+    return ftpInfo
+  }
+
+  static __sourceScope({ scope }) {
+    const sources = applicationConfiguration.get('sources')
+    const sourceScope = sources[scope.reference]
+
+    return sourceScope
   }
 }
 

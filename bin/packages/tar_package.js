@@ -3,7 +3,7 @@ const tar = require('tar')
 
 class TarPackage {
   static pack (archiveBundle, manifestConfiguration) {
-    const releaseAsset = `${archiveBundle.releaseStaging}/${archiveBundle.archive}__${archiveBundle.version}.tar`
+    const releaseAsset = `${archiveBundle.releaseStaging}.tar`
 
     return tar.create({
       gzip: false,

@@ -26,8 +26,8 @@ class FileSystem {
     })
   }
 
-  static flattenFolder (folder) {
-    return this.__flattenFolder(folder, [])
+  static flattenFolder (path) {
+    return (this.isFilePath(path)) ? [path] : this.__flattenFolder(path, [])
   }
   static __flattenFolder (folder, allFiles) {
     fs.readdirSync(folder).forEach(file => {
@@ -42,6 +42,13 @@ class FileSystem {
     })
 
     return allFiles
+  }
+
+  static isFilePath(path) {
+    const lastSlash = path.lastIndexOf(`/`)
+    const lastDot = path.lastIndexOf(`.`)
+
+    return lastSlash < lastDot
   }
 
   /**

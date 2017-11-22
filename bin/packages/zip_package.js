@@ -6,7 +6,7 @@ const _ = require('lodash')
 
 class ZipPackage {
   static pack (archiveBundle, manifestConfiguration) {
-    const releaseAsset = `${archiveBundle.releaseStaging}/${archiveBundle.archive}__${archiveBundle.version}.zip`
+    const releaseAsset = `${archiveBundle.releaseStaging}.zip`
 
     return this.__packZip(archiveBundle, FileSystem.flattenFolder(archiveBundle.releaseFolder))
       .generateAsync({
