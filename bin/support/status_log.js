@@ -40,7 +40,7 @@ class StatusLog {
         timestamp: () => Date.now(),
         handleExceptions: true,
         filename: `vault.log`,
-        json: false,
+        json: true,
         options: {
           flags: 'w'
         }

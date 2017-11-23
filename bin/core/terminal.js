@@ -1,5 +1,5 @@
 const packageConfiguration = require('../../package')
-const StatusLog = require('./support/status_log')
+const StatusLog = require('../support/status_log')
 const _ = require('lodash')
 
 module.exports = {
