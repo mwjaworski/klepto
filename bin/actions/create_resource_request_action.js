@@ -12,7 +12,7 @@ const createResourceRequestAction = (reference, installPath = undefined) => {
     const PackageTool = PackageFacade.of(archiveRequest)
     const TransitTool = TransitFacade.of(archiveRequest)
 
-    StatusLog.notify(`resource ${archiveRequest.uri}`, archiveRequest.uuid, _.merge({}, archiveRequest, {
+    StatusLog.notify(`created-pull-request`, archiveRequest.uuid, _.merge({}, archiveRequest, {
       packageTool: PackageTool.name,
       transitTool: TransitTool.name
     }))

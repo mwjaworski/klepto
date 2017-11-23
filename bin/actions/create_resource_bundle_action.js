@@ -10,7 +10,7 @@ const createResourceBundleAction = (manifestConfiguration) => {
     const PackageTool = PackageFacade.of(archiveBundle)
     const TransitTool = TransitFacade.of(archiveBundle)
 
-    StatusLog.notify(`resource ${archiveBundle.uri}`, archiveBundle.uuid, _.merge({}, archiveBundle, {
+    StatusLog.notify(`created-push-request`, archiveBundle.uuid, _.merge({}, archiveBundle, {
       packageTool: PackageTool.name,
       transitTool: TransitTool.name
     }))

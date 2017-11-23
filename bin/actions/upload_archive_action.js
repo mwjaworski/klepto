@@ -3,10 +3,12 @@ const StatusLog = require('../support/status_log')
 const uploadArchiveAction = (resourceBundle, manifestConfiguration) => {
   const { archiveBundle, TransitTool } = resourceBundle
 
-  StatusLog.notify(`upload ${archiveBundle.uri}`, archiveBundle.uuid)
   return TransitTool
     .push(archiveBundle, manifestConfiguration)
-    .then(() => resourceBundle)
+    .then(() => {
+      StatusLog.notify(`uploaded`, archiveBundle.uuid)
+      return resourceBundle
+    })
 }
 
 module.exports = uploadArchiveAction
