@@ -55,7 +55,7 @@ class FTPTransit {
   static __ftpInfo({ uri, scope, scopeSource }) {
     const PARSE_FTP = /(ftp:\/\/)([a-z0-9A-Z]+?)@([.a-z0-9A-Z]+?):([0-9]+?)\/(.*)/
     const ftpURI = PARSE_FTP.exec(uri)
-    console.dir(ftpURI)
+
     const ftpInfo = {
       filePath: `/${ftpURI[5]}`,
       host: ftpURI[3],

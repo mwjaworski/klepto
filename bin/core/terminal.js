@@ -1,4 +1,5 @@
 const packageConfiguration = require('../../package')
+const StatusLog = require('./support/status_log')
 const _ = require('lodash')
 
 module.exports = {
@@ -11,6 +12,8 @@ module.exports = {
       .delimiter(`$ `)
       .history(applicationHandle)
       .localStorage(applicationHandle)
+
+    StatusLog.initialize(vorpal)
 
     if (_.size(process.argv) <= NODE_COMMAND_ARGV) {
       process.argv.push(`help`)

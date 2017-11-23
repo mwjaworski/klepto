@@ -14,19 +14,15 @@ module.exports = {
           archive
         } = args
 
-        StatusLog
-          .initialize()
-          .start()
-
         uninstallArchiveAction(archive, vorpal)
-          .catch(err => {
-            StatusLog
-              .completeFailure(err.toString())
-              .then(() => done())
-          })
           .then(() => {
             return StatusLog
               .completeSuccess()
+              .then(() => done())
+          })
+          .catch(err => {
+            StatusLog
+              .completeFailure(err.toString())
               .then(() => done())
           })
       })
