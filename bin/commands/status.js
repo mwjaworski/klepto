@@ -1,4 +1,3 @@
-const FTP = require('ftp')
 module.exports = {
   registerVorpalCommand: (vorpal, applicationConfiguration) => {
     return vorpal

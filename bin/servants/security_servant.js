@@ -2,12 +2,11 @@ const crypto = require('crypto')
 const os = require('os')
 
 class SecurityServant {
-
   /**
    *
    * @param {String} message
    */
-  static encrypt(message) {
+  static encrypt (message) {
     const cipher = crypto.createCipher(
       `aes-256-ctr`,
       this.__salt()
@@ -20,7 +19,7 @@ class SecurityServant {
    *
    * @param {String} cipher
    */
-  static decrypt(cipher) {
+  static decrypt (cipher) {
     const decipher = crypto.createDecipher(
       `aes-256-ctr`,
       this.__salt()
@@ -29,14 +28,13 @@ class SecurityServant {
     return decipher.update(cipher, 'hex', 'utf8') + decipher.final('utf8')
   }
 
-  static __salt() {
+  static __salt () {
     const {
       gid
     } = os.userInfo()
 
     return `${gid}`
   }
-
 }
 
 module.exports = SecurityServant

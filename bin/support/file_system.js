@@ -44,7 +44,7 @@ class FileSystem {
     return allFiles
   }
 
-  static isFilePath(path) {
+  static isFilePath (path) {
     const lastSlash = path.lastIndexOf(`/`)
     const lastDot = path.lastIndexOf(`.`)
 

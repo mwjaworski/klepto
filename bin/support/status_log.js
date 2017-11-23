@@ -1,6 +1,5 @@
 const winston = require('winston')
 const color = require('cli-color')
-const process = require('process')
 const _ = require('lodash')
 
 const Colors = {
@@ -10,16 +9,14 @@ const Colors = {
 }
 
 class StatusLog {
-
   static __drawContent () {
-    const spinner = Spinner.running[this.__frame % Spinner.running.length]
     const seconds = parseInt(this.__frame / (1000 / this.__refreshRate), 10)
 
     const errorCount = _.size(this.__errors)
     const errors = (errorCount > 0) ? Colors.red(errorCount + '! ') : ``
     const action = ``
 
-    return `${Colors.yellow(spinner)} ${Colors.gray(seconds + 's')} ${errors}${action}`
+    return `${Colors.gray(seconds + 's')} ${errors}${action}`
   }
 
   static start () {
