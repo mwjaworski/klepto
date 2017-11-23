@@ -16,10 +16,10 @@
   },
   "license": "MIT",
   "keywords": [
-    "cli",
+    "package management",
     "command line",
     "repository",
-    "package management",
+    "cli",
     "zip",
     "tar"
   ],

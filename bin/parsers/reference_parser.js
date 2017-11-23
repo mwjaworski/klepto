@@ -121,18 +121,19 @@ class ReferenceParser {
       release
     } = applicationConfiguration.get(`paths`)
 
-    const archive = manifestConfiguration.name
     const version = manifestConfiguration.version
+    const archive = manifestConfiguration.name
 
     const sources = applicationConfiguration.get('sources')
     const sourceScope = sources[scope.reference] || {}
 
+    // TODO why do we need to store this, it is added to the bundle
     manifestConfiguration.initializeLocalRelease({
       releaseFolder: manifestConfiguration.releaseFolder || _.get(sourceScope, 'push.subfolder', `./`)
     })
 
-    const releaseFolder = manifestConfiguration.releaseFolder
     const releaseStaging = `${release}/${archive}__${version}`
+    const releaseFolder = manifestConfiguration.releaseFolder
     const uuid = `${archive}${versionMarker}${version}`
     const uri = resource
 

@@ -24,10 +24,6 @@ module.exports = {
           releaseReference: args.reference
         })
 
-        StatusLog
-          .initialize()
-          // .start()
-
         createResourceBundleAction(manifestConfiguration)
           .then((resourcePackage) => {
             return bundleArchiveAction(resourcePackage, manifestConfiguration)
@@ -38,7 +34,6 @@ module.exports = {
 
                 return uploadArchiveAction(resourcePackage, manifestConfiguration)
                   .then(() => {
-                    console.log(`uploadArchiveAction`)
                     return StatusLog
                       .completeSuccess()
                       .then(() => done())

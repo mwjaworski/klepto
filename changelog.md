@@ -2,8 +2,9 @@
 
 ## 0.8.0
 
-- ADDED `klepto bundle` to prepare a build for uploading to a host
-- ADDED stubs for `publish` and `upload`
+- ADDED `klepto publish` to prepare a build an archive and upload to a host
+- ADDED more logging points with consistent logging information
+- REFACTORED status messages use `vorpal` and stream to the console
 
 ## 0.7.0
 

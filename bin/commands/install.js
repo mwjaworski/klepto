@@ -22,16 +22,7 @@ module.exports = {
             const archiveDependencies = archiveConfiguration.allDependencies()
             const archiveName = archiveConfiguration.name
 
-            StatusLog
-              .initialize()
-              .start()
-
             downloadArchivesAction(archiveDependencies, archiveName)
-              .catch(err => {
-                StatusLog
-                  .completeFailure(err.toString())
-                  .then(() => done())
-              })
               .then(() => {
                 const resolutions = DependencyLog.resolutions(archiveConfiguration.resolutions)
 
@@ -46,6 +37,11 @@ module.exports = {
               .then(() => {
                 return StatusLog
                   .completeSuccess()
+                  .then(() => done())
+              })
+              .catch(err => {
+                StatusLog
+                  .completeFailure(err.toString())
                   .then(() => done())
               })
           })

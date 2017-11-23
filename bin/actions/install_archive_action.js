@@ -21,7 +21,7 @@ const installArchiveAction = (archiveRequest, installedName) => {
     .removeDirectory(`${archiveFolder}/${archiveRequest.archive}`)
     .copyNonIgnoredFiles(installFrom, archivePath, ignoreFolders)
     .then(() => {
-      StatusLog.notify(`installed ${archivePath}`, archiveRequest.uuid)
+      StatusLog.notify(`installed`, archiveRequest.uuid)
       return manifestJson
     })
 }

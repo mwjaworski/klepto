@@ -5,19 +5,20 @@ TODO:
   ✔ Support `--save-dev` in `install` to update the component library @done (2017-11-17 09:32:49)
   ✔ Support integrating the resolutions of the main <system>.json with the calculated resolutions @done (2017-11-17 07:50:34)
 
+  ☐ Store passwords outside of .vaultrc
+  ☐ Create `security` command to manage passwords
+  ☐ Include questions if we need to resolve archive versions on `install`
+
   Package:
 
-    ☐ Support `package` to package as a (zip, tar, ...)
-    ☐ Support `upload` to send (http?, git, ftp, ...)
-    ☐ Support `publish` which does an `archive` followed by `upload`
+    ✔ Support `publish` which does an `archive` followed by `upload` @done (2017-11-23 11:36:09)
 
     0.8.0:
 
       ☐ How? Reference handles publishing
       ☐ How? Configuration addresses publishing
-      ☐ `package` for `FolderPackage`
-      ☐ `package` for `ZipPackage`
-      ☐ `upload` for `FTPTransit`
-      ☐ `upload` for `FolderTransit`
-      ☐ Question; do we follow `dependencies` and package/upload/zip as a tree? Tentatively, NO.
+      ✔ `package` for `FolderPackage` @done (2017-11-23 11:35:54)
+      ✔ `package` for `ZipPackage` @done (2017-11-23 11:35:55)
+      ✔ `upload` for `FTPTransit` @done (2017-11-23 11:35:56)
+      ✔ `upload` for `FolderTransit` @done (2017-11-23 11:35:57)
 
