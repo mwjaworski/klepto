@@ -2,11 +2,25 @@ const fs = require('fs-extra')
 const _ = require('lodash')
 
 /**
- * currently only retrieves the version requested, cannot handle version ranges.
+ *
  */
 class LocalTransit {
-  static sendToCache ({ uri, installedVersion, cachePath }) {
-    const originalLocation = _.trimEnd(`${uri}`).replace(`file://`, ``)
+  static push ({ uri, releaseStaging }) {
+    const writeTo = this.__cleanURI(uri)
+
+    return new Promise((resolve, reject) => {
+      fs.copy(releaseStaging, writeTo, err => {
+        if (err) {
+          reject(new Error(err))
+        } else {
+          resolve({})
+        }
+      })
+    })
+  }
+
+  static pull ({ uri, installedVersion, cachePath }) {
+    const originalLocation = this.__cleanURI(uri)
 
     return new Promise((resolve, reject) => {
       fs.copy(originalLocation, cachePath, err => {
@@ -20,6 +34,10 @@ class LocalTransit {
         }
       })
     })
+  }
+
+  static __cleanURI (uri) {
+    return _.trimEnd(`${uri}`).replace(`file://`, ``)
   }
 }
 

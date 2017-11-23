@@ -5,6 +5,8 @@ const os = require('os')
 
 class ApplicationConfiguration {
   constructor () {
+    // TODO make this search from process.cwd upwards until we hit root
+    // NOTE keep the home directory and do a uniq, just in case
     this.__paths = {
       application: `configuration/application.json`,
       global: `${os.homedir()}/.vaultrc`,
@@ -31,7 +33,7 @@ class ApplicationConfiguration {
     return this
   }
 
-  saveGlobalFile (setting) {
+  saveGlobalFile (settings) {
     return this.saveFile(`global`, settings)
   }
 
@@ -39,7 +41,7 @@ class ApplicationConfiguration {
     return this.saveFile(`local`, settings)
   }
 
-  saveFile(type, settings) {
+  saveFile (type, settings) {
     const filename = this.__paths[type]
     const configurationContent = this.__getFile(filename)
 

@@ -1,7 +1,6 @@
 const injectDependencyReferenceAction = require('../actions/inject_dependency_reference_action')
 const downloadArchivesAction = require('../actions/download_archives_action')
 
-const ManifestConfiguration = require('../configurations/manifest')
 const StatusLog = require('../support/status_log')
 
 module.exports = {
@@ -14,12 +13,8 @@ module.exports = {
         return true
       })
       .action(function (args, done) {
-        const vaultConfiguration = ManifestConfiguration.build(`./`)
-        const singleConfiguration = ManifestConfiguration.build().initializeLocal()
-        const archiveConfiguration = (!args.reference) ? vaultConfiguration : singleConfiguration
-
-        injectDependencyReferenceAction(archiveConfiguration.dependencies(), args.reference, args.options.rename)
-          .then((activeDependencies) => {
+        injectDependencyReferenceAction(args.reference, args.options)
+          .then((archiveConfiguration) => {
             const archiveDependencies = archiveConfiguration.allDependencies()
             const archiveName = archiveConfiguration.name
 

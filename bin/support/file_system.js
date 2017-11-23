@@ -26,6 +26,31 @@ class FileSystem {
     })
   }
 
+  static flattenFolder (path) {
+    return (this.isFilePath(path)) ? [path] : this.__flattenFolder(path, [])
+  }
+  static __flattenFolder (folder, allFiles) {
+    fs.readdirSync(folder).forEach(file => {
+      const filePath = path.join(folder, file)
+      const isDir = fs.statSync(filePath).isDirectory()
+
+      if (isDir) {
+        return this.__flattenFolder(filePath, allFiles)
+      } else {
+        allFiles.push(filePath)
+      }
+    })
+
+    return allFiles
+  }
+
+  static isFilePath(path) {
+    const lastSlash = path.lastIndexOf(`/`)
+    const lastDot = path.lastIndexOf(`.`)
+
+    return lastSlash < lastDot
+  }
+
   /**
    *
    * @param {*} directoryPath

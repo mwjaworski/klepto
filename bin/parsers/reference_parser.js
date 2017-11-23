@@ -19,15 +19,30 @@ const Discover = {
  * "uri#version" ===> { url, version }
  */
 class ReferenceParser {
+  /**
+   * duplicate of `referenceToArchiveRequest`
+   * @param {*} reference
+   * @param {*} overrideUniqueName
+   */
+  static referenceToArchivePackage (manifestConfiguration) {
+    const reference = manifestConfiguration.releaseReference
+    const scopeOrReference = this.normalizeReference(reference)
+    const {
+      resource,
+      scope
+    } = this.__scopeToResource(scopeOrReference, `push.uri`)
+
+    return this.__resourceToArchivePackage(manifestConfiguration, resource, scope)
+  }
+
   static referenceToArchiveRequest (reference, overrideUniqueName = undefined) {
     const scopeOrReference = this.normalizeReference(reference)
     const {
       resource,
       scope
-    } = this.__scopeToResource(scopeOrReference)
-    const archiveRequest = this.__resourceToArchiveRequest(resource, scope, overrideUniqueName)
+    } = this.__scopeToResource(scopeOrReference, `pull.uri`)
 
-    return archiveRequest
+    return this.__resourceToArchiveRequest(resource, scope, overrideUniqueName)
   }
 
   /**
@@ -58,8 +73,9 @@ class ReferenceParser {
   /**
    *
    * @param {*} scopeOrReference
+   * @param {String} operationType either `push_uri` or `pull_uri`
    */
-  static __scopeToResource (scopeOrReference) {
+  static __scopeToResource (scopeOrReference, operationType) {
     const patternMarkers = applicationConfiguration.get(`rules.patternMarkers`)
     const [uri, version = `*`] = this.splitURIVersion(scopeOrReference)
     const uriAspects = uri.split(patternMarkers.separator)
@@ -74,16 +90,62 @@ class ReferenceParser {
 
     const {
       pattern,
-      pull_uri, // OR push_uri if operation is publish
       constants
     } = scope
+
     const templateVariables = _.zipObject(pattern.split(patternMarkers.separator), uriAspects)
+    const template = _.get(scope, operationType)
+
+    if (!template) {
+      return {
+        resource: scopeOrReference,
+        scope: {}
+      }
+    }
 
     return {
       scope,
-      resource: _.template(pull_uri)(_.merge({}, templateVariables, constants, {
+      resource: _.template(template)(_.merge({}, templateVariables, constants, {
         version
       }))
+    }
+  }
+
+  /**
+   *
+   * @param {*} resource
+   */
+  static __resourceToArchivePackage (manifestConfiguration, resource, scope) {
+    const versionMarker = _.first(applicationConfiguration.get(`rules.patternMarkers.version`))
+    const {
+      release
+    } = applicationConfiguration.get(`paths`)
+
+    const archive = manifestConfiguration.name
+    const version = manifestConfiguration.version
+
+    const sources = applicationConfiguration.get('sources')
+    const sourceScope = sources[scope.reference] || {}
+
+    manifestConfiguration.initializeLocalRelease({
+      releaseFolder: manifestConfiguration.releaseFolder || _.get(sourceScope, 'push.subfolder', `./`)
+    })
+
+    const releaseFolder = manifestConfiguration.releaseFolder
+    const releaseStaging = `${release}/${archive}__${version}`
+    const uuid = `${archive}${versionMarker}${version}`
+    const uri = resource
+
+    return {
+      releaseAsset: null,
+      releaseStaging,
+      releaseFolder,
+      sourceScope,
+      archive,
+      version,
+      scope,
+      uuid,
+      uri
     }
   }
 
@@ -142,9 +204,15 @@ class ReferenceParser {
     const sources = applicationConfiguration.get(`sources`)
     const scope = uriAspects[0] = (_.first(uriAspects) || '')
 
-    return _.find(sources, (_0, sourceKey) => {
+    const scopeObj = _.find(sources, (_0, sourceKey) => {
       return scope === sourceKey
     })
+
+    if (scopeObj) {
+      scopeObj.reference = scope
+    }
+
+    return scopeObj
   }
 }
 

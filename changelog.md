@@ -1,5 +1,10 @@
 # Klepto Changelog
 
+## 0.8.0
+
+- ADDED `klepto bundle` to prepare a build for uploading to a host
+- ADDED stubs for `publish` and `upload`
+
 ## 0.7.0
 
 - ADDED show `help` if no commands are given

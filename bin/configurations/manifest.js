@@ -31,7 +31,6 @@ class ManifestConfiguration {
   }
 
   __locatePrioritizedManifest (archivePath, configurationSystemList = applicationConfiguration.get(`rules.configurationSystem`)) {
-
     if (!archivePath) {
       return this.__emptyManifest()
     }
@@ -53,7 +52,7 @@ class ManifestConfiguration {
     return this.__emptyManifest()
   }
 
-  __emptyManifest() {
+  __emptyManifest () {
     const configurationSystemList = applicationConfiguration.get(`rules.configurationSystem`)
 
     return {
@@ -91,6 +90,20 @@ class ManifestConfiguration {
     return this
   }
 
+  /**
+   *
+   */
+  initializeLocalRelease ({ releaseFolder, releaseReference }) {
+    this.initializeLocal()
+
+    this.__manifest.release = {
+      ref: releaseReference || this.releaseReference,
+      folder: releaseFolder || this.releaseFolder
+    }
+
+    return this
+  }
+
   saveLocal () {
     fs.writeFileSync(`./${this.__system.archiveManifest}`, JSON.stringify(this.__manifest, null, 2))
     return this
@@ -104,8 +117,24 @@ class ManifestConfiguration {
     return this.__system
   }
 
-  set name (name) {
-    this.__setSafeProp(`name`, name, ``)
+  set releaseFolder (_folder) {
+    this.__setSafeProp(`release.folder`, _folder, '')
+  }
+
+  get releaseFolder () {
+    return this.__getSafeProp(`release.folder`, '')
+  }
+
+  set releaseReference (_ref) {
+    this.__setSafeProp(`release.ref`, _ref, `-`)
+  }
+
+  get releaseReference () {
+    return this.__getSafeProp(`release.ref`, `-`)
+  }
+
+  set name (_name) {
+    this.__setSafeProp(`name`, _name, ``)
   }
 
   get name () {
@@ -116,7 +145,7 @@ class ManifestConfiguration {
     return this.__getSafeProp(`version`, ``)
   }
 
-  allDependencies() {
+  allDependencies () {
     return _.merge({}, this.dependencies(), this.devDependencies())
   }
 
@@ -124,7 +153,7 @@ class ManifestConfiguration {
     return this.__getSafeProp(`dependencies`, {})
   }
 
-  applyResolutions(_resolutions) {
+  applyResolutions (_resolutions) {
     this.__setSafeProp(`resolutions`, _.mapValues(_resolutions, `installedVersion`), this.resolutions())
   }
 
@@ -141,11 +170,11 @@ class ManifestConfiguration {
   }
 
   __setSafeProp (property, val, defaultValue) {
-    this.__manifest[property] = (is.sameType(val, defaultValue)) ? val : defaultValue
+    _.set(this.__manifest, property, (is.sameType(val, defaultValue)) ? val : defaultValue)
   }
 
   __getSafeProp (property, defaultValue) {
-    const val = this.__manifest[property]
+    const val = _.get(this.__manifest, property)
 
     return (is.sameType(val, defaultValue)) ? val : defaultValue
   }

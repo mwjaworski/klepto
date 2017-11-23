@@ -6,22 +6,27 @@ const _ = require('lodash')
 const os = require('os')
 
 class GitTransit {
-  static sendToCache (archiveRequest) {
+  static push (archiveRequest) {
+    return new Promise((resolve, reject) => {
+      reject(new Error('not implemented transit push (git)'))
+    })
+  }
+  static pull (archiveRequest) {
     return new Promise((resolve, reject) => {
       const { version, cachePath } = archiveRequest
       const isVersionRange = VersionServant.isVersionRange(version)
       const folderExists = fs.existsSync(cachePath)
-      let __sendToCache
+      let __pull
 
       if (folderExists) {
-        __sendToCache = this.__sendToCacheRefreshFolder
+        __pull = this.__pullRefreshFolder
       } else if (isVersionRange) {
-        __sendToCache = this.__sendToCacheVersionRange
+        __pull = this.__pullVersionRange
       } else {
-        __sendToCache = this.__sendToCacheVersionUnique
+        __pull = this.__pullVersionUnique
       }
 
-      return __sendToCache(archiveRequest)
+      return __pull(archiveRequest)
         .then(resolve)
         .catch(err => {
           StatusLog.error(err, archiveRequest)
@@ -32,18 +37,18 @@ class GitTransit {
     })
   }
 
-  static __sendToCacheVersionRange (archiveRequest) {
+  static __pullVersionRange (archiveRequest) {
     const { uri, cachePath } = archiveRequest
 
     return OperatingSystem.execute([
       `git clone --single-branch --branch 'master' ${uri} ${cachePath}`
     ])
     .then(() => {
-      return GitTransit.__sendToCacheRefreshFolder(archiveRequest)
+      return GitTransit.__pullRefreshFolder(archiveRequest)
     })
   }
 
-  static __sendToCacheRefreshFolder (archiveRequest) {
+  static __pullRefreshFolder (archiveRequest) {
     const { version, cachePath } = archiveRequest
 
     return GitTransit.__getVersions(cachePath).then((versionList) => {
@@ -65,7 +70,7 @@ class GitTransit {
     })
   }
 
-  static __sendToCacheVersionUnique (archiveRequest) {
+  static __pullVersionUnique (archiveRequest) {
     const { uri, version, cachePath } = archiveRequest
 
     return OperatingSystem.execute([

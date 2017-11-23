@@ -8,9 +8,9 @@ const _ = require('lodash')
 const installArchiveAction = (archiveRequest, installedName) => {
   const paths = applicationConfiguration.get(`paths`)
   const manifestJson = ManifestConfiguration.build(archiveRequest.stagingPath)
-  const archiveFolder = _.get(archiveRequest, 'scope.installation.destination', paths.archive)
+  const archiveFolder = _.get(archiveRequest, 'scope.pull.destination', paths.archive)
   const archivePath = `${archiveFolder}/${archiveRequest.installedName}/`
-  const installFrom = `${archiveRequest.stagingPath}${_.get(archiveRequest, 'scope.installation.subfolder', '')}`
+  const installFrom = `${archiveRequest.stagingPath}${_.get(archiveRequest, 'scope.pull.subfolder', '')}`
   const ignoreFolders = _.merge(
     applicationConfiguration.get(`rules.ignoreFiles`, []),
     manifestJson.ignore

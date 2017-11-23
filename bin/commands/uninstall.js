@@ -18,7 +18,7 @@ module.exports = {
           .initialize()
           .start()
 
-          uninstallArchiveAction(archive, vorpal)
+        uninstallArchiveAction(archive, vorpal)
           .catch(err => {
             StatusLog
               .completeFailure(err.toString())

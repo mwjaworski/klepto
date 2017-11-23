@@ -1,4 +1,3 @@
-const applicationConfiguration = require('../configurations/application')
 const _ = require('lodash')
 
 module.exports = {
