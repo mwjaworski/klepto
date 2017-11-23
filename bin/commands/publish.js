@@ -32,7 +32,10 @@ module.exports = {
           .then((resourcePackage) => {
             return bundleArchiveAction(resourcePackage, manifestConfiguration)
               .then(() => {
-                console.log(`bundleArchiveAction`)
+                if (!resourcePackage.releaseAsset) {
+                  return new Error(`no release asset defined`)
+                }
+
                 return uploadArchiveAction(resourcePackage, manifestConfiguration)
                   .then(() => {
                     console.log(`uploadArchiveAction`)

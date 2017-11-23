@@ -137,8 +137,7 @@ class ReferenceParser {
     const uri = resource
 
     return {
-      // TODO turn this to null and stop process if it stays as null
-      releaseAsset: '--set by package tool--',
+      releaseAsset: null,
       releaseStaging,
       releaseFolder,
       sourceScope,

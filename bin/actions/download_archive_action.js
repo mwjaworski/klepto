@@ -11,7 +11,7 @@ const downloadArchiveAction = (reference, installPath = undefined) => {
       const { isRedundant, archiveRequest, PackageTool, TransitTool } = resourceRequest
 
       if (isRedundant) {
-        StatusLog.notify(`pre-cached ${archiveRequest.uri}`, archiveRequest.uuid)
+        StatusLog.notify(`cached ${archiveRequest.uri}`, archiveRequest.uuid)
         return new Promise((resolve) => {
           resolve(resourceRequest)
         })
@@ -19,7 +19,7 @@ const downloadArchiveAction = (reference, installPath = undefined) => {
 
       FileSystem.createDirectory(`${paths.cache}/`)
 
-      StatusLog.notify(`cache ${archiveRequest.uri}`, archiveRequest.uuid)
+      StatusLog.notify(`download ${archiveRequest.uri}`, archiveRequest.uuid)
       return TransitTool
         .pull(archiveRequest)
           .then(({ availableVersions }) => {
