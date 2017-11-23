@@ -30,8 +30,10 @@ class StatusLog {
     return this
   }
 
-  static initialize () {
+  static initialize (vorpal) {
     this.uninitialize()
+
+    this.__vorpal = vorpal
 
     const transports = [
       new (winston.transports.File)({
@@ -56,14 +58,17 @@ class StatusLog {
 
   static uninitialize () {
     this.__logger = undefined
-    this.__frame = 0
+    this.__vorpal = undefined
     this.__errors = []
+    this.__frame = 0
+
     return this
   }
 
   static notify (action, resource, meta = {}) {
-    vorpal.log(action)
     this.__logger.info(`[${resource}] ${action}`, meta)
+    this.__vorpal.log(action)
+
     return this
   }
 
@@ -76,9 +81,7 @@ class StatusLog {
     this.notify(`completed`)
 
     return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve(this.stop().__writeErrors().uninitialize())
-      }, 1000)
+      resolve(this.stop().__writeErrors().uninitialize())
     })
   }
 
@@ -87,9 +90,7 @@ class StatusLog {
 
     StatusLog.error(reason)
     return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve(this.stop().__writeErrors().uninitialize())
-      }, 1000)
+      resolve(this.stop().__writeErrors().uninitialize())
     })
   }
 

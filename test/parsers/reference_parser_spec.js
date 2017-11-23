@@ -33,12 +33,14 @@ test.cb('parser: scope-to-resource (local)', t => {
     'sources': {
       'local_source': {
         'pattern': 'source/group/sub_group/resource',
-        'pull_uri': '~/<%= source %>/components/<%= group %>/<%= sub_group %>/<%= resource %>/<%= version %>/'
+        'pull': {
+          'uri': '~/<%= source %>/components/<%= group %>/<%= sub_group %>/<%= resource %>/<%= version %>/'
+        }
       }
     }
   })
 
-  const { resource } = ReferenceParser.__scopeToResource(`local_source/def/ghi/hij@1.2.3`)
+  const { resource } = ReferenceParser.__scopeToResource(`local_source/def/ghi/hij@1.2.3`, `pull.uri`)
 
   t.is(resource, `~/local_source/components/def/ghi/hij/1.2.3/`)
   t.end()
@@ -51,12 +53,14 @@ test.cb('parser: scope-to-resource (web)', t => {
     'sources': {
       'web-source': {
         'pattern': 'source/resource',
-        'pull_uri': 'http://phoenix.eab.com/eabui/<%= resource %>__<%= version %>.zip'
+        'pull': {
+          'uri': 'http://phoenix.eab.com/eabui/<%= resource %>__<%= version %>.zip'
+        }
       }
     }
   })
 
-  const { resource } = ReferenceParser.__scopeToResource(`web-source/blueprint@1.2.3`)
+  const { resource } = ReferenceParser.__scopeToResource(`web-source/blueprint@1.2.3`, `pull.uri`)
 
   t.is(resource, `http://phoenix.eab.com/eabui/blueprint__1.2.3.zip`)
   t.end()
