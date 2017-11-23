@@ -1,5 +1,6 @@
 const ManifestConfiguration = require('../configurations/manifest')
 const ReferenceParser = require(`../parsers/reference_parser`)
+const StatusLog = require('../support/status_log')
 
 const injectDependencyReferenceAction = (reference, options) => {
   return new Promise((resolve, reject) => {
@@ -13,6 +14,7 @@ const injectDependencyReferenceAction = (reference, options) => {
       activeDependency[installedName] = `${reference}`.replace(`@`, `#`)
     }
 
+    StatusLog.notify(`included-library-dependency`, reference)
     resolve(manifestConfiguration)
   })
 }
