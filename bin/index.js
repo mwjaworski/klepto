@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-const applicationConfiguration = require('./configurations/application')
+const ApplicationConfiguration = require('./configurations/application')
 const vorpal = require('vorpal')()
 
 const augmentCommand = (vorpalCommand) => {
@@ -22,10 +22,10 @@ const augmentCommand = (vorpalCommand) => {
   `uninstall`,
   `version`
 ].forEach((command) => {
-  augmentCommand(require(`./commands/${command}`).registerVorpalCommand(vorpal, applicationConfiguration))
+  augmentCommand(require(`./commands/${command}`).registerVorpalCommand(vorpal, ApplicationConfiguration))
 })
 
 // vorpal must parse arguments after all commands are registered
 //
 //
-require('./core/terminal').initializeVorpal(vorpal, applicationConfiguration)
+require('./core/terminal').initializeVorpal(vorpal, ApplicationConfiguration)

@@ -57,7 +57,7 @@ class DependencyLog {
         return resolutionAttempt2
       }
 
-      // TODO what if this is still null?
+      // TODO ask user to resolve
       return null
 
       // OPTION 2
@@ -65,14 +65,9 @@ class DependencyLog {
       //   return requestedBy.length
       // })
 
-      // OPTION 3
-      // const highestRequested = 0
-
-      // TODO what if this is still null?
     })
 
-    // TODO if we have this version - great. if not, then we need to get a new version - which means download again...
-    // then we can copy folders
+    // TODO if we have this version - great. if not, then we need to get a new version - which means download again... then we can copy folders
 
     const calculatedResolutions = _.mapValues(_.merge({}, versionMatches, versionConflictsResolution), (version, installedName) => {
       return _.get(this.__installed, `["${installedName}"]["${version}"]`, {

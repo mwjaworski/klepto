@@ -29,11 +29,13 @@
     ],
     "configurationSystem": [{
         "toolConfiguration": ".bowerrc",
-        "archiveManifest": "bower.json"
+        "archiveManifest": "bower.json",
+        "versionSeparator": "#"
       },
       {
         "toolConfiguration": ".vaultrc",
-        "archiveManifest": "vault.json"
+        "archiveManifest": "vault.json",
+        "versionSeparator": "@"
       }
     ]
   }
