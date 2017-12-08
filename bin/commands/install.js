@@ -6,7 +6,7 @@ const DependencyLog = require('../support/dependency_log')
 const StatusLog = require('../support/status_log')
 
 module.exports = {
-  registerVorpalCommand: (vorpal, applicationConfiguration) => {
+  registerVorpalCommand: (vorpal, ApplicationConfiguration) => {
     return vorpal
       .command(`install [reference]`)
       .option('-r, --rename <archive>', `Rename the reference`)

@@ -1,7 +1,7 @@
 const ManifestConfiguration = require('../configurations/manifest')
 
 module.exports = {
-  registerVorpalCommand: (vorpal, applicationConfiguration) => {
+  registerVorpalCommand: (vorpal, ApplicationConfiguration) => {
     return vorpal
       .command(`initialize`)
       .alias(`init`)

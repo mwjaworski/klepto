@@ -2,7 +2,7 @@ const uninstallArchiveAction = require('../actions/uninstall_archive_action')
 const StatusLog = require('../support/status_log')
 
 module.exports = {
-  registerVorpalCommand: (vorpal, applicationConfiguration) => {
+  registerVorpalCommand: (vorpal, ApplicationConfiguration) => {
     return vorpal
       .command(`uninstall <archive>`)
       .description(`Uninstall an archive.`)

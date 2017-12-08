@@ -3,7 +3,7 @@
 const test = require('ava')
 const crypto = require('crypto')
 const ReferenceParser = require('../../bin/parsers/reference_parser')
-const applicationConfiguration = require(`../../bin/configurations/application`)
+const ApplicationConfiguration = require(`../../bin/configurations/application`)
 
 test.cb('parser: reference (folder)', t => {
   t.plan(4)
@@ -21,7 +21,7 @@ test.cb('parser: reference (folder)', t => {
 
   const versionFolder = crypto.createHash(`md5`).update(version).digest(`hex`)
 
-  t.is(stagingPath, `${applicationConfiguration.get('paths.staging')}/${archive}/${versionFolder}/`, `staging path is the archive name in staging folder`)
+  t.is(stagingPath, `${ApplicationConfiguration.get('paths.staging')}/${archive}/${versionFolder}/`, `staging path is the archive name in staging folder`)
 
   t.end()
 })
@@ -29,7 +29,7 @@ test.cb('parser: reference (folder)', t => {
 test.cb('parser: scope-to-resource (local)', t => {
   t.plan(1)
 
-  applicationConfiguration.override({
+  ApplicationConfiguration.override({
     'sources': {
       'local_source': {
         'pattern': 'source/group/sub_group/resource',
@@ -49,7 +49,7 @@ test.cb('parser: scope-to-resource (local)', t => {
 test.cb('parser: scope-to-resource (web)', t => {
   t.plan(1)
 
-  applicationConfiguration.override({
+  ApplicationConfiguration.override({
     'sources': {
       'web-source': {
         'pattern': 'source/resource',

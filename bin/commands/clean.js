@@ -1,7 +1,7 @@
 const fs = require('fs-extra')
 
 module.exports = {
-  registerVorpalCommand: (vorpal, applicationConfiguration) => {
+  registerVorpalCommand: (vorpal, ApplicationConfiguration) => {
     return vorpal
       .command(`clean [reference]`)
       .description(`Clean vault folders`)
@@ -11,14 +11,14 @@ module.exports = {
       .action(function (args, done) {
         switch (args.reference) {
           case 'cache':
-            fs.removeSync(applicationConfiguration.get(`paths.cache`))
+            fs.removeSync(ApplicationConfiguration.get(`paths.cache`))
             break
           case 'staging':
-            fs.removeSync(applicationConfiguration.get(`paths.staging`))
+            fs.removeSync(ApplicationConfiguration.get(`paths.staging`))
             break
           default:
-            fs.removeSync(applicationConfiguration.get(`paths.staging`))
-            fs.removeSync(applicationConfiguration.get(`paths.cache`))
+            fs.removeSync(ApplicationConfiguration.get(`paths.staging`))
+            fs.removeSync(ApplicationConfiguration.get(`paths.cache`))
         }
 
         done()

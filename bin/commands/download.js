@@ -4,7 +4,7 @@ const downloadArchivesAction = require('../actions/download_archives_action')
 const StatusLog = require('../support/status_log')
 
 module.exports = {
-  registerVorpalCommand: (vorpal, applicationConfiguration) => {
+  registerVorpalCommand: (vorpal, ApplicationConfiguration) => {
     return vorpal
       .command(`download [reference]`)
       .option('-r, --rename <archive>', `Rename the reference`)

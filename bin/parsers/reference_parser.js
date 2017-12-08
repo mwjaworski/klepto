@@ -2,7 +2,7 @@ const crypto = require('crypto')
 const path = require('path')
 const _ = require('lodash')
 
-const applicationConfiguration = require('../configurations/application')
+const ApplicationConfiguration = require('../configurations/application')
 
 const Discover = {
   COMPONENT_ASPECT: /.*?\/([a-z0-9-_.]*?)[./]?(zip|tar|tgz|gz|tar.gz|git)?$/i,
@@ -64,7 +64,7 @@ class ReferenceParser {
   }
 
   static splitURIVersion (reference) {
-    const patternMarkers = applicationConfiguration.get(`rules.patternMarkers`)
+    const patternMarkers = ApplicationConfiguration.get(`rules.patternMarkers`)
     const versionMarker = _.find(patternMarkers.version, (versionMarker) => reference.indexOf(versionMarker) !== -1)
 
     return reference.split(versionMarker || _.first(patternMarkers.version))
@@ -76,7 +76,7 @@ class ReferenceParser {
    * @param {String} operationType either `push_uri` or `pull_uri`
    */
   static __scopeToResource (scopeOrReference, operationType) {
-    const patternMarkers = applicationConfiguration.get(`rules.patternMarkers`)
+    const patternMarkers = ApplicationConfiguration.get(`rules.patternMarkers`)
     const [uri, version = `*`] = this.splitURIVersion(scopeOrReference)
     const uriAspects = uri.split(patternMarkers.separator)
     const scope = this.__matchConversionRule(uriAspects)
@@ -116,18 +116,17 @@ class ReferenceParser {
    * @param {*} resource
    */
   static __resourceToArchivePackage (manifestConfiguration, resource, scope) {
-    const versionMarker = _.first(applicationConfiguration.get(`rules.patternMarkers.version`))
+    const versionMarker = _.first(ApplicationConfiguration.get(`rules.patternMarkers.version`))
     const {
       release
-    } = applicationConfiguration.get(`paths`)
+    } = ApplicationConfiguration.get(`paths`)
 
     const version = manifestConfiguration.version
     const archive = manifestConfiguration.name
 
-    const sources = applicationConfiguration.get('sources')
+    const sources = ApplicationConfiguration.get('sources')
     const sourceScope = sources[scope.reference] || {}
 
-    // TODO why do we need to store this, it is added to the bundle
     manifestConfiguration.initializeLocalRelease({
       releaseFolder: manifestConfiguration.releaseFolder || _.get(sourceScope, 'push.subfolder', `./`)
     })
@@ -155,11 +154,11 @@ class ReferenceParser {
    * @param {*} resource
    */
   static __resourceToArchiveRequest (resource, scope, overrideUniqueName = undefined) {
-    const versionMarker = _.first(applicationConfiguration.get(`rules.patternMarkers.version`))
+    const versionMarker = _.first(ApplicationConfiguration.get(`rules.patternMarkers.version`))
     const {
       staging,
       cache
-    } = applicationConfiguration.get(`paths`)
+    } = ApplicationConfiguration.get(`paths`)
 
     const [uri, _version] = this.splitURIVersion(resource)
     const [_archive, extension] = this.splitArchiveExtension(uri)
@@ -202,7 +201,7 @@ class ReferenceParser {
    * @returns a scope object or undefined
    */
   static __matchConversionRule (uriAspects) {
-    const sources = applicationConfiguration.get(`sources`)
+    const sources = ApplicationConfiguration.get(`sources`)
     const scope = uriAspects[0] = (_.first(uriAspects) || '')
 
     const scopeObj = _.find(sources, (_0, sourceKey) => {

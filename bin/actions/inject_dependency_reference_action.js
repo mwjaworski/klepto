@@ -1,3 +1,4 @@
+const ApplicationConfiguration = require('../configurations/application')
 const ManifestConfiguration = require('../configurations/manifest')
 const ReferenceParser = require(`../parsers/reference_parser`)
 const StatusLog = require('../support/status_log')
@@ -8,10 +9,13 @@ const injectDependencyReferenceAction = (reference, options) => {
     const activeDependency = (options['save-dev']) ? manifestConfiguration.devDependencies() : manifestConfiguration.dependencies()
 
     if (reference) {
+      const manifestVersionSeparator = manifestConfiguration.system.configurationSystem.versionSeparator
+      const versionSeparators = ApplicationConfiguration.get(`rules.patternMarkers.version`)
       const { installedName } = ReferenceParser.referenceToArchiveRequest(reference, options.rename)
 
-      // TODO find a way to normalize this version?! bower wants a # (have to match this against the system type)
-      activeDependency[installedName] = `${reference}`.replace(`@`, `#`)
+      activeDependency[installedName] = _.reduce(versionSeparators, (_ref, versionMarker) => {
+        return _ref.replace(versionMarker, manifestVersionSeparator)
+      }, `${reference}`)
     }
 
     StatusLog.notify(`included-library-dependency`, reference)

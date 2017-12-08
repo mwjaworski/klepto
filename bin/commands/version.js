@@ -1,7 +1,7 @@
 const packageConfiguration = require('../../package')
 
 module.exports = {
-  registerVorpalCommand: (vorpal, applicationConfiguration) => {
+  registerVorpalCommand: (vorpal, ApplicationConfiguration) => {
     return vorpal
       .command(`version`)
       .description(`View current version.`)

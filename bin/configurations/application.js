@@ -1,18 +1,18 @@
 const process = require('process')
 const fs = require('fs-extra')
+const path = require('path')
 const _ = require('lodash')
 const os = require('os')
 
 class ApplicationConfiguration {
   constructor () {
-    // TODO make this search from process.cwd upwards until we hit root
-    // NOTE keep the home directory and do a uniq, just in case
-    this.__paths = {
-      application: `configuration/application.json`,
-      global: `${os.homedir()}/.vaultrc`,
-      local: `${process.cwd()}/.vaultrc`
-    }
+
     this.__configuration = {}
+    this.__paths = {
+      application: `configuration`,
+      global: os.homedir(),
+      local: process.cwd()
+    }
   }
 
   override (manifestJson) {
@@ -20,15 +20,23 @@ class ApplicationConfiguration {
   }
 
   initialize () {
-    const paths = this.__paths
+    const currentFolder = process.cwd()
+    const homeFolder = os.homedir()
 
-    _.each([
-      paths.application,
-      paths.global,
-      paths.local
-    ], (configurationPath) => {
-      this.loadFile(configurationPath)
+    let baseFolder = ''
+    const parentPaths = _.map(_.compact(currentFolder.split(path.sep)), (aspect) => {
+      baseFolder = `${baseFolder}${path.sep}${aspect}`
+      return baseFolder
     })
+
+    const paths = _([
+      this.__paths.application,
+      ...parentPaths,
+      this.__paths.global
+    ])
+    .uniq()
+    .map((configurationPath) => `${configurationPath}${path.sep}.vaultrc`)
+    .each((configurationPath) => this.loadFile(configurationPath))
 
     return this
   }
@@ -67,6 +75,8 @@ class ApplicationConfiguration {
       if (e instanceof SyntaxError) {
         console.error(`${filename} is malformed`)
       }
+
+      return {}
     }
   }
 

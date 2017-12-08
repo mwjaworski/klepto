@@ -6,7 +6,7 @@ const ManifestConfiguration = require('../configurations/manifest')
 const StatusLog = require('../support/status_log')
 
 module.exports = {
-  registerVorpalCommand: (vorpal, applicationConfiguration) => {
+  registerVorpalCommand: (vorpal, ApplicationConfiguration) => {
     return vorpal
       .command(`publish [reference] [release_folder]`)
       .description(`Bundle, then upload`)

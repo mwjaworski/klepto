@@ -1,4 +1,4 @@
-const applicationConfiguration = require('../configurations/application')
+const ApplicationConfiguration = require('../configurations/application')
 const fs = require('fs-extra')
 const path = require('path')
 const _ = require('lodash')
@@ -30,7 +30,7 @@ class ManifestConfiguration {
     this.__path = path
   }
 
-  __locatePrioritizedManifest (archivePath, configurationSystemList = applicationConfiguration.get(`rules.configurationSystem`)) {
+  __locatePrioritizedManifest (archivePath, configurationSystemList = ApplicationConfiguration.get(`rules.configurationSystem`)) {
     if (!archivePath) {
       return this.__emptyManifest()
     }
@@ -53,7 +53,7 @@ class ManifestConfiguration {
   }
 
   __emptyManifest () {
-    const configurationSystemList = applicationConfiguration.get(`rules.configurationSystem`)
+    const configurationSystemList = ApplicationConfiguration.get(`rules.configurationSystem`)
 
     return {
       configurationSystem: _.find(configurationSystemList, (system) => system.archiveManifest === `vault.json`),
