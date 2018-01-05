@@ -64,7 +64,6 @@ class DependencyLog {
       // const mostRequested = _.findKey(conflicts, (requestedBy, version) => {
       //   return requestedBy.length
       // })
-
     })
 
     // TODO if we have this version - great. if not, then we need to get a new version - which means download again... then we can copy folders

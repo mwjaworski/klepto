@@ -14,7 +14,6 @@ const C = {
 }
 
 class StatusLog {
-
   static initialize (vorpal) {
     this.uninitialize()
 

@@ -6,7 +6,6 @@ const os = require('os')
 
 class ApplicationConfiguration {
   constructor () {
-
     this.__configuration = {}
     this.__paths = {
       application: `configuration`,
@@ -21,7 +20,6 @@ class ApplicationConfiguration {
 
   initialize () {
     const currentFolder = process.cwd()
-    const homeFolder = os.homedir()
 
     let baseFolder = ''
     const parentPaths = _.map(_.compact(currentFolder.split(path.sep)), (aspect) => {
@@ -29,7 +27,7 @@ class ApplicationConfiguration {
       return baseFolder
     })
 
-    const paths = _([
+    _([
       this.__paths.application,
       ...parentPaths,
       this.__paths.global

@@ -19,7 +19,6 @@ const downloadArchiveAction = (reference, installPath = undefined) => {
 
       FileSystem.createDirectory(`${paths.cache}/`)
 
-
       return TransitTool
         .pull(archiveRequest)
           .then(({ availableVersions }) => {
