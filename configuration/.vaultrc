@@ -36,6 +36,11 @@
         "toolConfiguration": ".vaultrc",
         "archiveManifest": "vault.json",
         "versionSeparator": "@"
+      },
+      {
+        "toolConfiguration": ".does_not_exist",
+        "archiveManifest": "component.json",
+        "versionSeparator": "#"
       }
     ]
   }

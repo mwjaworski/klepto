@@ -3,7 +3,7 @@ const _ = require('lodash')
 module.exports = {
   registerVorpalCommand: (vorpal, ApplicationConfiguration) => {
     return vorpal
-      .command(`configure <path> [val]`)
+      .command(`configure [path] [val]`)
       .option('--local', '(default) Apply changes to local settings.')
       .option('--global', 'Apply changes to global (~/) settings.')
       .alias(`conf`)
@@ -12,6 +12,12 @@ module.exports = {
         return true
       })
       .action(function (args, done) {
+
+        if (!args.path) {
+          vorpal.log(JSON.stringify(ApplicationConfiguration.get(), null, 2))
+          return done();
+        }
+
         const val = args.val
         const configurationFileScope = (args.options.global) ? `global` : `local`
         const pathParts = args.path.split(`.`)
@@ -23,6 +29,7 @@ module.exports = {
         }, settings)
 
         // TODO verify if key is valid
+
         if (args.val) {
           valueKey[_.last(pathParts)] = (typeof val === 'string') ? val : JSON.parse(val)
           ApplicationConfiguration.saveFile(configurationFileScope, settings)

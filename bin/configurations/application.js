@@ -29,8 +29,9 @@ class ApplicationConfiguration {
 
     _([
       this.__paths.application,
+      this.__paths.global,
       ...parentPaths,
-      this.__paths.global
+      this.__paths.local
     ])
     .uniq()
     .map((configurationPath) => `${configurationPath}${path.sep}.vaultrc`)

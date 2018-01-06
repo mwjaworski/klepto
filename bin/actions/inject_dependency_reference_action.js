@@ -10,7 +10,7 @@ const injectDependencyReferenceAction = (reference, options) => {
     const activeDependency = (options['save-dev']) ? manifestConfiguration.devDependencies() : manifestConfiguration.dependencies()
 
     if (reference) {
-      const manifestVersionSeparator = manifestConfiguration.system.configurationSystem.versionSeparator
+      const manifestVersionSeparator = manifestConfiguration.system.versionSeparator
       const versionSeparators = ApplicationConfiguration.get(`rules.patternMarkers.version`)
       const { installedName } = ReferenceParser.referenceToArchiveRequest(reference, options.rename)
 
