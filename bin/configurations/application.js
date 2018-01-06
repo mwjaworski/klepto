@@ -34,10 +34,20 @@ class ApplicationConfiguration {
       this.__paths.local
     ])
     .uniq()
-    .map((configurationPath) => `${configurationPath}${path.sep}.vaultrc`)
-    .each((configurationPath) => this.loadFile(configurationPath))
+    .map((configurationPath) => this.__vaultRCFile(configurationPath))
+    .each((configurationPath) => this.__loadFile(configurationPath))
 
     return this
+  }
+
+  initializeLocal () {
+    if (!this.hasLocalFile()) {
+      this.saveLocalFile({
+        sources: {},
+        paths: {},
+        rules: {}
+      })
+    }
   }
 
   saveGlobalFile (settings) {
@@ -49,7 +59,7 @@ class ApplicationConfiguration {
   }
 
   saveFile (type, settings) {
-    const filename = this.__paths[type]
+    const filename = this.__vaultRCFile(this.__paths[type])
     const configurationContent = this.__getFile(filename)
 
     return this._saveFile(filename, _.merge({}, configurationContent, settings))
@@ -60,9 +70,21 @@ class ApplicationConfiguration {
     return this
   }
 
-  loadFile (filename) {
+  hasLocalFile () {
+    return fs.existsSync(this.__vaultRCFile(this.__paths['local']))
+  }
+
+  loadFile (type) {
+    return this.__loadFile(this.__vaultRCFile(this.__paths[type]))
+  }
+
+  __loadFile (filename) {
     this.__configuration = _.merge(this.__configuration, this.__getFile(filename))
     return this
+  }
+
+  __vaultRCFile(configurationPath) {
+    return `${configurationPath}${path.sep}.vaultrc`
   }
 
   __getFile (filename) {

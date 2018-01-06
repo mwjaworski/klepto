@@ -12,10 +12,9 @@ module.exports = {
         return true
       })
       .action(function (args, done) {
-
         if (!args.path) {
           vorpal.log(JSON.stringify(ApplicationConfiguration.get(), null, 2))
-          return done();
+          return done()
         }
 
         const val = args.val

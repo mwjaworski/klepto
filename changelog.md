@@ -4,8 +4,10 @@
 
 - ADDED documentation
 - ADDED `configuration` will show the entire configuration object affecting a project folder
+- ADDED `initialize` creates a configuration file (`.vaultrc`) along with a resource file (`vault.json`)
 - FIXED always include the local folder last and the global folder before the folder traversal when calculating the application configuration
 - FIXED make sure the global configuration is before any folder traversal configurations
+- FIXED save klepto configuration
 
 ## 0.8.0
 

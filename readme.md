@@ -89,7 +89,7 @@ The configure command allows you to configure and inspect the settings which inf
 3. Every parent folder of the project folder, which is readable
 4. The project folder itself
 
-Each version over-writes keys the previous wrote. When you type `kelpto configure` you will see the entire configuration which affects Klepto.
+Each version over-writes deep keys (does not clobber top-level keys) the previous wrote. When you type `kelpto configure` you will see the entire configuration which affects Klepto.
 
 #### Write/Read
 
@@ -147,9 +147,21 @@ klepto install internal-archive/my-library@1.2.3
 
 ### Initialize
 
+```bash
+# setup a default configuration
+klepto initialze
+```
 
+
+
+Will initialize a project folder with two files, if they do not exist:
+
+1. A Klepto configuration (.vaultrc) which can be managed via `klepto configure`
+2. An archive manifest (vault.json) which identifies this archive and lists dependencies on other archives
 
 ### Status
+
+
 
 ### Clean
 
@@ -171,6 +183,27 @@ klepto exit
 Under the hood Klepto uses [Vorpal](http://vorpal.js.org/) which adds an `exit` command to the command list. Vorpal supports an interactive CLI session where an application will accept all commands from it's own prompt. Therefore it is important to offer an `exit` command to leave that session.
 
 Klepto disables this feature, but the `exit` command is added by Vorpal.
+
+## Configuration
+
+The following explains the full configuration for Klepto. Configurations for Klepto are stored in a .vaultrc file. The order .vaultrc files are read and merged to create a final configuration to use when invoking Klepto follows this order:
+
+1. The internal default configuration from Klepto
+2. The global configuration (at ~/.valultrc)
+3. Every parent folder of the project folder, which is readable
+4. The project folder itself
+
+Each version over-writes deep keys (does not clobber top-level keys) from the previous version.
+
+There are three sections to the configuration
+
+| Section   | Purpose                                  |
+| --------- | ---------------------------------------- |
+| `sources` | A set of external sources for where to install or publish to |
+| `paths`   | Folder paths for where to read/write files |
+| `rules`   | Information about different component systems, files to ignore, and rules special symbols for semantic versioning |
+
+
 
 ## License
 
