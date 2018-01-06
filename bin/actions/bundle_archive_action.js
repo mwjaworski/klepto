@@ -3,7 +3,6 @@ const StatusLog = require('../support/status_log')
 const bundleArchiveAction = (resourceBundle, manifestConfiguration) => {
   const { archiveBundle, PackageTool } = resourceBundle
 
-
   return PackageTool
     .pack(archiveBundle, manifestConfiguration)
     .then(({ releaseAsset }) => {

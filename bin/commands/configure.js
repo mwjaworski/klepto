@@ -23,11 +23,10 @@ module.exports = {
         }, settings)
 
         // TODO verify if key is valid
-        if (!!args.val) {
+        if (args.val) {
           valueKey[_.last(pathParts)] = (typeof val === 'string') ? val : JSON.parse(val)
           ApplicationConfiguration.saveFile(configurationFileScope, settings)
-        }
-        else {
+        } else {
           vorpal.log(JSON.stringify(ApplicationConfiguration.get(args.path), null, 2))
         }
 
