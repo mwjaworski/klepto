@@ -2,6 +2,7 @@
 
 ## 0.9.0
 
+- REMOVED `status` command, it was not implemented and mostly is implemented through updates to `configure`
 - ADDED documentation
 - ADDED `configuration` will show the entire configuration object affecting a project folder
 - ADDED `initialize` creates a configuration file (`.vaultrc`) along with a resource file (`vault.json`)
