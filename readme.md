@@ -89,7 +89,12 @@ Will initialize a project folder with two files, if they do not exist:
 
 ### Install
 
+Install is the core tool of Klepto, it installs a series of archives and all of their dependencies. Install has two modes:
 
+1. Install a single repository, and all dependencies
+2. Install all the dependencies of the archive (ie. read the archive configuration, bower.json, vault.json) of the current folder
+
+Regardless of which mode is chosen the result is the same, the vault/ folder will have new components. 
 
 ### Uninstall
 
@@ -212,6 +217,42 @@ Klepto disables this feature, but the `exit` command is added by Vorpal.
 
 ## Configuration
 
+### Archive Configuration
+
+Klepto is built to read multiple archive component manifests. Klepto has only one purpose, to install the correct version of an archive. Klepto only reviews the following keys, which happen to be consistent across a number of component/archive tools.
+
+```json
+{
+	"name": "--",
+	"version": "--",
+	"dependencies": {
+  
+	},
+	"devDependencies": {
+  
+	},
+	"ignore": [
+		"**/.*",
+		"node_modules",
+		"bower_components",
+		"test",
+		"tests"
+	]
+}
+```
+
+Klepto uses each property in the following ways:
+
+| Property        | Purpose                                  |
+| :-------------- | :--------------------------------------- |
+| name            | The name of the component when installed. |
+| version         | The version of this archive              |
+| dependencies    | The versions of archives required when being install and installing |
+| devDependencies | The versions of archives required when installing this component |
+| ignore          | Files/folders to ignore when installing an archive |
+
+### Klepto Application Configuration
+
 The following explains the full configuration for Klepto. Configurations for Klepto are stored in a .vaultrc file. The order .vaultrc files are read and merged to create a final configuration to use when invoking Klepto follows this order:
 
 1. The internal default configuration from Klepto
@@ -223,11 +264,11 @@ Each version over-writes deep keys (does not clobber top-level keys) from the pr
 
 There are three sections to the configuration
 
-| Section   | Purpose                                  |
-| --------- | ---------------------------------------- |
-| `sources` | A set of external sources for where to install or publish to |
-| `paths`   | Folder paths for where to read/write files |
-| `rules`   | Information about different component systems, files to ignore, and rules special symbols for semantic versioning |
+| Section | Purpose                                  |
+| ------- | ---------------------------------------- |
+| sources | A set of external sources for where to install or publish to |
+| paths   | Folder paths for where to read/write files |
+| rules   | Information about different component systems, files to ignore, and rules special symbols for semantic versioning |
 
 
 

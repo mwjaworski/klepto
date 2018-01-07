@@ -83,7 +83,7 @@ class ApplicationConfiguration {
     return this
   }
 
-  __vaultRCFile(configurationPath) {
+  __vaultRCFile (configurationPath) {
     return `${configurationPath}${path.sep}.vaultrc`
   }
 

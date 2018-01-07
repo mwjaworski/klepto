@@ -10,9 +10,8 @@ const uninstallArchiveAction = (archive) => {
       FileSystem.removeDirectory(uninstallPath)
       StatusLog.notify(`uninstalled`, archive)
       resolve()
-    }
-    else {
-      reject(`${uninstallPath} does not exist`)
+    } else {
+      reject(new Error(`${uninstallPath} does not exist`))
     }
   })
 }
