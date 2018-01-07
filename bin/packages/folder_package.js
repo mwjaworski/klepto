@@ -10,7 +10,9 @@ class FolderPackage {
         manifestConfiguration.ignore()
       ).then(() => {
         return {
-          releaseAsset: archiveBundle.releaseStaging
+          archiveBundle: {
+            releaseAsset: archiveBundle.releaseStaging
+          }
         }
       })
     })

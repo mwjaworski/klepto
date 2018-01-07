@@ -11,7 +11,9 @@ class TarPackage {
     }, [archiveBundle.releaseFolder])
       .then(() => {
         return {
-          releaseAsset
+          archiveBundle: {
+            releaseAsset
+          }
         }
       })
   }

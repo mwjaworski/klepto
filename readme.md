@@ -12,7 +12,7 @@
 
 Klepto is a package manager for self-hosted archive sets. Klepto provides the standard set of package management tools, but is designed to work alongside, or replace, existing package tools like [Bower](https://bower.io/) or [Component](https://github.com/componentjs/guide).
 
-The main audience for Klepto is a development group that wants to setup their own internal package repository. Klepto also supports transitioning away from other component systems; with custom scopes Klepto will use a different transport protocol for each scope matched, so a single `vault.json` can pull from local folders, bower,  and http paths each with dependencies which pull from different transport protocols.
+The main audience for Klepto is a development group that wants to setup their own internal package repository. Klepto also supports transitioning away from other component systems; with custom sources Klepto will use a different transport protocol for each source matched, so a single `vault.json` can pull from local folders, bower,  and http paths each with dependencies which pull from different transport protocols.
 
 Klepto supports archives distributed through the web, github repositories, ftp, or local folders. It supports archives being pulled from multiple sources and also searching across multiple sources.
 
@@ -25,7 +25,7 @@ When Klepto installs archives it:
 1. Resolves the reference against configurable scoping rules (eg @internal/sub-folder/repo)
 2. Pulls and caches an archive file/folder from an external source
 3. Reviews the archive manifest (eg. _bower.json_, component.json, or _vault.json_) rules to install all dependent archives
-4. All archives are placed in project archive folders, defined by the scope or match rule
+4. All archives are placed in project archive folders, defined by the source or match rule
 
 > Klepto does not pass through any commands to existing package managers. It is a stand-alone package manager which allows a development team to distribute packages as they choose.
 
@@ -94,7 +94,82 @@ Install is the core tool of Klepto, it installs a series of archives and all of 
 1. Install a single repository, and all dependencies
 2. Install all the dependencies of the archive (ie. read the archive configuration, bower.json, vault.json) of the current folder
 
-Regardless of which mode is chosen the result is the same, the vault/ folder will have new components. 
+Regardless of which mode is chosen the result is the same, the vault/ folder will have new components. The Install command has a few forms.
+
+```bash
+# install all archives in a <component-manifest>.json file
+klepto install
+# install a single archive, with dependencies, from a direct reference
+klepto install http://direct/referece.tar.gz
+# install a single archive, with dependencies, from a pre-defined scope
+klepto install acme-archive/big-red-button@2.0.0
+```
+
+Klepto can install from:
+
+- Git
+- HTTP(s)
+- (s)FTP
+- Local Folder
+
+Klepto can install archives packaged as:
+
+- Folder, as in a local folder or git repository
+- `.zip`
+- `.tar(.gz)`
+
+When you invoke Install, the _uri_ provided will indicate which transit and package protocol to use. There is no way to force Klepto to identify the resource differently.
+
+#### Source URI
+
+Usually you will have multiple archives stored in a central repository and want many people to call down archives consistently. To support this, we have Sources. A Source defines a mapping procedure between the source uri and the actuall uri you need. 
+
+We can install an archive in one of two ways:
+
+```bash
+# uses the source "big-blue"
+klepto install big-blue/button@1.2.3
+# source translates to this, which we could use directly
+klepto install https://dev.big-blue.co/archives/components/button_1.2.3.zip
+```
+
+> Klepto will use the version number associated with the install if the archive does not have a manifest that defines one.
+
+To define a source we edit a .vaultrc file in the project or at a parent folder. It is useful to include sources in parent folders because Klepto will merge all configuration files together, so the global sources you define will be merged in to the configuration used in a project.
+
+```json
+{
+  "sources": {
+    "big-blue": {
+      "pattern": "source/component",
+      "pull": {
+        "uri": "http://dev.big-blue.co/archives/components/${component}_${version}.zip"
+      }
+    }
+  }
+}
+```
+
+In the example above, we defined a `pattern` to split variables off of the source uri (`big-blue/button`) and then defined `uri` for `pull` to download the component and expand the uri. 
+
+#### Support Matrix
+
+|           | Zip        | Tar        | Folder     |
+| :-------- | :--------- | :--------- | :--------- |
+| __Git__   |            |            | Pull       |
+| __HTTP__  | Pull       | Pull       |            |
+| __FTP__   | Pull, Push | Pull, Push | Pull, Push |
+| __Local__ | Pull, Push | Pull, Push | Pull, Push |
+
+#### Supported Transit/Package Combinations
+
+##### Git / Folder
+
+
+
+Local / Folder & File
+
+A local path will always expand to an archive. 
 
 ### Uninstall
 
@@ -145,7 +220,7 @@ You can change all of these settings by editting the configuration in a text edi
 
 #### Sharing Configurations
 
-A useful application of this feature is to share configurations, for instance (see Install) if you want to give access to a set of install scopes (different paths to install/publisu) to an entire team, then you could share a single configuration at a root level of a users folder or project folder. 
+A useful application of this feature is to share configurations, for instance (see Install) if you want to give access to a set of install sources (different paths to install/publisu) to an entire team, then you could share a single configuration at a root level of a users folder or project folder. 
 
 If your folder structure were:
 
@@ -157,7 +232,7 @@ If your folder structure were:
 		- Project2
 ```
 
-The .vaultrc file might have a scope defined. If Klepto is invoked in Project 1 or Project 2 it will know the scope and install from that remote repository.
+The .vaultrc file might have a source defined. If Klepto is invoked in Project 1 or Project 2 it will know the source and install from that remote repository.
 
 The .vaultrc might have this in it.
 
@@ -169,12 +244,12 @@ The .vaultrc might have this in it.
       "pull": {
         "uri": "http://internal.co/components/${component}/${component}--${version}.zip"
       }
-    },
+    }
   }
 }
 ```
 
-This configuration would allow us to install to or publish to `internal-archive` as a scope.
+This configuration would allow us to install to or publish to `internal-archive` as a source.
 
 ```bash
 # will hit the server http://internal.co/
@@ -231,6 +306,9 @@ Klepto is built to read multiple archive component manifests. Klepto has only on
 	"devDependencies": {
   
 	},
+	"resolutions": {
+    
+	},
 	"ignore": [
 		"**/.*",
 		"node_modules",
@@ -249,6 +327,7 @@ Klepto uses each property in the following ways:
 | version         | The version of this archive              |
 | dependencies    | The versions of archives required when being install and installing |
 | devDependencies | The versions of archives required when installing this component |
+| resolutions     | the absolute version to install for an archive |
 | ignore          | Files/folders to ignore when installing an archive |
 
 ### Klepto Application Configuration

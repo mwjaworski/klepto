@@ -17,7 +17,9 @@ class ZipPackage {
       .then((content) => {
         FileSystem.write(releaseAsset, content)
         return {
-          releaseAsset
+          archiveBundle: {
+            releaseAsset
+          }
         }
       })
   }

@@ -27,12 +27,8 @@ module.exports = {
         createResourceBundleAction(manifestConfiguration)
           .then((resourcePackage) => {
             return bundleArchiveAction(resourcePackage, manifestConfiguration)
-              .then(() => {
-                if (!resourcePackage.releaseAsset) {
-                  return new Error(`no release asset defined`)
-                }
-
-                return uploadArchiveAction(resourcePackage, manifestConfiguration)
+              .then((bundledArchive) => {
+                return uploadArchiveAction(_.merge(resourcePackage, bundledArchive), manifestConfiguration)
                   .then(() => {
                     return StatusLog
                       .completeSuccess()
