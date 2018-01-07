@@ -75,6 +75,37 @@ klepto -v;
 
 Tracking and exposing the version of an application is standard practice. 
 
+### Initialize
+
+```bash
+# setup a default configuration
+klepto initialze
+```
+
+Will initialize a project folder with two files, if they do not exist:
+
+1. A Klepto configuration (.vaultrc) which can be managed via `klepto configure`
+2. An archive manifest (vault.json) which identifies this archive and lists dependencies on other archives
+
+### Install
+
+
+
+### Uninstall
+
+```bash
+# the command will fail, this component was never installed
+klepto uninstall does-not-exist
+```
+
+Uninstall will remove installed archives. This is a simple tool that erases folders. It will either erase the entire folder if you use `—all` or an archive, if named. 
+
+If the archive is not found, then command will fail.
+
+### Publish
+
+
+
 ### Configure
 
 ```bash
@@ -145,33 +176,28 @@ This configuration would allow us to install to or publish to `internal-archive`
 klepto install internal-archive/my-library@1.2.3
 ```
 
-### Initialize
+### Clean
 
 ```bash
-# setup a default configuration
-klepto initialze
+# erase temporary folders
+klepto clean
 ```
 
+There are two temporary folders which Klepto uses to store archives:
 
+1. cache, for the raw version of an archive
+2. staging, a normalized cache, where archives store the same way, unlike cache which can have different file types and folders based on the archive system
 
-Will initialize a project folder with two files, if they do not exist:
-
-1. A Klepto configuration (.vaultrc) which can be managed via `klepto configure`
-2. An archive manifest (vault.json) which identifies this archive and lists dependencies on other archives
-
-### Status
-
-
-
-### Clean
+Not all archives that Klepto supports express in the same way; some are files, some folders. Klepto needs a cache and staging folder to normalize an archive before deploying to an application folder.
 
 ### Download
 
-### Install
+```bash
+# download to cache/staging the button archive
+klepto download @external/button@1.0.0
+```
 
-### Uninstall
-
-### Publish
+Download is more of a helper command. It will fill the cache with archives based on the same rules as `klepto install`. All of the rules that apply to the Install command, apply to Download. The only difference is that Download will not take the last step of placing the resolved archive in the final vault file.
 
 ### Exit
 

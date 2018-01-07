@@ -2,6 +2,7 @@
 
 ## 0.9.0
 
+- ADDED `--all` to `uninstall` to erase the entire vault/ folder
 - REMOVED `status` command, it was not implemented and mostly is implemented through updates to `configure`
 - ADDED documentation
 - ADDED `configuration` will show the entire configuration object affecting a project folder
@@ -9,6 +10,7 @@
 - FIXED always include the local folder last and the global folder before the folder traversal when calculating the application configuration
 - FIXED make sure the global configuration is before any folder traversal configurations
 - FIXED save klepto configuration
+- FIXED `uninstall` will fail if the archive does not exist
 
 ## 0.8.0
 
