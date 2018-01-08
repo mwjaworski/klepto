@@ -158,18 +158,18 @@ In the example above, we defined a `pattern` to split variables off of the sourc
 | :-------- | :--------- | :--------- | :--------- |
 | __Git__   |            |            | Pull       |
 | __HTTP__  | Pull       | Pull       |            |
-| __FTP__   | Pull, Push | Pull, Push | Pull, Push |
+| __FTP__   | Push       | Push       | Push       |
 | __Local__ | Pull, Push | Pull, Push | Pull, Push |
 
 #### Supported Transit/Package Combinations
 
 ##### Git / Folder
 
-
+A git folder is treated as the entire archive. This is similar to how Bower or Component work and allow Klepto to support exist repositories as archives.
 
 Local / Folder & File
 
-A local path will always expand to an archive. 
+A local path, whether file or folder, will always expand to an archive. 
 
 ### Uninstall
 
