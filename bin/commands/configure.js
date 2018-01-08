@@ -5,6 +5,7 @@ module.exports = {
   registerVorpalCommand: (vorpal, ApplicationConfiguration) => {
     return vorpal
       .command(`configure [path] [val]`)
+      .option('--encrypt', 'Encrypt the value saved.')
       .option('--local', '(default) Apply changes to local settings.')
       .option('--global', 'Apply changes to global (~/) settings.')
       .alias(`conf`)
@@ -32,7 +33,7 @@ module.exports = {
 
         if (args.val) {
           const value = (typeof val === 'string') ? val : JSON.parse(val)
-          const protectedValue = (args.path.indexOf('authentication') > -1) ? SecurityServant.encrypt(value) : value
+          const protectedValue = (!!args.options.encrypt) ? SecurityServant.encrypt(value) : value
           valueKey[_.last(pathParts)] = protectedValue
           ApplicationConfiguration.saveFile(configurationFileScope, settings)
         } else {

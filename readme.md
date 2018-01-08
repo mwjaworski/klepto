@@ -184,7 +184,49 @@ If the archive is not found, then command will fail.
 
 ### Publish
 
+While all commands will work without configuration, the Publish command works best if configured through a .vaultrc file. To publish to FTP I would need a .vaultrc with these properties:
 
+```json
+{
+  "sources": {
+    "myftp": {
+      "pattern": "source/component",
+      "push": {
+        "uri": "ftp://you@127.0.0.1:22/components/${component}",
+        "subfolder": "release/folder/"
+      },
+      "authentication": {
+        "key": "abcdefghijk"
+      }
+    }
+  }
+}
+```
+
+You need three things to publish: 
+
+1. A uri to publish to
+2. A subfolder usually where your release exists in the project
+3. Authentication information, which usually is stored elsewhere, but can be included in Klepto
+
+To use this configuration with Publish you would:
+
+```bash
+# publish the release folder as a folder
+klepto publish myftp/?
+# publish the release folder as a zip file
+klepto publish myftp/?.zip
+```
+
+> The `?` is a special character in the Publish command, it is a substitute for `component__version` and does not have to be used.
+
+#### Storing Authentication Keys
+
+The Publish command with FTP requires you add your password as an authentication property. To add this to your .vaultrc use Configure.
+
+```bash
+klepto configure --encrypt myftp.authentication.key myPassword
+```
 
 ### Configure
 

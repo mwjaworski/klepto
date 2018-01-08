@@ -2,6 +2,7 @@
 
 ## 0.9.0
 
+- ADDED `--encrypt` to `configure` to encrypt values on .vaultrc
 - ADDED `--all` to `uninstall` to erase the entire vault/ folder
 - REMOVED `status` command, it was not implemented and mostly is implemented through updates to `configure`
 - ADDED documentation
@@ -11,6 +12,7 @@
 - FIXED make sure the global configuration is before any folder traversal configurations
 - FIXED save klepto configuration
 - FIXED `uninstall` will fail if the archive does not exist
+- FIXED publish FTP will report errors
 
 ## 0.8.0
 
