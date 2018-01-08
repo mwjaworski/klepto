@@ -1,3 +1,4 @@
+const SecurityServant = require('../servants/security_servant')
 const _ = require('lodash')
 
 module.exports = {
@@ -30,7 +31,9 @@ module.exports = {
         // TODO verify if key is valid
 
         if (args.val) {
-          valueKey[_.last(pathParts)] = (typeof val === 'string') ? val : JSON.parse(val)
+          const value = (typeof val === 'string') ? val : JSON.parse(val)
+          const protectedValue = (args.path.indexOf('authentication') > -1) ? SecurityServant.encrypt(value) : value
+          valueKey[_.last(pathParts)] = protectedValue
           ApplicationConfiguration.saveFile(configurationFileScope, settings)
         } else {
           vorpal.log(JSON.stringify(ApplicationConfiguration.get(args.path), null, 2))

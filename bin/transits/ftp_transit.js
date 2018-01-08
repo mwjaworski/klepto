@@ -13,7 +13,8 @@ class FTPTransit {
       const ftp = new FTP()
 
       ftp.on('error', (err) => {
-        return reject(new Error(err))
+        ftp.destroy()
+        reject(new Error(`ftp: ${err.toString()}`))
       })
 
       ftp.on('ready', () => {
@@ -48,7 +49,7 @@ class FTPTransit {
     })
   }
 
-  static __ftpInfo ({ uri, scope, scopeSource }) {
+  static __ftpInfo ({ uri, scope, sourceScope }) {
     const PARSE_FTP = /(ftp:\/\/)([a-z0-9A-Z]+?)@([.a-z0-9A-Z]+?):([0-9]+?)\/(.*)/
     const ftpURI = PARSE_FTP.exec(uri)
 
@@ -61,7 +62,7 @@ class FTPTransit {
       password: ''
     }
 
-    const encryptedKey = _.get(scopeSource, `authentication.key`)
+    const encryptedKey = _.get(sourceScope, `authentication.key`)
 
     ftpInfo.password = SecurityServant.decrypt(encryptedKey)
     return ftpInfo

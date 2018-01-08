@@ -6,34 +6,46 @@ class SecurityServant {
    *
    * @param {String} message
    */
-  static encrypt (message) {
-    const cipher = crypto.createCipher(
-      `aes-256-ctr`,
-      this.__salt()
-    )
+  static encrypt(message) {
+    try {
+      const cipher = crypto.createCipher(
+        `aes192`,
+        this.__salt()
+      )
 
-    return cipher.update(message, 'utf8', 'hex') + cipher.final('hex')
+      return cipher.update((message + '').toString(), 'utf8', 'hex') + cipher.final('hex')
+    }
+    catch(e) {
+      console.error(`encrypt`, e);
+      return '';
+    }
   }
 
   /**
    *
    * @param {String} cipher
    */
-  static decrypt (cipher) {
-    const decipher = crypto.createDecipher(
-      `aes-256-ctr`,
-      this.__salt()
-    )
+  static decrypt(cipher) {
+    try {
+      const decipher = crypto.createDecipher(
+        `aes192`,
+        this.__salt()
+      )
 
-    return decipher.update(cipher, 'hex', 'utf8') + decipher.final('utf8')
+      return decipher.update(cipher, 'hex', 'utf8') + decipher.final('utf8')
+    }
+    catch(e) {
+      console.error(`decrypt`, e);
+      return '';
+    }
   }
 
-  static __salt () {
+  static __salt() {
     const {
       gid
     } = os.userInfo()
 
-    return `${gid}`
+    return `__${gid}`
   }
 }
 

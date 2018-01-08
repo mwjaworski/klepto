@@ -7,9 +7,7 @@
         "destination": "vault",
         "subfolder": ""
       },
-      "push": {
-
-      },
+      "push": {},
       "constants": {}
     },
     "universal-es6": {
@@ -29,7 +27,7 @@
     "eabui-ftp": {
       "pattern": "source/component",
       "pull": {
-        "uri": "ftp://jaworskm@10.150.131.39:21/${component}",
+        "uri": "ftp://jaworskm@10.150.131.39:21/var/www/html/release/components/${component}",
         "subfolder": "release/es5/"
       },
       "push": {
@@ -37,7 +35,7 @@
         "subfolder": "./bin/"
       },
       "authentication": {
-        "key": "e607cd1bb68ac68230f6"
+        "key": "33974c4a43284aa028debec3becad886"
       }
     }
   }

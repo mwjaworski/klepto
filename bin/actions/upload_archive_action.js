@@ -5,14 +5,17 @@ const uploadArchiveAction = (resourceBundle, manifestConfiguration) => {
     const { archiveBundle, TransitTool } = resourceBundle
 
     if (!archiveBundle.releaseAsset) {
-      reject(new Error(`no release asset defined`))
+      reject(new Error(`you must specify the asset to publish`))
     }
 
-    return TransitTool
+    TransitTool
       .push(archiveBundle, manifestConfiguration)
       .then(() => {
         StatusLog.notify(`uploaded`, archiveBundle.uuid)
-        return resourceBundle
+        resolve(resourceBundle)
+      })
+      .catch(err => {
+        reject(err)
       })
   })
 }

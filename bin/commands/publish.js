@@ -31,7 +31,7 @@ module.exports = {
             return bundleArchiveAction(resourcePackage, manifestConfiguration)
               .then((bundledArchive) => {
                 return uploadArchiveAction(_.merge(resourcePackage, bundledArchive), manifestConfiguration)
-                  .then(() => {
+                  .then((what) => {
                     return StatusLog
                       .completeSuccess()
                       .then(() => done())

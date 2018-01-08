@@ -9,12 +9,13 @@ class FolderPackage {
         archiveBundle.releaseStaging,
         manifestConfiguration.ignore()
       ).then(() => {
-        return {
+        resolve({
           archiveBundle: {
             releaseAsset: archiveBundle.releaseStaging
           }
-        }
+        })
       })
+      .catch((reason) => reject(new Error(reason)))
     })
   }
   static unpack ({ cachePath, stagingPath }) {
