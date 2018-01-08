@@ -5,6 +5,8 @@ const uploadArchiveAction = require('../actions/upload_archive_action')
 const ManifestConfiguration = require('../configurations/manifest')
 const StatusLog = require('../support/status_log')
 
+const _ = require('lodash')
+
 module.exports = {
   registerVorpalCommand: (vorpal, ApplicationConfiguration) => {
     return vorpal
