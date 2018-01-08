@@ -1,11 +1,13 @@
 const DependencyLog = require('../support/dependency_log')
+const StatusLog = require('../support/status_log')
 
 const resolveArchiveAction = function (archiveConfiguration) {
   return new Promise((resolve, reject) => {
-    const resolutions = DependencyLog.resolutions(archiveConfiguration.resolutions)
+    const resolveArchiveRequests = DependencyLog.resolutions(archiveConfiguration.resolutions)
 
-    archiveConfiguration.applyResolutions(resolutions)
-    resolve(resolutions)
+    StatusLog.notify(`resolved dependencies`)
+    archiveConfiguration.applyResolutions(resolveArchiveRequests)
+    resolve(resolveArchiveRequests)
   })
 }
 

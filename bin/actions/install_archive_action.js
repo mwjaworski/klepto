@@ -3,13 +3,14 @@ const ManifestConfiguration = require('../configurations/manifest')
 
 const FileSystem = require('../support/file_system')
 const StatusLog = require('../support/status_log')
+const path = require('path')
 const _ = require('lodash')
 
 const installArchiveAction = (archiveRequest, installedName) => {
   const paths = ApplicationConfiguration.get(`paths`)
   const manifestJson = ManifestConfiguration.build(archiveRequest.stagingPath)
   const archiveFolder = _.get(archiveRequest, 'scope.pull.destination', paths.archive)
-  const archivePath = `${archiveFolder}/${archiveRequest.installedName}/`
+  const archivePath = `${archiveFolder}${path.sep}${archiveRequest.installedName}${path.sep}`
   const installFrom = `${archiveRequest.stagingPath}${_.get(archiveRequest, 'scope.pull.subfolder', '')}`
   const ignoreFolders = _.merge(
     ApplicationConfiguration.get(`rules.ignoreFiles`, []),
@@ -19,7 +20,7 @@ const installArchiveAction = (archiveRequest, installedName) => {
   return FileSystem
     .createDirectory(`${archiveFolder}/`)
     .removeDirectory(`${archiveFolder}/${archiveRequest.archive}`)
-    .copyNonIgnoredFiles(installFrom, archivePath, ignoreFolders)
+    .copyFiles(installFrom, archivePath, ignoreFolders)
     .then(() => {
       StatusLog.notify(`installed`, archiveRequest.uuid)
       return manifestJson

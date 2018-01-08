@@ -23,7 +23,7 @@ class VersionServant {
     return semver.maxSatisfying(_.compact(_.map(possibleVersions, this.fixVersion)), versionRange)
   }
   static findAppropriateBranchName (version) {
-    return version.replace(Discover.REMOVE_DOTS, '')
+    return (version) ? version.replace(Discover.REMOVE_DOTS, '') : 'master'
   }
   static isVersionRange (version) {
     return version.match(Discover.IS_VERSION_RANGE) !== null

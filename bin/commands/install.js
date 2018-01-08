@@ -26,8 +26,8 @@ module.exports = {
               .then(() => {
                 return resolveArchiveAction(archiveConfiguration)
               })
-              .then((resolutions) => {
-                return installArchivesAction(resolutions)
+              .then((resolveArchiveRequests) => {
+                return installArchivesAction(resolveArchiveRequests)
               })
               .then(() => {
                 if (args.options['save-dev'] || args.options['save']) {

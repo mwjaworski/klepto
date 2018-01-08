@@ -10,7 +10,7 @@ class FileSystem {
    * @param {String} to write to folder
    * @param {Array<String>} ignoredFolders folders to ignore with micromatch
    */
-  static copyNonIgnoredFiles (from, to, ignoredFolders) {
+  static copyFiles (from, to, ignoredFolders) {
     const copyOptions = {
       filter: (source, destination) => {
         const relativePath = _.last(source.split(from))
