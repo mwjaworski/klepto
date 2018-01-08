@@ -1,8 +1,8 @@
 const injectDependencyReferenceAction = require('../actions/inject_dependency_reference_action')
 const downloadArchivesAction = require('../actions/download_archives_action')
 const installArchivesAction = require('../actions/install_archives_action')
+const resolveArchiveAction = require('../actions/resolve_archive_action')
 
-const DependencyLog = require('../support/dependency_log')
 const StatusLog = require('../support/status_log')
 
 module.exports = {
@@ -24,10 +24,10 @@ module.exports = {
 
             downloadArchivesAction(archiveDependencies, archiveName)
               .then(() => {
-                const resolutions = DependencyLog.resolutions(archiveConfiguration.resolutions)
-
-                archiveConfiguration.applyResolutions(resolutions)
-                return installArchivesAction(resolutions)
+                return resolveArchiveAction(archiveConfiguration)
+              })
+              .then((resolveArchiveRequests) => {
+                return installArchivesAction(resolveArchiveRequests)
               })
               .then(() => {
                 if (args.options['save-dev'] || args.options['save']) {

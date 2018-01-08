@@ -18,7 +18,6 @@ const augmentCommand = (vorpalCommand) => {
   `initialize`,
   `install`,
   `publish`,
-  `status`,
   `uninstall`,
   `version`
 ].forEach((command) => {

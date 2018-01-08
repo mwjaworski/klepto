@@ -1,16 +1,14 @@
 const StatusLog = require('../support/status_log')
+const _ = require('lodash')
 
 const bundleArchiveAction = (resourceBundle, manifestConfiguration) => {
   const { archiveBundle, PackageTool } = resourceBundle
 
-
   return PackageTool
     .pack(archiveBundle, manifestConfiguration)
-    .then(({ releaseAsset }) => {
+    .then((_resourceBundle) => {
       StatusLog.notify(`packaged`, archiveBundle.uuid)
-      resourceBundle.archiveBundle.releaseAsset = releaseAsset
-
-      return resourceBundle
+      return _.merge(resourceBundle, _resourceBundle)
     })
 }
 

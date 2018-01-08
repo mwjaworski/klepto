@@ -6,7 +6,7 @@ We need a way to specify git paths which will fail if they are straight URL's pi
 
 In our configuration which we can store in a couple of places and merge together!
 
-node bin/index.js cache --audit ../bower-alternative-source-resolver.zip 1.2.3
+node bin/index.js download --audit ../bower-alternative-source-resolver.zip 1.2.3
 
 ```json
 {
@@ -49,15 +49,17 @@ git + folder/tar
 local + tar
 web + tar
 
-node bin/index.js cache ../bower-alternative-source-resolver.zip #1.2.3
-node bin/index.js cache http://phoenix.eab.com/projects/core-ply-brand_3.8.0.zip #1.2.3
-node bin/index.js cache https://JaworskM@repo.advisory.com/scm/~jaworskm/test-test.git #1.2.3 core-ply-brand_3.8.0.zip
+node bin/index.js download https://github.com/mwjaworski/configula.git --addendum
 
-node bin/index.js cache @f1/bower-alternative-source-resolver #1.2.3
-node bin/index.js cache @phoenix/core-ply-brand_3.8.0 #1.2.3
-node bin/index.js cache @repo/biz-ng-career-details/core-ply-brand_3.8.0 #1.2.3
+node bin/index.js download ../bower-alternative-source-resolver.zip #1.2.3
+node bin/index.js download http://phoenix.eab.com/projects/core-ply-brand_3.8.0.zip #1.2.3
+node bin/index.js download https://JaworskM@repo.advisory.com/scm/~jaworskm/test-test.git #1.2.3 core-ply-brand_3.8.0.zip
 
-node bin/index.js cache https://JaworskM@repo.advisory.com/scm/~jaworskm/test-test.git core-ply-brand_3.8.0.zip
+node bin/index.js download @f1/bower-alternative-source-resolver #1.2.3
+node bin/index.js download @phoenix/core-ply-brand_3.8.0 #1.2.3
+node bin/index.js download @repo/biz-ng-career-details/core-ply-brand_3.8.0 #1.2.3
+
+node bin/index.js download https://JaworskM@repo.advisory.com/scm/~jaworskm/test-test.git core-ply-brand_3.8.0.zip
 
 <!-- node bin/index.js audit -r http://phoenix.eab.com/projects/core-ply-brand_3.8.0.zip -->
 
@@ -75,9 +77,9 @@ node bin/index.js cache https://JaworskM@repo.advisory.com/scm/~jaworskm/test-te
 `klepto install http://phoenix.eab.com/projects/core-ply-brand_3.8.0.zip`
 -->
 
-node bin/index.js cache --audit http://phoenix.eab.com/projects/core-ply-brand_3.8.0.zip
+node bin/index.js download --audit http://phoenix.eab.com/projects/core-ply-brand_3.8.0.zip
 
-node bin/index.js cache http://phoenix.eab.com/projects/core-ply-brand_3.8.0.zip
+node bin/index.js download http://phoenix.eab.com/projects/core-ply-brand_3.8.0.zip
 
 
 A. web + zip           http://a.b.c/file.zip 1.2.3                    YES
@@ -106,12 +108,12 @@ D. node bin/index.js download  ../ bower-alternative-source-resolver.zip 1.2.3
 E. node bin/index.js download  ../bower-alternative-source-resolver.zip@1.2.3
 F. node bin/index.js download  ../test@S1.2.3
 
-A. cache (zip)          staging (folder)    component (folder-refined)    DONE
-B. cache (folder/zip)   staging (folder)    component (folder-refined)    ----
-C. cache (folder)       staging (folder)    component (folder-refined)    ----
-D. cache (folder/zip)   staging (folder)    component (folder-refined)    DONE
-E. cache (zip)          staging (folder)    component (folder-refined)    DONE
-F. cache (folder)       staging (folder)    component (folder-refined)    DONE
+A. download (zip)          staging (folder)    component (folder-refined)    DONE
+B. download (folder/zip)   staging (folder)    component (folder-refined)    ----
+C. download (folder)       staging (folder)    component (folder-refined)    ----
+D. download (folder/zip)   staging (folder)    component (folder-refined)    DONE
+E. download (zip)          staging (folder)    component (folder-refined)    DONE
+F. download (folder)       staging (folder)    component (folder-refined)    DONE
 
 ## Detect Version
 
@@ -121,28 +123,28 @@ F. cache (folder)       staging (folder)    component (folder-refined)    DONE
 
 where can I check version and compare against existing?
 
-A. cache (web + zip)            on a vault-manifest.json hosted at the site
-B. cache (git + folder/zip)     other files with the version stripped out
-C. cache (git + folder)         use git versioning (to see tags)
-D. cache (local + folder/zip)   other files with the version stripped out
-E. cache (local + zip)          other files with the version stripped out
-F. cache (local + folder)       other folders with the version stripped out
+A. download (web + zip)            on a vault-manifest.json hosted at the site
+B. download (git + folder/zip)     other files with the version stripped out
+C. download (git + folder)         use git versioning (to see tags)
+D. download (local + folder/zip)   other files with the version stripped out
+E. download (local + zip)          other files with the version stripped out
+F. download (local + folder)       other folders with the version stripped out
 
 1. (A) download a vault-manifest.json (PENDING)
 2. (B, D, E, F*) tear version off of file/folder and scan
 3. (C) ask git for a tag list and review
 
 1. we pull remote
-2. we have to scan the cache/
-3. we have to scan the cache/
+2. we have to scan the download/
+3. we have to scan the download/
 
 ```bash
 node bin/index.js install  ../folder_a/ xew.zip
-node bin/index.js cache  ../link-talk
-node bin/index.js cache
-node bin/index.js cache  https://github.com/advisory/phoenix/blob/master/ui-ply-input_3.8.0.zip?raw=true
+node bin/index.js download  ../link-talk
+node bin/index.js download
+node bin/index.js download  https://github.com/advisory/phoenix/blob/master/ui-ply-input_3.8.0.zip?raw=true
 https://github.com/advisory/phoenix/ ui-ply-input_3.8.0.zip
-klepto cache https://github.com/advisory/phoenix.git ui-ply-input_3.8.0.zip
+klepto download https://github.com/advisory/phoenix.git ui-ply-input_3.8.0.zip
 klepto install https://github.com/advisory/phoenix.git ui-ply-input_3.8.0.zip
 ```
 

@@ -4,15 +4,18 @@ const fs = require('fs-extra')
 class FolderPackage {
   static pack (archiveBundle, manifestConfiguration) {
     return new Promise((resolve, reject) => {
-      FileSystem.copyNonIgnoredFiles(
+      FileSystem.copyFiles(
         archiveBundle.releaseFolder,
         archiveBundle.releaseStaging,
         manifestConfiguration.ignore()
       ).then(() => {
-        return {
-          releaseAsset: archiveBundle.releaseStaging
-        }
+        resolve({
+          archiveBundle: {
+            releaseAsset: archiveBundle.releaseStaging
+          }
+        })
       })
+      .catch((reason) => reject(new Error(reason)))
     })
   }
   static unpack ({ cachePath, stagingPath }) {

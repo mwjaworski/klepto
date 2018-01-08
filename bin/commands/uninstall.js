@@ -4,7 +4,8 @@ const StatusLog = require('../support/status_log')
 module.exports = {
   registerVorpalCommand: (vorpal, ApplicationConfiguration) => {
     return vorpal
-      .command(`uninstall <archive>`)
+      .command(`uninstall [archive]`)
+      .option('-a, --all', `Uninstall entire vault`)
       .description(`Uninstall an archive.`)
       .validate(function (args) {
         return true
@@ -14,7 +15,9 @@ module.exports = {
           archive
         } = args
 
-        uninstallArchiveAction(archive, vorpal)
+        const archiveOrAll = (args.options.all) ? '' : archive
+
+        uninstallArchiveAction(archiveOrAll, vorpal)
           .then(() => {
             return StatusLog
               .completeSuccess()

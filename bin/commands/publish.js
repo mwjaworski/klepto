@@ -5,6 +5,8 @@ const uploadArchiveAction = require('../actions/upload_archive_action')
 const ManifestConfiguration = require('../configurations/manifest')
 const StatusLog = require('../support/status_log')
 
+const _ = require('lodash')
+
 module.exports = {
   registerVorpalCommand: (vorpal, ApplicationConfiguration) => {
     return vorpal
@@ -27,13 +29,9 @@ module.exports = {
         createResourceBundleAction(manifestConfiguration)
           .then((resourcePackage) => {
             return bundleArchiveAction(resourcePackage, manifestConfiguration)
-              .then(() => {
-                if (!resourcePackage.releaseAsset) {
-                  return new Error(`no release asset defined`)
-                }
-
-                return uploadArchiveAction(resourcePackage, manifestConfiguration)
-                  .then(() => {
+              .then((bundledArchive) => {
+                return uploadArchiveAction(_.merge(resourcePackage, bundledArchive), manifestConfiguration)
+                  .then((what) => {
                     return StatusLog
                       .completeSuccess()
                       .then(() => done())

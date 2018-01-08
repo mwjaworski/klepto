@@ -14,6 +14,8 @@ module.exports = {
 
         projectManifest.initializeLocal()
         projectManifest.saveLocal()
+
+        ApplicationConfiguration.initializeLocal()
         done()
       })
   }
