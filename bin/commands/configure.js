@@ -33,7 +33,7 @@ module.exports = {
 
         if (args.val) {
           const value = (typeof val === 'string') ? val : JSON.parse(val)
-          const protectedValue = (!!args.options.encrypt) ? SecurityServant.encrypt(value) : value
+          const protectedValue = (args.options.encrypt) ? SecurityServant.encrypt(value) : value
           valueKey[_.last(pathParts)] = protectedValue
           ApplicationConfiguration.saveFile(configurationFileScope, settings)
         } else {

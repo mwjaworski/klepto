@@ -6,7 +6,7 @@ class SecurityServant {
    *
    * @param {String} message
    */
-  static encrypt(message) {
+  static encrypt (message) {
     try {
       const cipher = crypto.createCipher(
         `aes192`,
@@ -14,10 +14,9 @@ class SecurityServant {
       )
 
       return cipher.update((message + '').toString(), 'utf8', 'hex') + cipher.final('hex')
-    }
-    catch(e) {
-      console.error(`encrypt`, e);
-      return '';
+    } catch (e) {
+      console.error(`encrypt`, e)
+      return ''
     }
   }
 
@@ -25,7 +24,7 @@ class SecurityServant {
    *
    * @param {String} cipher
    */
-  static decrypt(cipher) {
+  static decrypt (cipher) {
     try {
       const decipher = crypto.createDecipher(
         `aes192`,
@@ -33,14 +32,13 @@ class SecurityServant {
       )
 
       return decipher.update(cipher, 'hex', 'utf8') + decipher.final('utf8')
-    }
-    catch(e) {
-      console.error(`decrypt`, e);
-      return '';
+    } catch (e) {
+      console.error(`decrypt`, e)
+      return ''
     }
   }
 
-  static __salt() {
+  static __salt () {
     const {
       gid
     } = os.userInfo()
