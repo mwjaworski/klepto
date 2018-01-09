@@ -53,9 +53,13 @@ class ZipPackage {
           }
       }
 
+      // TODO decide if we should include more than bare folder
+      // `${archiveBundle.archive}${path.sep}${archiveBundle.version}${path.sep}${filePath}`
+      const zipFilePath = `${filePath.replace(archiveBundle.releaseFolder.replace('./', ''), '')}`
+
       // TODO figure out how we allow this to be configured...
       zip.file(
-        `${archiveBundle.archive}${path.sep}${archiveBundle.version}${path.sep}${filePath}`,
+        zipFilePath,
         fs.readFileSync(filePath, readFileOptions),
         addZipOptions
       )

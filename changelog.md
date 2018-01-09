@@ -1,5 +1,9 @@
 # Klepto Changelog
 
+## 0.9.4
+
+- REFACTORED Zip `pack` will not include project or version but the bare folder structure
+
 ## 0.9.3
 
 - ADDED name and version variables to `uri` template strings for scope resolution
