@@ -1,5 +1,10 @@
 # Klepto Changelog
 
+## 0.9.3
+
+- ADDED name and version variables to `uri` template strings for scope resolution
+- FIXED creating a directory for ftp push is fixed
+
 ## 0.9.2
 
 - ADDED `--system` to force initialize of a component system in `initialize`

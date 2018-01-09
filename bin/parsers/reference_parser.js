@@ -30,7 +30,7 @@ class ReferenceParser {
     const {
       resource,
       scope
-    } = this.__scopeToResource(scopeOrReference, `push.uri`)
+    } = this.__scopeToResource(scopeOrReference, manifestConfiguration, `push.uri`)
 
     return this.__resourceToArchivePackage(manifestConfiguration, resource, scope)
   }
@@ -40,7 +40,7 @@ class ReferenceParser {
     const {
       resource,
       scope
-    } = this.__scopeToResource(scopeOrReference, `pull.uri`)
+    } = this.__scopeToResource(scopeOrReference, manifestConfiguration, `pull.uri`)
 
     return this.__resourceToArchiveRequest(resource, scope, overrideUniqueName)
   }
@@ -75,7 +75,7 @@ class ReferenceParser {
    * @param {*} scopeOrReference
    * @param {String} operationType either `push_uri` or `pull_uri`
    */
-  static __scopeToResource (scopeOrReference, operationType) {
+  static __scopeToResource (scopeOrReference, manifestConfiguration, operationType) {
     const patternMarkers = ApplicationConfiguration.get(`rules.patternMarkers`)
     const [uri, version = `*`] = this.splitURIVersion(scopeOrReference)
     const uriAspects = uri.split(patternMarkers.separator)
@@ -105,8 +105,8 @@ class ReferenceParser {
 
     return {
       scope,
-      resource: _.template(template)(_.merge({}, templateVariables, constants, {
-        version
+      resource: _.template(template)(_.merge({}, manifestConfiguration.__manifest, templateVariables, constants, {
+        version: manifestConfiguration.__manifest.version || version
       }))
     }
   }

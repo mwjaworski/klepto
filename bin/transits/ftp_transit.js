@@ -21,7 +21,7 @@ class FTPTransit {
         let uploaded = pushFiles.length
 
         pushFiles.forEach((file) => {
-          const aspects = file.split(path.sep)
+          const aspects = ftpInfo.filePath.split(path.sep)
           const folder = _.initial(aspects).join(path.sep)
 
           ftp.mkdir(folder, recursivelyCreate, () => {
