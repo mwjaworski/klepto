@@ -10,27 +10,25 @@ class ManifestConfiguration {
     return this
   }
 
-  static build (archivePath, forceUpdate) {
-    this.__manifests[archivePath] = (!forceUpdate)
-      ? this.__manifests[archivePath] || new ManifestConfiguration(archivePath)
-      : new ManifestConfiguration(archivePath)
-
-    return this.__manifests[archivePath]
-  }
-
-  constructor (archivePath) {
-    this.assignManifest(archivePath)
+  static build (archivePath) {
+    const manifest = this.__manifests[archivePath] = this.__manifests[archivePath] || new ManifestConfiguration()
+    return manifest.assignManifest(archivePath)
   }
 
   assignManifest (archivePath) {
-    const { configurationSystem, json, path } = this.__locatePrioritizedManifest(archivePath)
+    const configurationSystemList = (this.__system)
+      ? [this.__system]
+      : ApplicationConfiguration.get(`rules.configurationSystem`)
 
-    this.__system = configurationSystem
+    const { configurationSystem, json, path } = this.__locatePrioritizedManifest(archivePath, configurationSystemList)
+
+    this.__system = this.__system || configurationSystem
     this.__manifest = json
     this.__path = path
+    return this;
   }
 
-  __locatePrioritizedManifest (archivePath, configurationSystemList = ApplicationConfiguration.get(`rules.configurationSystem`)) {
+  __locatePrioritizedManifest (archivePath, configurationSystemList) {
     if (!archivePath) {
       return this.__emptyManifest()
     }
@@ -115,6 +113,10 @@ class ManifestConfiguration {
 
   get system () {
     return this.__system
+  }
+
+  set system (_system) {
+    this.__system = _.find(ApplicationConfiguration.get(`rules.configurationSystem`), (system) => system.toolName === _system)
   }
 
   set releaseFolder (_folder) {

@@ -6,9 +6,10 @@ const os = require('os')
 
 class ApplicationConfiguration {
   constructor () {
+    this.__root = __dirname.replace(`${path.sep}bin${path.sep}configurations`, '')
     this.__configuration = {}
     this.__paths = {
-      application: `configuration`,
+      application: `${this.__root}/configuration`,
       global: os.homedir(),
       local: process.cwd()
     }
@@ -40,7 +41,11 @@ class ApplicationConfiguration {
     return this
   }
 
-  initializeLocal () {
+  initializeLocal() {
+    // already initialized
+  }
+
+  saveLocal () {
     if (!this.hasLocalFile()) {
       this.saveLocalFile({
         sources: {},

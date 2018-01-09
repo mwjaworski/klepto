@@ -1,5 +1,10 @@
 # Klepto Changelog
 
+## 0.9.2
+
+- ADDED `--system` to force initialize of a component system in `initialize`
+- FIXED when initializing a project, support forcing the system
+
 ## 0.9.1
 
 - FIXED Prefer vault.json and .vaultrc over any other component library.

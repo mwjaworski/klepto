@@ -28,14 +28,17 @@
       "package-lock.json"
     ],
     "configurationSystem": [{
+        "toolName": "klepto",
         "toolConfiguration": ".vaultrc",
         "archiveManifest": "vault.json",
         "versionSeparator": "@"
       }, {
+        "toolName": "bower",
         "toolConfiguration": ".bowerrc",
         "archiveManifest": "bower.json",
         "versionSeparator": "#"
       }, {
+        "toolName": "component",
         "toolConfiguration": ".does_not_exist",
         "archiveManifest": "component.json",
         "versionSeparator": "#"

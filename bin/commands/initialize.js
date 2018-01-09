@@ -5,17 +5,26 @@ module.exports = {
     return vorpal
       .command(`initialize`)
       .alias(`init`)
+      .option('-s, --system <system>', `Initialize a system (klepto, bower, component)`)
       .description(`Create an initial configuration`)
       .validate(function (args) {
         return true
       })
       .action(function (args, done) {
-        const projectManifest = ManifestConfiguration.build(`./`, `force-update`)
+        const projectManifest = new ManifestConfiguration()
 
-        projectManifest.initializeLocal()
-        projectManifest.saveLocal()
+        if (args.options.system) {
+          projectManifest.system = args.options.system
+        }
+
+        projectManifest.assignManifest(`./`)
 
         ApplicationConfiguration.initializeLocal()
+        projectManifest.initializeLocal()
+
+        ApplicationConfiguration.saveLocal()
+        projectManifest.saveLocal()
+
         done()
       })
   }
