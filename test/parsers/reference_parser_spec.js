@@ -40,7 +40,7 @@ test.cb('parser: scope-to-resource (local)', t => {
     }
   })
 
-  const { resource } = ReferenceParser.__scopeToResource(`local_source/def/ghi/hij@1.2.3`, `pull.uri`)
+  const { resource } = ReferenceParser.__scopeToResource(`local_source/def/ghi/hij@1.2.3`, {}, `pull.uri`)
 
   t.is(resource, `~/local_source/components/def/ghi/hij/1.2.3/`)
   t.end()
@@ -60,7 +60,7 @@ test.cb('parser: scope-to-resource (web)', t => {
     }
   })
 
-  const { resource } = ReferenceParser.__scopeToResource(`web-source/blueprint@1.2.3`, `pull.uri`)
+  const { resource } = ReferenceParser.__scopeToResource(`web-source/blueprint@1.2.3`, {}, `pull.uri`)
 
   t.is(resource, `http://phoenix.eab.com/eabui/blueprint__1.2.3.zip`)
   t.end()

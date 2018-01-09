@@ -25,7 +25,7 @@ class ManifestConfiguration {
     this.__system = this.__system || configurationSystem
     this.__manifest = json
     this.__path = path
-    return this;
+    return this
   }
 
   __locatePrioritizedManifest (archivePath, configurationSystemList) {

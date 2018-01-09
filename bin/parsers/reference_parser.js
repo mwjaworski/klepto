@@ -40,7 +40,8 @@ class ReferenceParser {
     const {
       resource,
       scope
-    } = this.__scopeToResource(scopeOrReference, manifestConfiguration, `pull.uri`)
+    } = this.__scopeToResource(scopeOrReference, {}, `pull.uri`)
+    // TODO replace {} with manifestConfiguration so we can add more variables to the pull uri
 
     return this.__resourceToArchiveRequest(resource, scope, overrideUniqueName)
   }
@@ -105,8 +106,8 @@ class ReferenceParser {
 
     return {
       scope,
-      resource: _.template(template)(_.merge({}, manifestConfiguration.__manifest, templateVariables, constants, {
-        version: manifestConfiguration.__manifest.version || version
+      resource: _.template(template)(_.merge({}, _.get(manifestConfiguration, '__manifest', {}), templateVariables, constants, {
+        version: _.get(manifestConfiguration, '__manifest.version', version)
       }))
     }
   }

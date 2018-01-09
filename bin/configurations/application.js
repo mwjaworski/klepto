@@ -41,7 +41,7 @@ class ApplicationConfiguration {
     return this
   }
 
-  initializeLocal() {
+  initializeLocal () {
     // already initialized
   }
 
