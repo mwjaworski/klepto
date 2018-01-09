@@ -1,5 +1,9 @@
 # Klepto Changelog
 
+## 0.9.5
+
+- FIXED on zip extract we only strip folder names with valid archive names
+
 ## 0.9.4
 
 - REFACTORED Zip `pack` will not include project or version but the bare folder structure
