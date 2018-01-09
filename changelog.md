@@ -1,5 +1,9 @@
 # Klepto Changelog
 
+## 0.9.1
+
+- FIXED Prefer vault.json and .vaultrc over any other component library.
+
 ## 0.9.0
 
 - ADDED `--encrypt` to `configure` to encrypt values on .vaultrc

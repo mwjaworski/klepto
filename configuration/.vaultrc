@@ -28,16 +28,14 @@
       "package-lock.json"
     ],
     "configurationSystem": [{
-        "toolConfiguration": ".bowerrc",
-        "archiveManifest": "bower.json",
-        "versionSeparator": "#"
-      },
-      {
         "toolConfiguration": ".vaultrc",
         "archiveManifest": "vault.json",
         "versionSeparator": "@"
-      },
-      {
+      }, {
+        "toolConfiguration": ".bowerrc",
+        "archiveManifest": "bower.json",
+        "versionSeparator": "#"
+      }, {
         "toolConfiguration": ".does_not_exist",
         "archiveManifest": "component.json",
         "versionSeparator": "#"
