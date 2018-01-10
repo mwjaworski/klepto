@@ -1,5 +1,9 @@
 # Klepto Changelog
 
+## 0.9.7
+
+- REFACTORED the version tag for klepto is `#` instead of `@`; a following release will always look for either `#` or `@` as version markers
+
 ## 0.9.6
 
 - ADDED `externals` to the manifest so that sub-folders could be carried along with a component and moved to the same level as the component
