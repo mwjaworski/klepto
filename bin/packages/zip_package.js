@@ -8,7 +8,7 @@ class ZipPackage {
   static pack (archiveBundle, manifestConfiguration) {
     const releaseAsset = `${archiveBundle.releaseStaging}.zip`
 
-    return this.__packZip(archiveBundle, FileSystem.flattenFolder(archiveBundle.releaseFolder))
+    return this.__pack(archiveBundle, FileSystem.flattenFolder(archiveBundle.releaseFolder))
       .generateAsync({
         compression: 'deflate',
         type: 'nodebuffer',
@@ -23,7 +23,7 @@ class ZipPackage {
         }
       })
   }
-  static __packZip (archiveBundle, fileList) {
+  static __pack (archiveBundle, fileList) {
     const zip = new JSZip()
 
     fileList.forEach(filePath => {
@@ -72,10 +72,10 @@ class ZipPackage {
     return FileSystem
       .read(archiveRequest.cachePath)
       .then((binaryData) => {
-        return this.__unpackZip(binaryData, archiveRequest)
+        return this.__unpack(binaryData, archiveRequest)
       })
   }
-  static __unpackZip (binaryData, {
+  static __unpack (binaryData, {
     stagingPath,
     archive
   }, msg) {

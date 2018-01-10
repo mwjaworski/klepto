@@ -1,5 +1,14 @@
 # Klepto Changelog
 
+## 0.9.6
+
+- ADDED `externals` to the manifest so that sub-folders could be carried along with a component and moved to the same level as the component
+- FIXED the archive being installed is placed in the proper folder
+- FIXED `install` and `publish` accept the same pattern `component@version`
+- FIXED the `uri` template accepts `component` and `version` for `pull` and `push`
+- FIXED splitting the archive ignores `-` and only splits on `_` (needs improvement)
+-
+
 ## 0.9.5
 
 - FIXED on zip extract we only strip folder names with valid archive names

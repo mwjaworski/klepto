@@ -14,13 +14,17 @@ const installArchiveAction = (archiveRequest, installedName) => {
   const installFrom = `${archiveRequest.stagingPath}${_.get(archiveRequest, 'scope.pull.subfolder', '')}`
   const ignoreFolders = _.merge(
     ApplicationConfiguration.get(`rules.ignoreFiles`, []),
-    manifestJson.ignore
+    manifestJson.ignore()
   )
+  const externalFolders = manifestJson.externals()
 
   return FileSystem
     .createDirectory(`${archiveFolder}/`)
     .removeDirectory(`${archiveFolder}/${archiveRequest.archive}`)
     .copyFiles(installFrom, archivePath, ignoreFolders)
+    .then(() => {
+      return FileSystem.moveFiles(archivePath, FileSystem.parentFolder(archivePath), externalFolders)
+    })
     .then(() => {
       StatusLog.notify(`installed`, archiveRequest.uuid)
       return manifestJson

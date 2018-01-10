@@ -26,6 +26,44 @@ class FileSystem {
     })
   }
 
+  /**
+   * a string of the path for the parent folder
+   *
+   * @param {String} folder a folder path
+   */
+  static parentFolder(folder) {
+    const sep = path.sep
+    const endIndex = folder.length - 1
+
+    folder = folder.replace(`${sep}${sep}`, '/')
+    folder = (folder[endIndex] === sep) ? folder.slice(0, endIndex) : folder
+
+    return _.initial(folder.split(sep)).join(sep)
+  }
+
+  /**
+   *
+   * @param {String} from read from folder
+   * @param {String} to write to folder
+   * @param {Array<String>} moveFolders folders to move
+   */
+  static moveFiles (from, to, moveFolders) {
+    return Promise.all(_.map(moveFolders, (folder) => {
+      return new Promise((resolve, reject) => {
+        fs.move(`${from}${folder}${path.sep}`, `${to}${path.sep}${folder}${path.sep}`, {
+          overwrite: true
+        }, err => {
+          if (err) {
+            reject(err)
+          }
+          else {
+            resolve()
+          }
+        })
+      })
+    }))
+  }
+
   static flattenFolder (path) {
     return (this.isFilePath(path)) ? [path] : this.__flattenFolder(path, [])
   }

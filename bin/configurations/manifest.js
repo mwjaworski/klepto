@@ -76,6 +76,7 @@ class ManifestConfiguration {
       dependencies: {},
       devDependencies: {},
       resolutions: {},
+      externals: [],
       ignore: []
     }
   }
@@ -165,6 +166,10 @@ class ManifestConfiguration {
 
   devDependencies () {
     return this.__getSafeProp(`devDependencies`, {})
+  }
+
+  externals () {
+    return this.__getSafeProp(`externals`, [])
   }
 
   ignore () {

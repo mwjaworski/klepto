@@ -6,7 +6,7 @@ const ApplicationConfiguration = require('../configurations/application')
 
 const Discover = {
   COMPONENT_ASPECT: /.*?\/([a-z0-9-_.]*?)[./]?(zip|tar|tgz|gz|tar.gz|git)?$/i,
-  HAS_EMBEDDED_VERSION: /.*?[_-]+([\d.]*)$/i
+  HAS_EMBEDDED_VERSION: /(.*?)[_]+([\d.]*)$/i
 }
 
 /**
@@ -30,7 +30,7 @@ class ReferenceParser {
     const {
       resource,
       scope
-    } = this.__scopeToResource(scopeOrReference, manifestConfiguration, `push.uri`)
+    } = this.__scopeToResource(scopeOrReference, `push.uri`)
 
     return this.__resourceToArchivePackage(manifestConfiguration, resource, scope)
   }
@@ -40,9 +40,9 @@ class ReferenceParser {
     const {
       resource,
       scope
-    } = this.__scopeToResource(scopeOrReference, {}, `pull.uri`)
-    // TODO replace {} with manifestConfiguration so we can add more variables to the pull uri
+    } = this.__scopeToResource(scopeOrReference, `pull.uri`)
 
+    // TODO replace {} with manifestConfiguration so we can add more variables to the pull uri
     return this.__resourceToArchiveRequest(resource, scope, overrideUniqueName)
   }
 
@@ -76,7 +76,7 @@ class ReferenceParser {
    * @param {*} scopeOrReference
    * @param {String} operationType either `push_uri` or `pull_uri`
    */
-  static __scopeToResource (scopeOrReference, manifestConfiguration, operationType) {
+  static __scopeToResource (scopeOrReference, operationType) {
     const patternMarkers = ApplicationConfiguration.get(`rules.patternMarkers`)
     const [uri, version = `*`] = this.splitURIVersion(scopeOrReference)
     const uriAspects = uri.split(patternMarkers.separator)
@@ -106,8 +106,8 @@ class ReferenceParser {
 
     return {
       scope,
-      resource: _.template(template)(_.merge({}, _.get(manifestConfiguration, '__manifest', {}), templateVariables, constants, {
-        version: _.get(manifestConfiguration, '__manifest.version', version)
+      resource: _.template(template)(_.merge({}, templateVariables, constants, {
+        version
       }))
     }
   }
@@ -166,7 +166,7 @@ class ReferenceParser {
     const [archive, version = `*`] = this.__detectVersionInArchive(_archive, _version)
 
     const versionFolder = crypto.createHash(`md5`).update(version).digest(`hex`)
-    const installedName = overrideUniqueName || archive
+    const installedName = (overrideUniqueName && overrideUniqueName.length > 0) ? overrideUniqueName : archive
 
     const safeExtension = (extension) ? `.${extension}` : `/`
     const cachePath = `${cache}/${archive}__${versionFolder}${safeExtension}`
@@ -190,7 +190,8 @@ class ReferenceParser {
     const embeddedVersion = Discover.HAS_EMBEDDED_VERSION.exec(archive)
 
     if (embeddedVersion) {
-      return [archive.substr(0, embeddedVersion.index), _.last(embeddedVersion)]
+      const archiveVersion = _.tail(embeddedVersion)
+      return [_.first(archiveVersion), _.last(archiveVersion)]
     } else {
       return [archive, version]
     }

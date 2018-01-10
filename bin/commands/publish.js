@@ -2,6 +2,7 @@ const createResourceBundleAction = require('../actions/create_resource_bundle_ac
 const bundleArchiveAction = require('../actions/bundle_archive_action')
 const uploadArchiveAction = require('../actions/upload_archive_action')
 
+const ApplicationConfiguration = require('../configurations/application')
 const ManifestConfiguration = require('../configurations/manifest')
 const StatusLog = require('../support/status_log')
 
@@ -10,16 +11,17 @@ const _ = require('lodash')
 module.exports = {
   registerVorpalCommand: (vorpal, ApplicationConfiguration) => {
     return vorpal
-      .command(`publish [reference] [release_folder]`)
+      .command(`publish <reference> [release_folder]`)
       .description(`Bundle, then upload`)
       .validate(function (args) {
         return true
       })
       .action(function (args, done) {
         const manifestConfiguration = ManifestConfiguration.build(`./`)
-        const autoAssetName = `${manifestConfiguration.name}__${manifestConfiguration.version}`
+        const versionSeparator = manifestConfiguration.system.versionSeparator
+        const autoAssetName = `${manifestConfiguration.name}${versionSeparator}${manifestConfiguration.version}`
 
-        args.reference = (args.reference || `./`).replace(`?`, autoAssetName)
+        args.reference = (args.reference || `./`).replace('?', autoAssetName)
 
         manifestConfiguration.initializeLocalRelease({
           releaseFolder: args['release_folder'],
