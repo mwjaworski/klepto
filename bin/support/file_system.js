@@ -1,3 +1,4 @@
+const StatusLog = require('../support/status_log')
 const mm = require('micromatch')
 const fs = require('fs-extra')
 const path = require('path')
@@ -22,6 +23,7 @@ class FileSystem {
     }
 
     return new Promise((resolve) => {
+      StatusLog.notify(`copied`, to)
       resolve(fs.copy(from, to, copyOptions))
     })
   }
@@ -50,6 +52,7 @@ class FileSystem {
   static moveFiles (from, to, moveFolders) {
     return Promise.all(_.map(moveFolders, (folder) => {
       return new Promise((resolve, reject) => {
+        StatusLog.notify(`moved`, `${to}${path.sep}${folder}`)
         fs.move(`${from}${folder}${path.sep}`, `${to}${path.sep}${folder}${path.sep}`, {
           overwrite: true
         }, err => {
@@ -107,6 +110,7 @@ class FileSystem {
       const pathInQuestion = directoryName.slice(0, index + 1).join(path.sep)
 
       if (pathInQuestion && !this.isDirectory(pathInQuestion)) {
+        StatusLog.notify(`folder created`, directoryName)
         fs.mkdirSync(pathInQuestion)
       }
     })
@@ -118,6 +122,7 @@ class FileSystem {
     directoryName = path.normalize(directoryName)
 
     if (directoryName && this.isDirectory(directoryName)) {
+      StatusLog.notify(`folder removed`, directoryName)
       fs.removeSync(directoryName)
     }
 

@@ -56,7 +56,7 @@ class ReferenceParser {
    * @returns "reference"
    */
   static normalizeReference (reference) {
-    return _.trimEnd(_.trimStart(reference || '', path.sep))
+    return _.trim(reference || '', path.sep)
   }
 
   static splitArchiveExtension (uri) {
@@ -188,13 +188,11 @@ class ReferenceParser {
 
   static __detectVersionInArchive (archive, version) {
     const embeddedVersion = Discover.HAS_EMBEDDED_VERSION.exec(archive)
+    const archiveVersion = _.tail(embeddedVersion)
 
-    if (embeddedVersion) {
-      const archiveVersion = _.tail(embeddedVersion)
-      return [_.first(archiveVersion), _.last(archiveVersion)]
-    } else {
-      return [archive, version]
-    }
+    return (embeddedVersion)
+      ? [_.first(archiveVersion), _.last(archiveVersion)]
+      : [archive, version]
   }
 
   /**
@@ -204,7 +202,7 @@ class ReferenceParser {
    */
   static __matchConversionRule (uriAspects) {
     const sources = ApplicationConfiguration.get(`sources`)
-    const scope = uriAspects[0] = (_.first(uriAspects) || '')
+    const scope = uriAspects[0] = _.first(uriAspects) || ''
 
     const scopeObj = _.find(sources, (_0, sourceKey) => {
       return scope === sourceKey

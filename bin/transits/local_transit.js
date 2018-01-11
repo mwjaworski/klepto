@@ -37,7 +37,7 @@ class LocalTransit {
   }
 
   static __cleanURI (uri) {
-    return _.trimEnd(`${uri}`).replace(`file://`, ``)
+    return _.trim(`${uri}`).replace(`file://`, ``)
   }
 }
 

@@ -1,5 +1,10 @@
 # Klepto Changelog
 
+## 0.9.8
+
+- ADDED logging to significant file operations
+- ADDED support for `-h` and `--help` as aliases for `help`
+
 ## 0.9.7
 
 - REFACTORED the version tag for klepto is `#` instead of `@`; a following release will always look for either `#` or `@` as version markers

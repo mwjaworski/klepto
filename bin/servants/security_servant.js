@@ -1,3 +1,4 @@
+const StatusLog = require('../support/status_log')
 const crypto = require('crypto')
 const os = require('os')
 
@@ -15,7 +16,7 @@ class SecurityServant {
 
       return cipher.update((message + '').toString(), 'utf8', 'hex') + cipher.final('hex')
     } catch (e) {
-      console.error(`encrypt`, e)
+      StatusLog.error('encrypt', e.message)
       return ''
     }
   }
@@ -33,7 +34,7 @@ class SecurityServant {
 
       return decipher.update(cipher, 'hex', 'utf8') + decipher.final('utf8')
     } catch (e) {
-      console.error(`decrypt`, e)
+      StatusLog.error('decrypt', e.message)
       return ''
     }
   }

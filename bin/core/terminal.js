@@ -17,6 +17,8 @@ module.exports = {
 
     if (_.size(process.argv) <= NODE_COMMAND_ARGV) {
       process.argv.push(`help`)
+    } else if (_.size(process.argv) > NODE_COMMAND_ARGV && (process.argv[2] === '-h' || process.argv[2] === '--help')) {
+      process.argv[2] = `help`
     } else if (_.size(process.argv) > NODE_COMMAND_ARGV && process.argv[2] === '-v') {
       process.argv[2] = `version`
     }
