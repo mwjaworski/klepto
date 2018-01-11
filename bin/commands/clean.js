@@ -1,4 +1,4 @@
-const fs = require('fs-extra')
+const FileSystem = require('../support/file_system')
 
 module.exports = {
   registerVorpalCommand: (vorpal, ApplicationConfiguration) => {
@@ -11,14 +11,14 @@ module.exports = {
       .action(function (args, done) {
         switch (args.reference) {
           case 'cache':
-            fs.removeSync(ApplicationConfiguration.get(`paths.cache`))
+            FileSystem.removeDirectory(ApplicationConfiguration.get(`paths.cache`))
             break
           case 'staging':
-            fs.removeSync(ApplicationConfiguration.get(`paths.staging`))
+            FileSystem.removeDirectory(ApplicationConfiguration.get(`paths.staging`))
             break
           default:
-            fs.removeSync(ApplicationConfiguration.get(`paths.staging`))
-            fs.removeSync(ApplicationConfiguration.get(`paths.cache`))
+            FileSystem.removeDirectory(ApplicationConfiguration.get(`paths.staging`))
+            FileSystem.removeDirectory(ApplicationConfiguration.get(`paths.cache`))
         }
 
         done()

@@ -60,7 +60,7 @@ class StatusLog {
     const colors = this.__messageColors
 
     const errorCount = this.__errors.length
-    const errors = (errorCount > 0) ? errorCount + '!' : ``
+    const errors = (errorCount > 0) ? `${errorCount} issues` : ''
 
     const message = [
       action,

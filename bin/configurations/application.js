@@ -41,6 +41,9 @@ class ApplicationConfiguration {
     return this
   }
 
+  /**
+   * this exists for parity in the initialize command, the ApplicationConfig is a singleton and initializes at the bottom of this file
+   */
   initializeLocal () {
     // already initialized
   }

@@ -54,17 +54,15 @@ class FTPTransit {
     const ftpURI = PARSE_FTP.exec(uri)
 
     const ftpInfo = {
+      password: SecurityServant.decrypt(_.get(sourceScope, `authentication.key`)),
       filePath: `/${ftpURI[5]}`,
       host: ftpURI[3],
       port: ftpURI[4],
       user: ftpURI[2],
-      secure: false,
-      password: ''
+      // TODO we need to configure this
+      secure: false
     }
 
-    const encryptedKey = _.get(sourceScope, `authentication.key`)
-
-    ftpInfo.password = SecurityServant.decrypt(encryptedKey)
     return ftpInfo
   }
 }
