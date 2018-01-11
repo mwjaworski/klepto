@@ -1,5 +1,4 @@
 const FileSystem = require('../support/file_system')
-const fs = require('fs-extra')
 
 module.exports = {
   registerVorpalCommand: (vorpal, ApplicationConfiguration) => {

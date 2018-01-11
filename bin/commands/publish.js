@@ -2,7 +2,6 @@ const createResourceBundleAction = require('../actions/create_resource_bundle_ac
 const bundleArchiveAction = require('../actions/bundle_archive_action')
 const uploadArchiveAction = require('../actions/upload_archive_action')
 
-const ApplicationConfiguration = require('../configurations/application')
 const ManifestConfiguration = require('../configurations/manifest')
 const StatusLog = require('../support/status_log')
 

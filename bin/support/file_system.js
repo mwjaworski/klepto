@@ -33,7 +33,7 @@ class FileSystem {
    *
    * @param {String} folder a folder path
    */
-  static parentFolder(folder) {
+  static parentFolder (folder) {
     const sep = path.sep
     const endIndex = folder.length - 1
 
@@ -58,8 +58,7 @@ class FileSystem {
         }, err => {
           if (err) {
             reject(err)
-          }
-          else {
+          } else {
             resolve()
           }
         })
