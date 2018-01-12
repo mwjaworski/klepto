@@ -1,5 +1,9 @@
 # Klepto Changelog
 
+## 0.9.11
+
+- ADDED additional context to logging messages
+
 ## 0.9.10
 
 - FIXED installing components to a folder structure with name/ and contents

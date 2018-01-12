@@ -21,7 +21,7 @@ class FTPTransit {
       ftp.on('ready', () => {
         let uploaded = pushFiles.length
 
-        StatusLog.inform('connected', 'ftp')
+        StatusLog.inform('connected', 'ftp', { host: ftpInfo.host })
         pushFiles.forEach((file) => {
           const aspects = ftpInfo.filePath.split(path.sep)
           const folder = _.initial(aspects).join(path.sep)
@@ -33,7 +33,7 @@ class FTPTransit {
               if (err) {
                 reject(new Error(err))
               } else if (uploaded <= 0) {
-                StatusLog.inform('closed', 'ftp')
+                StatusLog.inform('closed', 'ftp', { host: ftpInfo.host })
                 ftp.end()
                 resolve()
               }
@@ -42,7 +42,7 @@ class FTPTransit {
         })
       })
 
-      StatusLog.inform('connecting', 'ftp')
+      StatusLog.inform('connecting', 'ftp', { host: ftpInfo.host })
       ftp.connect(ftpInfo)
     })
   }
