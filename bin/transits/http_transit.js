@@ -1,4 +1,5 @@
 const fileSystem = require('../support/file_system')
+const StatusLog = require('../support/status_log')
 const axios = require('axios')
 
 /**
@@ -11,6 +12,7 @@ class HTTPTransit {
     })
   }
   static pull ({ uri, installedVersion, cachePath }) {
+    StatusLog.inform('pull', 'http', { uri })
     return axios({
       responseType: `arraybuffer`,
       maxContentLength: 99999999,

@@ -1,3 +1,4 @@
+const StatusLog = require('../support/status_log')
 const crypto = require('crypto')
 const path = require('path')
 const _ = require('lodash')
@@ -137,6 +138,7 @@ class ReferenceParser {
     const uuid = `${archive}${versionMarker}${version}`
     const uri = resource
 
+    StatusLog.inform('package', uri)
     return {
       releaseAsset: null,
       releaseStaging,
@@ -173,6 +175,7 @@ class ReferenceParser {
     const stagingPath = `${staging}/${archive}/${versionFolder}/`
     const uuid = `${installedName}${versionMarker}${version}`
 
+    StatusLog.inform('request', uri)
     return {
       installedVersion: version,
       installedName,

@@ -1,5 +1,11 @@
 # Klepto Changelog
 
+## 0.9.9
+
+- FIXED `FileSystem.move` so it does not fail
+- ADDED `inform` as a sub-type for logging sub-tasks, useful for debugging
+- ADDED logging to package and transit tasks
+
 ## 0.9.8
 
 - ADDED logging to significant file operations

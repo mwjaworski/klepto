@@ -23,8 +23,10 @@ class FileSystem {
     }
 
     return new Promise((resolve) => {
-      StatusLog.notify(`copied`, to)
-      resolve(fs.copy(from, to, copyOptions))
+      resolve(fs.copy(from, to, copyOptions).then((o) => {
+        StatusLog.inform(`copied`, to)
+        return o
+      }))
     })
   }
 
@@ -52,16 +54,12 @@ class FileSystem {
   static moveFiles (from, to, moveFolders) {
     return Promise.all(_.map(moveFolders, (folder) => {
       return new Promise((resolve, reject) => {
-        StatusLog.notify(`moved`, `${to}${path.sep}${folder}`)
-        fs.move(`${from}${folder}${path.sep}`, `${to}${path.sep}${folder}${path.sep}`, {
-          overwrite: true
-        }, err => {
-          if (err) {
-            reject(err)
-          } else {
-            resolve()
-          }
-        })
+        return fs.copy(`${from}${folder}${path.sep}`, `${to}${path.sep}${folder}${path.sep}`)
+          .then((o) => {
+            fs.removeSync(`${from}${folder}${path.sep}`)
+            StatusLog.inform(`moved`, `${to}${path.sep}${folder}`)
+            return o
+          })
       })
     }))
   }
@@ -104,13 +102,13 @@ class FileSystem {
   }
 
   static createDirectory (directoryName) {
-    directoryName = path.normalize(directoryName).split(path.sep)
-    directoryName.forEach((_0, index) => {
-      const pathInQuestion = directoryName.slice(0, index + 1).join(path.sep)
+    const _directoryName = path.normalize(directoryName).split(path.sep)
+    _directoryName.forEach((_0, index) => {
+      const pathInQuestion = _directoryName.slice(0, index + 1).join(path.sep)
 
       if (pathInQuestion && !this.isDirectory(pathInQuestion)) {
-        StatusLog.notify(`folder created`, directoryName)
         fs.mkdirSync(pathInQuestion)
+        StatusLog.inform(`created`, directoryName)
       }
     })
 
@@ -118,11 +116,11 @@ class FileSystem {
   }
 
   static removeDirectory (directoryName) {
-    directoryName = path.normalize(directoryName)
+    const _directoryName = path.normalize(directoryName)
 
-    if (directoryName && this.isDirectory(directoryName)) {
-      StatusLog.notify(`folder removed`, directoryName)
+    if (_directoryName && this.isDirectory(_directoryName)) {
       fs.removeSync(directoryName)
+      StatusLog.inform(`removed`, directoryName)
     }
 
     return this

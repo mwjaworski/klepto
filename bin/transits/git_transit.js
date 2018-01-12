@@ -26,6 +26,7 @@ class GitTransit {
         __pull = this.__pullVersionUnique
       }
 
+      StatusLog.inform('pull', 'git', { uri: archiveRequest.uri })
       return __pull(archiveRequest)
         .then(resolve)
         .catch(err => {

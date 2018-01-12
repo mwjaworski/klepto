@@ -1,4 +1,5 @@
 const FileSystem = require('../support/file_system')
+const StatusLog = require('../support/status_log')
 const JSZip = require('jszip')
 const fs = require('fs-extra')
 const path = require('path')
@@ -8,6 +9,7 @@ class ZipPackage {
   static pack (archiveBundle, manifestConfiguration) {
     const releaseAsset = `${archiveBundle.releaseStaging}.zip`
 
+    StatusLog.inform('pack', 'zip', { path: releaseAsset })
     return this.__pack(archiveBundle, FileSystem.flattenFolder(archiveBundle.releaseFolder))
       .generateAsync({
         compression: 'deflate',
@@ -15,6 +17,7 @@ class ZipPackage {
         platform: 'UNIX'
       })
       .then((content) => {
+        StatusLog.inform('packed', 'zip', { path: releaseAsset })
         FileSystem.write(releaseAsset, content)
         return {
           archiveBundle: {
@@ -69,10 +72,14 @@ class ZipPackage {
   }
 
   static unpack (archiveRequest, cachePath) {
+    StatusLog.inform('unpack', 'zip', { path: archiveRequest.cachePath })
     return FileSystem
       .read(archiveRequest.cachePath)
       .then((binaryData) => {
-        return this.__unpack(binaryData, archiveRequest)
+        return this.__unpack(binaryData, archiveRequest).then((v) => {
+          StatusLog.inform('unpacked', 'zip', { path: archiveRequest.cachePath })
+          return v
+        })
       })
   }
   static __unpack (binaryData, {

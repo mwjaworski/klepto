@@ -3,14 +3,17 @@ const color = require('cli-color')
 const _ = require('lodash')
 
 const C = {
-  gray: color.xterm(249),
-  darkGray: color.xterm(242),
-  lightGray: color.xterm(253),
-  yellow: color.yellow,
-  red: color.redBright,
-  action: color.xterm(139),
-  resource: color.xterm(145),
-  error: color.xterm(198)
+  gray: color.xterm(251),
+  darkGray: color.xterm(243),
+  lightGray: color.xterm(254),
+  yellow: color.xterm(226),
+  red: color.xterm(197),
+  action: color.xterm(39),
+  resource: color.xterm(176),
+  error: color.xterm(205),
+  actionInform: color.xterm(117),
+  resourceInform: color.xterm(188),
+  errorInform: color.xterm(223)
 }
 
 class StatusLog {
@@ -45,19 +48,31 @@ class StatusLog {
     this.__vorpal = undefined
     this.__errors = []
     this.__started = Date.now()
-    this.__messageColors = [
+    this.__notifyColors = [
       C.action,
       C.resource,
       C.error
+    ]
+    this.__informColors = [
+      C.actionInform,
+      C.resourceInform,
+      C.errorInform
     ]
 
     return this
   }
 
   static notify (action, resource, meta = {}) {
+    return this.__log(``, this.__notifyColors, action, resource, meta)
+  }
+
+  static inform (action, resource, meta = {}) {
+    return this.__log(` `, this.__informColors, action, resource, meta)
+  }
+
+  static __log (padding, colors, action, resource, meta = {}) {
     const seconds = `${(Date.now() - this.__started) / 1000}`.slice(0, 3) + `s`
     const secondsStr = (seconds > 10) ? `${seconds} ` : `${seconds}  `
-    const colors = this.__messageColors
 
     const errorCount = this.__errors.length
     const errors = (errorCount > 0) ? `${errorCount} issues` : ''
@@ -69,7 +84,7 @@ class StatusLog {
     ]
 
     this.__logger.info(message.join(` `), meta)
-    this.__vorpal.log(`${C.darkGray(secondsStr)}` + message.map((s, i) => colors[i](s)).join(` `))
+    this.__vorpal.log(`${C.darkGray(secondsStr)}${padding}` + message.map((s, i) => colors[i](s)).join(` `))
     return this
   }
 

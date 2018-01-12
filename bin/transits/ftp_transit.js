@@ -1,5 +1,6 @@
 const SecurityServant = require('../servants/security_servant')
 const FileSystem = require('../support/file_system')
+const StatusLog = require('../support/status_log')
 const path = require('path')
 const _ = require('lodash')
 const FTP = require('ftp')
@@ -20,6 +21,7 @@ class FTPTransit {
       ftp.on('ready', () => {
         let uploaded = pushFiles.length
 
+        StatusLog.inform('connected', 'ftp')
         pushFiles.forEach((file) => {
           const aspects = ftpInfo.filePath.split(path.sep)
           const folder = _.initial(aspects).join(path.sep)
@@ -31,6 +33,7 @@ class FTPTransit {
               if (err) {
                 reject(new Error(err))
               } else if (uploaded <= 0) {
+                StatusLog.inform('closed', 'ftp')
                 ftp.end()
                 resolve()
               }
@@ -39,6 +42,7 @@ class FTPTransit {
         })
       })
 
+      StatusLog.inform('connecting', 'ftp')
       ftp.connect(ftpInfo)
     })
   }
