@@ -94,8 +94,13 @@ class ZipPackage {
         zip.forEach((relativePath, file) => {
           const archivePrefix = `${archive}`
 
-          if (archivePrefix.length > 0 && relativePath.indexOf(archivePrefix) === 0) {
-            relativePath = relativePath.substr(`${archivePrefix}/`.length)
+          if (archivePrefix.length > 0) {
+            if (relativePath.indexOf(archivePrefix) === 0) {
+              relativePath = relativePath.substr(`${archivePrefix}/`.length)
+            }
+            else if (relativePath.indexOf(`/${archivePrefix}`) === 0) {
+              relativePath = relativePath.substr(`/${archivePrefix}/`.length)
+            }
           }
 
           const isFolder = relativePath.lastIndexOf(`/`) === relativePath.length - 1

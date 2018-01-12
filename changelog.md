@@ -1,5 +1,9 @@
 # Klepto Changelog
 
+## 0.9.10
+
+- FIXED installing components to a folder structure with name/ and contents
+
 ## 0.9.9
 
 - FIXED `FileSystem.move` so it does not fail
