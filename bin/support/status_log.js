@@ -84,7 +84,7 @@ class StatusLog {
     ]
 
     this.__logger.info(message.join(` `), meta)
-    this.__vorpal.log(`${C.darkGray(secondsStr)}${padding}` + message.map((s, i) => colors[i](s)).join(` `) + _.first(_.toArray(meta)))
+    this.__vorpal.log(`${C.darkGray(secondsStr)}${padding}` + message.map((s, i) => colors[i](s)).join(` `) + (_.first(_.toArray(meta)) || ''))
     return this
   }
 

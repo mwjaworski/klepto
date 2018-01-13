@@ -1,5 +1,9 @@
 # Klepto Changelog
 
+## 0.9.12
+
+- FIXED unnecessary `undefined` after status messages if there is no context
+
 ## 0.9.11
 
 - ADDED additional context to logging messages
