@@ -5,6 +5,17 @@ const path = require('path')
 const _ = require('lodash')
 
 class FileSystem {
+
+  static writeFile(path, contents) {
+    try {
+      fs.writeFileSync(path, contents)
+      StatusLog.inform(`write file`, path)
+    }
+    catch(e) {
+      StatusLog.error(err, path)
+      throw new Error(err)
+    }
+  }
   /**
    *
    * @param {String} from read from folder
@@ -54,11 +65,11 @@ class FileSystem {
   static moveFiles (from, to, moveFolders) {
     return Promise.all(_.map(moveFolders, (folder) => {
       return new Promise((resolve, reject) => {
-        return fs.copy(`${from}${folder}${path.sep}`, `${to}${path.sep}${folder}${path.sep}`)
+        fs.copy(`${from}${folder}${path.sep}`, `${to}${path.sep}${folder}${path.sep}`)
           .then((o) => {
             fs.removeSync(`${from}${folder}${path.sep}`)
             StatusLog.inform(`moved`, `${to}${path.sep}${folder}`)
-            return o
+            resolve(o)
           })
       })
     }))

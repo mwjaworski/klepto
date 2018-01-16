@@ -1,4 +1,5 @@
 const ApplicationConfiguration = require('../configurations/application')
+const FileSystem = require('../support/file_system')
 const fs = require('fs-extra')
 const path = require('path')
 const _ = require('lodash')
@@ -104,7 +105,7 @@ class ManifestConfiguration {
   }
 
   saveLocal () {
-    fs.writeFileSync(`./${this.__system.archiveManifest}`, JSON.stringify(this.__manifest, null, 2))
+    FileSystem.writeFile(`./${this.__system.archiveManifest}`, JSON.stringify(this.__manifest, null, 2))
     return this
   }
 

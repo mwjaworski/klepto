@@ -1,5 +1,11 @@
 # Klepto Changelog
 
+## 0.9.13
+
+- FIXED report on file save
+- FIXED save/save-as for `install`
+- FIXED `FileSystem` move files
+
 ## 0.9.12
 
 - FIXED unnecessary `undefined` after status messages if there is no context

@@ -1,3 +1,4 @@
+const FileSystem = require('../support/file_system')
 const process = require('process')
 const fs = require('fs-extra')
 const path = require('path')
@@ -74,7 +75,7 @@ class ApplicationConfiguration {
   }
 
   _saveFile (filename, content) {
-    fs.writeFileSync(filename, JSON.stringify(content, null, 2))
+    FileSystem.writeFile(filename, JSON.stringify(content, null, 2))
     return this
   }
 
