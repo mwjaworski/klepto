@@ -1,5 +1,9 @@
 # Klepto Changelog
 
+## 0.9.14
+
+- ADDED `completed` or `failed` messages to all commands except `version`. If a command does not end with `completed` or `failed`, then it hung
+
 ## 0.9.13
 
 - FIXED report on file save

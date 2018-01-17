@@ -1,4 +1,5 @@
 const FileSystem = require('../support/file_system')
+const StatusLog = require('../support/status_log')
 
 module.exports = {
   registerVorpalCommand: (vorpal, ApplicationConfiguration) => {
@@ -9,6 +10,7 @@ module.exports = {
         return true
       })
       .action(function (args, done) {
+
         switch (args.reference) {
           case 'cache':
             FileSystem.removeDirectory(ApplicationConfiguration.get(`paths.cache`))
@@ -21,7 +23,9 @@ module.exports = {
             FileSystem.removeDirectory(ApplicationConfiguration.get(`paths.cache`))
         }
 
-        done()
+        StatusLog
+          .completeSuccess()
+          .then(() => done())
       })
   }
 }

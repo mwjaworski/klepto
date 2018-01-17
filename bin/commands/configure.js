@@ -1,4 +1,5 @@
 const SecurityServant = require('../servants/security_servant')
+const StatusLog = require('../support/status_log')
 const _ = require('lodash')
 
 module.exports = {
@@ -14,9 +15,11 @@ module.exports = {
         return true
       })
       .action(function (args, done) {
+
         if (!args.path) {
-          vorpal.log(JSON.stringify(ApplicationConfiguration.get(), null, 2))
-          return done()
+          StatusLog
+            .completeFailure(JSON.stringify(ApplicationConfiguration.get(), null, 2))
+            .then(() => done())
         }
 
         const val = args.val
@@ -40,7 +43,9 @@ module.exports = {
           vorpal.log(JSON.stringify(ApplicationConfiguration.get(args.path), null, 2))
         }
 
-        done()
+        StatusLog
+          .completeSuccess()
+          .then(() => done())
       })
   }
 }

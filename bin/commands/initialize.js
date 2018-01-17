@@ -1,4 +1,5 @@
 const ManifestConfiguration = require('../configurations/manifest')
+const StatusLog = require('../support/status_log')
 
 module.exports = {
   registerVorpalCommand: (vorpal, ApplicationConfiguration) => {
@@ -25,7 +26,9 @@ module.exports = {
         ApplicationConfiguration.saveLocal()
         projectManifest.saveLocal()
 
-        done()
+        StatusLog
+          .completeSuccess()
+          .then(() => done())
       })
   }
 }
