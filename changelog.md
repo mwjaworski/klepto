@@ -1,5 +1,10 @@
 # Klepto Changelog
 
+## 0.10.0
+
+- ADDED `optimistic` flag for `install` and `download` which will install/download any archives which exist, but not fail for those which do not
+- ADDED `depth` flag for `install` and `download` which limits how many `dependency` lists we travel down and install. To just install a component use `--depth 0`
+
 ## 0.9.14
 
 - ADDED `completed` or `failed` messages to all commands except `version`. If a command does not end with `completed` or `failed`, then it hung

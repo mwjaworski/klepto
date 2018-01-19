@@ -4,7 +4,7 @@ const DependencyLog = require('../support/dependency_log')
 const FileSystem = require('../support/file_system')
 const StatusLog = require('../support/status_log')
 
-const downloadArchiveAction = (reference, installPath = undefined) => {
+const downloadArchiveAction = (reference, installPath, configuration) => {
   return createResourceRequestAction(reference, installPath)
     .then((resourceRequest) => {
       const paths = ApplicationConfiguration.get(`paths`)
@@ -19,23 +19,34 @@ const downloadArchiveAction = (reference, installPath = undefined) => {
 
       FileSystem.createDirectory(`${paths.cache}/`)
 
-      return TransitTool
-        .pull(archiveRequest)
-          .then(({ availableVersions }) => {
-            StatusLog.notify(`downloaded`, archiveRequest.uuid)
-            DependencyLog.trackAvailableVersions(archiveRequest, availableVersions)
+      return new Promise((resolve, reject) => {
+        TransitTool
+          .pull(archiveRequest)
+            .then(({ availableVersions }) => {
+              StatusLog.notify(`downloaded`, archiveRequest.uuid)
+              DependencyLog.trackAvailableVersions(archiveRequest, availableVersions)
 
-            FileSystem.removeDirectory(`${archiveRequest.stagingPath}`)
-            FileSystem.createDirectory(`${archiveRequest.stagingPath}`)
+              FileSystem.removeDirectory(`${archiveRequest.stagingPath}`)
+              FileSystem.createDirectory(`${archiveRequest.stagingPath}`)
 
-            return PackageTool
-              .unpack(archiveRequest)
-              .then((o) => {
-                StatusLog.notify(`staged`, archiveRequest.uuid)
-                return o
-              })
-          })
-          .then(() => resourceRequest)
+              return PackageTool
+                .unpack(archiveRequest)
+                .then((o) => {
+                  StatusLog.notify(`staged`, archiveRequest.uuid)
+                  return o
+                })
+            })
+            .then(() => resolve(resourceRequest))
+            .catch((e) => {
+              if (configuration.optimistic) {
+                resolve(resourceRequest)
+              }
+              else {
+                reject(new Error(e))
+              }
+
+            })
+        })
     })
 }
 

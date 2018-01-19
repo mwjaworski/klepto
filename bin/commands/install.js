@@ -12,6 +12,8 @@ module.exports = {
       .option('-r, --rename <archive>', `Rename the reference`)
       .option('-D, --save-dev', `Save reference to devDependencies`)
       .option('-S, --save', `Save reference to dependencies`)
+      .option('--optimistic', `Install any archives which resolve`)
+      .option('--depth <level>', `Depth of dependencies to install`)
       .description(`Install an archive(s).`)
       .validate(function (args) {
         return true
@@ -22,7 +24,7 @@ module.exports = {
             const archiveDependencies = archiveConfiguration.allDependencies()
             const archiveName = archiveConfiguration.name
 
-            downloadArchivesAction(archiveDependencies, archiveName)
+            downloadArchivesAction(archiveDependencies, archiveName, args.options)
               .then(() => {
                 return resolveArchiveAction(archiveConfiguration)
               })
