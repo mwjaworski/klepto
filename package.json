@@ -1,7 +1,7 @@
 {
   "name": "klepto",
   "description": "Manage components packaged in zip files",
-  "version": "0.10.0",
+  "version": "0.10.1",
   "homepage": "https://github.com/mwjaworski/klepto",
   "author": {
     "name": "Michael Jaworski",

@@ -1,5 +1,9 @@
 # Klepto Changelog
 
+## 0.10.1
+
+- ADDED `installFolder` on `pull` scopes to install to a different folder
+
 ## 0.10.0
 
 - ADDED `optimistic` flag for `install` and `download` which will install/download any archives which exist, but not fail for those which do not

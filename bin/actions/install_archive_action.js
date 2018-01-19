@@ -10,7 +10,9 @@ const installArchiveAction = (archiveRequest, installedName) => {
   const paths = ApplicationConfiguration.get(`paths`)
   const manifestJson = ManifestConfiguration.build(archiveRequest.stagingPath)
   const archiveFolder = _.get(archiveRequest, 'scope.pull.destination', paths.archive)
-  const archivePath = `${archiveFolder}${path.sep}${archiveRequest.installedName}${path.sep}`
+  const localInstallFolder = _.get(archiveRequest, 'scope.pull.installFolder', `${archiveRequest.installedName}`)
+  const localInstallPath = _.template(localInstallFolder)(archiveRequest)
+  const archivePath = `${archiveFolder}${path.sep}${localInstallPath}${path.sep}`
   const installFrom = `${archiveRequest.stagingPath}${_.get(archiveRequest, 'scope.pull.subfolder', '')}`
   const ignoreFolders = _.merge(
     ApplicationConfiguration.get(`rules.ignoreFiles`, []),
@@ -26,7 +28,7 @@ const installArchiveAction = (archiveRequest, installedName) => {
       return FileSystem.moveFiles(archivePath, FileSystem.parentFolder(archivePath), externalFolders)
     })
     .then(() => {
-      StatusLog.notify(`installed`, archiveRequest.uuid)
+      StatusLog.notify(`installed`, archiveRequest.uuid, { archivePath })
       return manifestJson
     })
 }
