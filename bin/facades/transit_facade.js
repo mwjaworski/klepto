@@ -1,3 +1,4 @@
+const ExternalTransit = require('../transits/external_transit')
 const LocalTransit = require('../transits/local_transit')
 const NullTransit = require('../transits/null_transit')
 const HTTPTransit = require('../transits/http_transit')
@@ -24,7 +25,19 @@ class TransitFacade {
       this.__ofFTP(uri) ||
       this.__ofGit(uri) ||
       this.__ofLocal(uri) ||
+      this.__ofExternal(uri) ||
       this.__ofNull(uri)
+  }
+
+  /**
+   * @param {String} uri
+   * @returns {LocalTransit | undefined} the LocalTransit if the uri passes
+   */
+  static __ofExternal (uri) {
+    // TODO if there is any uri provided at all?
+    const isExternal = !!uri
+
+    return isExternal ? ExternalTransit : undefined
   }
 
   /**

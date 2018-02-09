@@ -6,7 +6,7 @@ const _ = require('lodash')
 const os = require('os')
 
 class GitTransit {
-  static push (archiveRequest) {
+  static push (archiveBundle) {
     return new Promise((resolve, reject) => {
       reject(new Error('not implemented transit push (git)'))
     })
